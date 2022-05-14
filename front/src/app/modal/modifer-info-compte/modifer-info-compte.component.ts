@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ClasseHerosService } from 'src/app/service/classe-heros.service';
 import { CompteService } from 'src/app/service/compte.service';
@@ -30,9 +31,6 @@ export class ModiferInfoCompteComponent implements OnInit {
   private listeUniteClone: Unite[] = [];
   private listeMesUnite: MesUnite[] = [];
 
-  private idCouleurUnite: number = 0;
-  private idTypeUnite: number = 0;
-
   constructor(
     private classeHeroServ: ClasseHerosService, 
     private outilServ: OutilService,
@@ -56,7 +54,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.nomImg = _nomImage;
   }
 
-  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0): void
+  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0, _checkbox: MatCheckbox): void
   {
     if(_idTypeUnite == 0 && _idCouleurUnite == 0)
     {
@@ -74,6 +72,10 @@ export class ModiferInfoCompteComponent implements OnInit {
     {
       this.listeUnite = this.listeUniteClone.filter(u => u.IdTypeUnite == _idTypeUnite);
     }  
+
+    // mes unités
+    if(_checkbox.checked)
+      this.listeUnite = this.listeUnite.filter(u => u.EstChoisi == 1);
   }
 
   Recherche(_recherche: string): void
@@ -174,7 +176,7 @@ export class ModiferInfoCompteComponent implements OnInit {
 
   GetNiveauMonUnite(_id: number): string
   {
-    return this.listeMesUnite.find(u => u.Id == +_id).Niveau;
+    return this.listeMesUnite.find(u => u.Id == +_id)?.Niveau ?? "";
   }
 
   private ListerClasse(): void
