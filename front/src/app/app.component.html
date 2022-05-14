@@ -1,0 +1,10 @@
+<mat-toolbar color="primary" *ngIf="EstConnecter()">
+    <span>CB unité</span>
+
+    <div id="flex"></div>
+
+    <button mat-button routerLink="mes-unites" routerLinkeActive="active">Unité</button>
+    <button mat-raised-button (click)="OuvrirModalModifInfoCompte()" routerLinkeActive="active">Mon compte</button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

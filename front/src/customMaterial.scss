@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+// retour a la ligne text checkbox
+.mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+/* For use in src/lib/core/theming/_palette.scss */
+$orange: (
+    50 : #fceae4,
+    100 : #f8cbbc,
+    200 : #f4a990,
+    300 : #ef8764,
+    400 : #eb6d42,
+    500 : #e85321,
+    600 : #e54c1d,
+    700 : #e24218,
+    800 : #de3914,
+    900 : #d8290b,
+    A100 : #ffffff,
+    A200 : #ffd5d0,
+    A400 : #ffa89d,
+    A700 : #ff9184,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$my-primary: mat.define-palette($orange);
+$my-accent: mat.define-palette(mat.$amber-palette);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$kids-typography: mat.define-typography-config(
+  $font-family: Helvetica,
+);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+   warn: $my-warn
+ ),
+
+ typography: $kids-typography
+));
+
+// Apply the dark theme by default
+@include mat.all-component-themes($my-theme);

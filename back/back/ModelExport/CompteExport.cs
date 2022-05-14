@@ -1,0 +1,13 @@
+﻿namespace back.ModelExport
+{
+    public class CompteExport
+    {
+        public int Id { get; set; }
+        public string Pseudo { get; set; } = null!;
+        public int Influance { get; set; }
+        public int? EstPremiereConnexion { get; set; }
+        public int IdClasseHeros { get; set; }
+        public string NomClasseHeros { get; set; } = null!;
+        public string NomImgClasse { get; set; } = null!;
+    }
+}

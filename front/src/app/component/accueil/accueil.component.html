@@ -1,0 +1,21 @@
+<div class="img">
+
+    <mat-card class="card">
+        <mat-card-title>Connexion</mat-card-title>
+
+        <mat-card-content>
+            <form #e="ngForm">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Pseudo</mat-label>
+                    <input matInput type="text" name="pseudo" ngModel="jetonpeche" required>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="Connexion(e)" color="primary">Go !</button>
+        </mat-card-actions>
+    </mat-card>
+    
+</div>
+
+

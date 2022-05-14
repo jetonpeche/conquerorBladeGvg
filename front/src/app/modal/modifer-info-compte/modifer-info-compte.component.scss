@@ -1,0 +1,81 @@
+.wrapper
+{
+    height: 130px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .item
+    {
+        min-width: 110px;
+        height: 110px;
+        margin-right: 2px;
+    }
+}
+
+.flexCard
+{
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+}
+
+.card 
+{
+  margin: 10px;
+  height: 250px;
+  width: 150px;
+  outline: 3px solid rgb(59, 59, 59);
+  cursor: pointer;
+
+  .influance
+  {
+    position: absolute;
+    bottom: 20px;
+    left: 90px;
+    border-radius: 20px;
+    padding: 5px;
+    background-color: rgba(59,59,59,1);
+    color: white;
+    font-weight: bold;
+  }
+
+  &.choisi
+  {
+    outline: 3px solid rgb(0, 255, 0);
+  }
+
+  &.Bleu
+  {
+    background: #0B438C;
+    background: linear-gradient(360deg, rgba(11,64,140,0.896796218487395) 26%, rgba(8,31,157,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
+  }
+
+  &.Violet
+  {
+    background: rgb(99,35,167);
+    background: linear-gradient(360deg, rgba(99,35,167,0.896796218487395) 26%, rgba(103,31,157,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
+  }
+
+  &.Jaune
+  {
+    background: rgb(230, 189, 8);
+    background: linear-gradient(360deg, rgba(230,189,8,0.896796218487395) 26%, rgba(234,185,0,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
+  }
+
+  img
+  {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    max-width: 100%;
+    height: 10rem;
+  }
+}
+
+.active
+{
+    background-color: red;
+}

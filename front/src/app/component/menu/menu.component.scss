@@ -1,0 +1,35 @@
+.img
+{
+  height: 95%;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  color: white;
+}
+
+h1
+{
+  text-align: center;
+}
+
+.card
+{
+  min-width: 402px;
+  height: 240px;
+  margin-right: 20px;
+  margin-top: 20px;
+
+  padding-left: 0;
+  padding-right: 0;
+
+  cursor: pointer;
+}
+
+.flexCard
+{
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+}

@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>Config du compte</h2>
+<mat-dialog-content>
+
+    <form #e="ngForm">
+
+        <div class="row">
+
+            <!-- influance -->
+            <div class="col-lg-6 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Influance</mat-label>
+                    <input matInput name="Influance" type="number" min="700" [ngModel]="compte.Influance" required>
+                </mat-form-field>
+            </div>
+
+            <!-- id discord -->
+            <div class="col-lg-6 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Id discord</mat-label>
+                    <input matInput name="IdDiscord" type="number" [ngModel]="compte.IdDiscord" required>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- liste des classes -->
+        <div class="wrapper">
+            <div *ngFor="let element of listeClasseHero"
+                [ngClass]="{ 'item': true, 'active': +element.Id == +idClasseChoisi }"
+                (click)="ClasseChoisi(element.Id, element.NomImg)">
+                <img width="110" height="110" [src]="'../../../assets/iconClasseHeros/' + element.IconClasse" alt="image de {{ element.Nom }}">
+            </div>
+        </div>
+
+        <!-- recherche -->
+        <mat-form-field appearance="outline">
+            <mat-label>Filtre</mat-label>
+            <input #inputRecherche matInput type="text" (keyup)="Recherche(inputRecherche.value)">
+        </mat-form-field>
+
+        <!-- liste des unités -->
+        <div class="flexCard">
+            <mat-card *ngFor="let element of listeUnite" [class.choisi]="element.EstChoisi == 1" class="{{ element.Couleur }} card" 
+                        (click)="ChoisirSuppUnite(element, selectNivUnite.value, $event)">
+
+                <img [src]="element.NomImg" alt="">
+                <p class="influance">{{ element.Influance }}</p>
+
+                <mat-form-field (click)="$event.stopPropagation()"
+                                 color="primary" style="width: 100%;" appearance="outline">
+                    <mat-label>Niveau</mat-label>
+                    <mat-select #selectNivUnite (selectionChange)="ModifierNiveau(element.Id, selectNivUnite.value)" 
+                                [value]="element.EstChoisi == 1 ? GetNiveauMonUnite(element.Id) : ''">
+
+                        <mat-option value="bas">Bas lvl</mat-option>
+                        <mat-option value="haut">Haut lvl</mat-option>
+                        <mat-option value="elite">Elite</mat-option>
+                        <mat-option value="max">Max</mat-option>
+                        <mat-option value="max et maitrisé">Max & maitrisé</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </mat-card>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="Enregistrer(e)">Enregistrer</button>
+</mat-dialog-actions>
