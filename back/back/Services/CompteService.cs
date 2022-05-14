@@ -29,6 +29,7 @@
                             Id = c.Id,
                             Influance = c.Influance,
                             Pseudo = c.Pseudo,
+                            IdDiscord = c.IdDiscord,
                             EstPremiereConnexion = c.EstPremiereConnexion,
                             IdClasseHeros = c.IdClasseHeros,
                             NomClasseHeros = c.IdClasseHerosNavigation.Nom,

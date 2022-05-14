@@ -31,12 +31,46 @@
             </div>
         </div>
 
-        <!-- recherche -->
-        <mat-form-field appearance="outline">
-            <mat-label>Filtre</mat-label>
-            <input #inputRecherche matInput type="text" (keyup)="Recherche(inputRecherche.value)">
-        </mat-form-field>
+        <!-- filtres / trie -->
+        <div class="row">
 
+            <!-- recherche -->
+            <div class="col-lg-4 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Filtre</mat-label>
+                    <input #inputRecherche matInput type="text" (keyup)="Recherche(inputRecherche.value)">
+                </mat-form-field>
+            </div>
+
+            <!-- type unité -->
+            <div class="col-lg-4 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Type d'unité</mat-label>
+                    <mat-select #selectTypeUnite (selectionChange)="Filtrer(+$event.value, +selectCouleurUnite.value)" value="0">
+                        <mat-option value="0">Toute les types</mat-option>
+                        <mat-option value="2">Cavalerie</mat-option>
+                        <mat-option value="1">Distance</mat-option>
+                        <mat-option value="3">Infanterie</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- couleur unité -->
+            <div class="col-lg-4 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Couleur d'unité</mat-label>
+                    <mat-select #selectCouleurUnite (selectionChange)="Filtrer(+selectTypeUnite.value, +$event.value)" value="0">
+                        <mat-option value="0">Toute les couleurs</mat-option>
+                        <mat-option value="1">Bleu</mat-option>
+                        <mat-option value="2">Violet</mat-option>
+                        <mat-option value="3">Dorée</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        
+        
         <!-- liste des unités -->
         <div class="flexCard">
             <mat-card *ngFor="let element of listeUnite" [class.choisi]="element.EstChoisi == 1" class="{{ element.Couleur }} card" 

@@ -30,6 +30,9 @@ export class ModiferInfoCompteComponent implements OnInit {
   private listeUniteClone: Unite[] = [];
   private listeMesUnite: MesUnite[] = [];
 
+  private idCouleurUnite: number = 0;
+  private idTypeUnite: number = 0;
+
   constructor(
     private classeHeroServ: ClasseHerosService, 
     private outilServ: OutilService,
@@ -53,6 +56,22 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.nomImg = _nomImage;
   }
 
+  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0): void
+  {
+    if(_idTypeUnite == 0 && _idCouleurUnite == 0)
+    {
+      this.listeUnite = this.listeUniteClone;
+      return;
+    }
+
+    if(_idCouleurUnite != 0 && _idTypeUnite != 0)
+      this.listeUnite = this.listeUniteClone.filter(u => u.IdTypeUnite == _idTypeUnite && u.IdCouleur == _idCouleurUnite);
+    else if(_idCouleurUnite != 0 && _idTypeUnite == 0)
+      this.listeUnite = this.listeUniteClone.filter(u => u.IdCouleur == _idCouleurUnite);
+    else if(_idCouleurUnite == 0 && _idTypeUnite != 0)
+      this.listeUnite = this.listeUniteClone.filter(u => u.IdTypeUnite == _idTypeUnite);
+  }
+
   Recherche(_recherche: string): void
   {
     if(_recherche == "")
@@ -74,7 +93,7 @@ export class ModiferInfoCompteComponent implements OnInit {
       IdClasseHeros: this.idClasseChoisi,
       Pseudo: this.compte.Pseudo,
       Influance: _form.value.Influance,
-      IdDiscord: _form.value.IdDiscord as string,
+      IdDiscord: _form.value.IdDiscord.toString(),
       ListeUniteNiv: this.listeUniteChoisi
     }
 
@@ -84,6 +103,7 @@ export class ModiferInfoCompteComponent implements OnInit {
         this.outilServ.ToastOK("Votre a été mise à jour");
         
         this.compte.NomImgClasse = this.nomImg;
+        this.compte.IdDiscord = DATA.IdDiscord;
         this.dialogRef.close();
       },
       error: () =>
