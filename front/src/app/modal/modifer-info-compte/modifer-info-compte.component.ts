@@ -65,11 +65,17 @@ export class ModiferInfoCompteComponent implements OnInit {
     }
 
     if(_idCouleurUnite != 0 && _idTypeUnite != 0)
+    {
       this.listeUnite = this.listeUniteClone.filter(u => u.IdTypeUnite == _idTypeUnite && u.IdCouleur == _idCouleurUnite);
+    }
     else if(_idCouleurUnite != 0 && _idTypeUnite == 0)
+    {
       this.listeUnite = this.listeUniteClone.filter(u => u.IdCouleur == _idCouleurUnite);
+    }  
     else if(_idCouleurUnite == 0 && _idTypeUnite != 0)
+    {
       this.listeUnite = this.listeUniteClone.filter(u => u.IdTypeUnite == _idTypeUnite);
+    }  
   }
 
   Recherche(_recherche: string): void
