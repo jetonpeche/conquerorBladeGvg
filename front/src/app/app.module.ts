@@ -12,7 +12,6 @@ import { AccueilComponent } from './component/accueil/accueil.component';
 import { MenuComponent } from './component/menu/menu.component';
 import { MonCompteComponent } from './component/mon-compte/mon-compte.component';
 import { ModiferInfoCompteComponent } from './modal/modifer-info-compte/modifer-info-compte.component';
-import { MesUnitesComponent } from './component/mes-unites/mes-unites.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,15 +24,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     AccueilComponent,
     MenuComponent,
     MonCompteComponent,
-    ModiferInfoCompteComponent,
-    MesUnitesComponent
+    ModiferInfoCompteComponent
   ],
   imports: [
     BrowserModule,
