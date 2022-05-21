@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AppComponent } from 'src/app/app.component';
 import { ModiferInfoCompteComponent } from 'src/app/modal/modifer-info-compte/modifer-info-compte.component';
 import { ClasseHerosService } from 'src/app/service/classe-heros.service';
 import { CompteService } from 'src/app/service/compte.service';
@@ -7,6 +8,7 @@ import { OutilService } from 'src/app/service/outil.service';
 import { VariableStatic } from 'src/app/Static/VariableStatic';
 import { ClasseHeros } from 'src/app/Types/ClasseHeros';
 import { Compte } from 'src/app/Types/Compte';
+import { Gvg } from 'src/app/Types/Gvg';
 
 @Component({
   selector: 'app-menu',
@@ -16,6 +18,8 @@ import { Compte } from 'src/app/Types/Compte';
 export class MenuComponent implements OnInit 
 {
   listeClasseHeros: ClasseHeros[] = [];
+  listeGvg: Gvg[] = [];
+
   compte: Compte;
   nomImgClasse: string;
   panelOpenState = false;
@@ -38,6 +42,11 @@ export class MenuComponent implements OnInit
 
   GetNomImage(): string
   {
-    return this.compte.NomImgClasse;
+    return this.compte?.NomImgClasse ?? "";
+  }
+
+  private ListerGvg(): void
+  {
+
   }
 }

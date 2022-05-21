@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +24,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +35,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AccueilComponent,
     MenuComponent,
     MonCompteComponent,
-    ModiferInfoCompteComponent
+    ModiferInfoCompteComponent,
+    AjouterGvgComponent
   ],
   imports: [
     BrowserModule,
@@ -53,9 +59,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSelectModule,
     MatExpansionModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

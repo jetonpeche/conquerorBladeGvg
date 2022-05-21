@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Programmer GvG</h2>
+<mat-dialog-content>
+    <p>Les GvG passées sont supprimés tous les mardi et samedi</p>
+    <form #e="ngForm">
+
+        <!-- nb input -->
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nombre de GvG à programmer</mat-label>
+            <input #inputNbInput matInput type="number" (keyup)="GenererInput(+inputNbInput.value)" name="nbInput" ngModel required>
+        </mat-form-field>
+
+        <!-- liste des dates GvG -->
+        <div *ngFor="let element of listeInput; let i = index">
+            <h3>GvG n°{{ i + 1 }}</h3>
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Date</mat-label>
+                <input readonly matInput [name]="element.name" [matDatepicker]="picker" ngModel required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>   
+<mat-dialog-actions align="end">
+    <button mat-button color="warn" mat-dialog-close>Fermer</button>
+    <button mat-raised-button color="primary" (click)="Ajouter(e)">Ajouter</button>
+</mat-dialog-actions>
