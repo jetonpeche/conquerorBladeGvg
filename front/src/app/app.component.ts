@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MenuComponent } from './component/menu/menu.component';
 import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { ModiferInfoCompteComponent } from './modal/modifer-info-compte/modifer-info-compte.component';
 import { VariableStatic } from './Static/VariableStatic';
+import { Gvg } from './Types/Gvg';
 
 @Component({
   selector: 'app-root',
@@ -30,9 +32,16 @@ export class AppComponent
     const DIALOG_REF = this.dialog.open(AjouterGvgComponent);
 
     DIALOG_REF.afterClosed().subscribe({
-      next: (listeGvg) =>
+      next: (listeGvg: Gvg[]) =>
       {
-        AppComponent.listeGvgAjouter = listeGvg;
+        for (const element of listeGvg) 
+        {
+          MenuComponent.listeGvg.push({
+            Id: element.Id,
+            Date: element.Date,
+            NbParticipant: 0
+          });
+        }
       }
     });
   }

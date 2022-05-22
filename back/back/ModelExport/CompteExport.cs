@@ -11,5 +11,6 @@
         public int IdClasseHeros { get; set; }
         public string NomClasseHeros { get; set; } = null!;
         public string NomImgClasse { get; set; } = null!;
+        public List<int> ListeIdGvgParticipe { get; set; } = null!;
     }
 }

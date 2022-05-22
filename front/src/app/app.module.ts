@@ -64,7 +64,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
     MatNativeDateModule
   ],
   providers: [
-    DatePipe,
+    DatePipe, MenuComponent,
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
   ],
   bootstrap: [AppComponent]

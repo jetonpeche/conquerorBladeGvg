@@ -48,7 +48,7 @@ export class AjouterGvgComponent implements OnInit
       {
         for (let i = 0; i < liste.length; i++) 
         {
-          liste[i].Id = listeId[i];     
+          liste[i].Id = listeId[i];
         }
 
         this.outilServ.ToastOK(`${ liste.length > 1 ? 'Les GvGs ont été programmées' : 'La GvG a été programmée' }`);

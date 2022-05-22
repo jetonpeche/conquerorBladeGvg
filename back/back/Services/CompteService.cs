@@ -33,7 +33,8 @@
                             EstPremiereConnexion = c.EstPremiereConnexion,
                             IdClasseHeros = c.IdClasseHeros,
                             NomClasseHeros = c.IdClasseHerosNavigation.Nom,
-                            NomImgClasse = c.IdClasseHerosNavigation.NomImg
+                            NomImgClasse = c.IdClasseHerosNavigation.NomImg,
+                            ListeIdGvgParticipe = c.IdGvgs.Select(g => g.Id).ToList()
                         }).First();
             });
 

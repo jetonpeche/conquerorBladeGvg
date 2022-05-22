@@ -109,7 +109,11 @@ export class ModiferInfoCompteComponent implements OnInit {
         this.outilServ.ToastOK("Votre a été mise à jour");
         
         this.compte.NomImgClasse = this.nomImg;
+        this.compte.Pseudo = DATA.Pseudo;
+        this.compte.IdClasseHeros = DATA.IdClasseHeros;
+        this.compte.Influance = DATA.Influance;
         this.compte.IdDiscord = DATA.IdDiscord;
+        
         this.dialogRef.close();
       },
       error: () =>

@@ -2,3 +2,10 @@
 
     flex: 1 1 auto;
   }
+
+.mat-toolbar
+{
+  z-index: 999;
+  position: sticky;
+  top: 0;
+}
