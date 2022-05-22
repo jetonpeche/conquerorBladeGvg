@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
+
 namespace back.Services
 {
     public class GvgService
@@ -13,25 +14,53 @@ namespace back.Services
             context = _context;
         }
 
-        public async Task<IQueryable> Lister()
+        public bool Existe(DateTime _date)
         {
-            IQueryable? listeRetour = null;
+            int t = (from gvg in context.Gvgs
+                     where gvg.DateProgrammer.Equals(_date)
+                     select gvg.Id).FirstOrDefault();
+
+            return t != 0;
+        }
+
+        public async Task<List<GvgExport>> Lister()
+        {
+            List<GvgExport>? listeRetour = null;
 
             await Task.Run(() =>
             {
-                listeRetour = from gvg in context.Gvgs
+                listeRetour = (from gvg in context.Gvgs
                               orderby gvg.DateProgrammer
-                              select new
+                              select new GvgExport
                               {
-                                  gvg.Id,
+                                  Id = gvg.Id,
                                   Date = gvg.DateProgrammer.ToString("dd/MM/yyyy"),
                                   NbParticipant = gvg.IdComptes.Count
-                              };
+                              }).ToList();
             });
 
             return listeRetour;
         }
-        
+
+        public async Task<int> GetIdGvG(DateTime _date)
+        {
+            int id = (from gvg in context.Gvgs
+                     where gvg.DateProgrammer.Equals(_date)
+                     select gvg.Id).FirstOrDefault();
+
+            return id;
+        }
+
+        public bool Participe(int _idCompte, int _idGvg)
+        {
+            int t = (from gvg in context.Gvgs
+                    where gvg.Id == _idGvg && gvg.IdComptes.Where(c => c.Id == _idCompte).Select(c => c.Id).First() == _idCompte
+                    select gvg.Id).FirstOrDefault();
+
+            
+            return t != 0;
+        }
+
         public async Task<List<int>> Ajouter(List<Gvg> _gvg)
         {
             List<int> listeRetour = new();

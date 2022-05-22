@@ -144,5 +144,5 @@ INSERT INTO ClasseHeros (id, nom, nomImg, iconClasse) VALUES
 SET IDENTITY_INSERT ClasseHeros OFF;
 
 SET IDENTITY_INSERT Compte ON;
-INSERT INTO Compte (id, idClasseHeros, pseudo, influance) VALUES (1, 4, 'Jetonpeche', 730);
+INSERT INTO Compte (id, idClasseHeros, pseudo, influance) VALUES (1, 4, 'Jetonpeche', 730), (2, 5, 'test', 700);
 SET IDENTITY_INSERT Compte OFF;
