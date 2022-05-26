@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Gvg } from '../Types/Gvg';
+import { ParticipantGvG } from '../Types/ParticipantGvg';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,11 @@ export class GvgService
   Lister(): Observable<Gvg[]>
   {
     return this.http.get<Gvg[]>(`${environment.urlApi}/${this.dossier}/lister`);
+  }
+
+  ListerParticipant(_idGvg: number): Observable<ParticipantGvG>
+  {
+    return this.http.get<ParticipantGvG>(`${environment.urlApi}/${this.dossier}/listerParticipant/${_idGvg}`);
   }
 
   Ajouter(_info): Observable<number[]>

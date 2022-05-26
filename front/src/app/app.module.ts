@@ -27,7 +27,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
+import { MatListModule } from '@angular/material/list';
 
+import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
     MenuComponent,
     MonCompteComponent,
     ModiferInfoCompteComponent,
-    AjouterGvgComponent
+    AjouterGvgComponent,
+    ParametrerGvgComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +64,8 @@ import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
     MatDialogModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatListModule
   ],
   providers: [
     DatePipe, MenuComponent,

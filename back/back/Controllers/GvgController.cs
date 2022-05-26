@@ -23,6 +23,14 @@
             return JsonConvert.SerializeObject(liste);
         }
 
+        [HttpGet("listerParticipant/{idGvg}")]
+        public async Task<string> listerParticipant(int idGvg)
+        {
+            var liste = await gvgService.listerParticipant(idGvg);
+
+            return JsonConvert.SerializeObject(liste);
+        }
+
         [HttpGet("listerViaDiscord/{idDiscord}")]
         public async Task<string> ListerViaGvG(string idDiscord)
         {

@@ -42,6 +42,39 @@ namespace back.Services
             return listeRetour;
         }
 
+        public async Task<IQueryable> listerParticipant(int _idGvg)
+        {
+            IQueryable? liste = null;
+
+            await Task.Run(() =>
+            {
+                liste = (from gvg in context.Gvgs
+                         where gvg.Id == _idGvg
+                         select new
+                         {
+                             gvg.Id,
+                             Date = gvg.DateProgrammer.ToString("d"),
+                             ListeCompte = gvg.IdComptes.Select(compte =>
+                             new
+                             {
+                                 compte.Id,
+                                 compte.Pseudo,
+                                 compte.Influance,
+                                 ListeUnite = compte.UniteComptes.Select(unite =>
+                                 new
+                                 {
+                                     Id = unite.IdUniteNavigation.Id,
+                                     unite.IdUniteNavigation.Influance,
+                                     unite.IdUniteNavigation.Nom,
+                                     unite.NiveauMaitrise
+                                 }),
+                             })
+                         });
+            });
+
+            return liste;
+        }
+
         public async Task<int> GetIdGvG(DateTime _date)
         {
             int id = (from gvg in context.Gvgs

@@ -4,7 +4,7 @@
     <h1>Prochaines GvG</h1>
 
     <div class="flexCard container-fluid">
-        <mat-card *ngFor="let element of GetListeGvG()" class="card">
+        <mat-card *ngFor="let element of GetListeGvG()" class="card" [routerLink]="'/parametrer-gvg/' + element.Id">
             <mat-card-header>
                 <mat-card-title>Date: {{ element.Date }}</mat-card-title>
                 <mat-card-subtitle>Participant: {{ element.NbParticipant }}</mat-card-subtitle>
