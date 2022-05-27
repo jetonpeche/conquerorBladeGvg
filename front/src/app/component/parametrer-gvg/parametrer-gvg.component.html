@@ -37,6 +37,11 @@
                 {{ element.Nom }} - {{ element.NiveauMaitrise }} - {{ element.Influance }}
             </mat-list-option>
         </mat-selection-list>
-    </mat-card>
 
+        <button *ngIf="listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText" 
+                mat-raised-button color="primary" class="btn-valider" (click)="Valider()">
+            <mat-spinner *ngIf="btnClicker" diameter="21"></mat-spinner>
+            {{ btnClicker ? '' : 'Valider la compo de: ' + listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText ?? '' }}
+        </button>
+    </mat-card>
 </div>

@@ -101,6 +101,19 @@
             return JsonConvert.SerializeObject(true);
         }
 
+        /// <summary>
+        ///     Ajout des unites du compte de la GvG
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("parametrerGvG")]
+        public async Task<string> ParametrerGvG([FromBody] GvgCompteUniteImport[] _gvgUniteCompte)
+        {
+            gvgService.connectionString = config.GetConnectionString("defaut");
+            await gvgService.ParametrerGvG(_gvgUniteCompte);
+
+            return JsonConvert.SerializeObject("OK");
+        }
+
         [HttpPost("absent")]
         public async Task<string> Absent([FromBody] GvgCompteImport _gvg)
         {

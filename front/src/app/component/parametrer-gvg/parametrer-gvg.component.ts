@@ -3,7 +3,7 @@ import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute } from '@angular/router';
 import { GvgService } from 'src/app/service/gvg.service';
 import { OutilService } from 'src/app/service/outil.service';
-import { UniteCompteExport } from 'src/app/Types/export/UniteCompteExport';
+import { UniteCompteGvGExport } from 'src/app/Types/export/UniteCompteExport';
 import { ParticipantGvG, UniteParticipant } from 'src/app/Types/ParticipantGvg';
 
 @Component({
@@ -20,10 +20,12 @@ export class ParametrerGvgComponent implements OnInit
   influanceTotal: number = 0;
   dateGvG: string = "";
 
+  btnClicker: boolean = false;
+
   private idGvG: number;
   private idCompte: number;
   private listeUniteClone: UniteParticipant[] = [];
-  private listeUniteCompteChoisi: UniteCompteExport[] = [];
+  private listeUniteCompteChoisi: UniteCompteGvGExport[] = [];
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -105,6 +107,30 @@ export class ParametrerGvgComponent implements OnInit
     this.idCompte = COMPTE.Id;
     this.influanceMax = COMPTE.Influance;
     this.listeUnite = this.listeUniteClone = COMPTE.ListeUnite;
+  }
+
+  Valider(): void
+  {
+    if(this.listeUniteCompteChoisi.length == 0)
+    {
+      this.outilServ.ToastAttention("Au moins une unité doit être choisi");
+      return;
+    }
+
+    this.btnClicker = true;
+
+    this.gvgServ.Parametrer(this.listeUniteCompteChoisi).subscribe({
+      next: () =>
+      {
+        this.outilServ.ToastOK("Les unités ont été defini");
+        this.btnClicker = false;
+      },
+      error: () =>
+      {
+        this.btnClicker = false;
+        this.outilServ.ToastErreurHttp();
+      }
+    });
   }
 
   private ListerGroupe(): void

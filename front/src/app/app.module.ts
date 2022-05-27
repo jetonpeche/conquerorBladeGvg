@@ -28,6 +28,8 @@ import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
 
@@ -65,7 +67,8 @@ import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gv
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     DatePipe, MenuComponent,

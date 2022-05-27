@@ -77,9 +77,9 @@ CREATE TABLE GvgUniteCompte
 (
     idGvg int NOT NULL,
     idCompte int NOT NULL,
-    idUnite int NULL,
+    idUnite int NOT NULL,
 
-    PRIMARY KEY (idGvg, idCompte),
+    PRIMARY KEY (idGvg, idCompte, idUnite),
 
     FOREIGN KEY (idGvg) REFERENCES Gvg(id),
     FOREIGN KEY (idCompte) REFERENCES Compte(id) ON DELETE CASCADE,

@@ -111,6 +111,39 @@ namespace back.Services
             return listeRetour;
         }
 
+        public async Task ParametrerGvG(GvgCompteUniteImport[] _gvgCompteUnite)
+        {
+            string value = "";
+
+            for (int i = 0; i < _gvgCompteUnite.Length; i++)
+            {
+                var element = _gvgCompteUnite[i];
+
+                // dernier element
+                if(i == _gvgCompteUnite.Length - 1)
+                {
+                    value += $"({element.IdGvg}, {element.IdUnite}, {element.IdCompte})";
+                }
+                else
+                {
+                    value += $"({element.IdGvg}, {element.IdUnite}, {element.IdCompte}), ";
+                }
+            }
+
+            using(SqlConnection sqlCon = new(connectionString))
+            {
+                await sqlCon.OpenAsync();
+
+                SqlCommand cmd = sqlCon.CreateCommand();
+                cmd.CommandText = $"INSERT INTO GvgUniteCompte (idGvg, idUnite, idCompte) VALUES {value}";
+
+                await cmd.PrepareAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                await sqlCon.CloseAsync();
+            }
+        }
+
         public async Task Participer(int _idGvg, int _idCompte)
         {
             using(SqlConnection sqlCon = new(connectionString))
