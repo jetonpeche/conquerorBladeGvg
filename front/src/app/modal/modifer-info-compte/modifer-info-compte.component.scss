@@ -45,10 +45,16 @@
     outline: 3px solid rgb(0, 255, 0);
   }
 
+  &.Vert
+  {
+    background: #5D8C16;
+    background: linear-gradient(360deg, rgba(93,140,22,0.896796218487395) 26%, rgba(97,136,157,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
+  }
+
   &.Bleu
   {
     background: #0B438C;
-    background: linear-gradient(360deg, rgba(11,64,140,0.896796218487395) 26%, rgba(8,31,157,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
+    background: linear-gradient(360deg, rgba(11,64,140,0.896796218487395) 26%, rgba(15,31,157,0.5046393557422969) 100%, rgba(59,59,59,1) 100%);
   }
 
   &.Violet
@@ -77,5 +83,5 @@
 
 .active
 {
-    background-color: red;
+    background-color: #403D3D;
 }
