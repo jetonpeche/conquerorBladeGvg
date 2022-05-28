@@ -7,9 +7,9 @@ namespace back.Models
     {
         public Compte()
         {
+            GvgComptes = new HashSet<GvgCompte>();
             GvgUniteComptes = new HashSet<GvgUniteCompte>();
             UniteComptes = new HashSet<UniteCompte>();
-            IdGvgs = new HashSet<Gvg>();
         }
 
         public int Id { get; set; }
@@ -22,9 +22,8 @@ namespace back.Models
         public int EstAdmin { get; set; }
 
         public virtual ClasseHero IdClasseHerosNavigation { get; set; } = null!;
+        public virtual ICollection<GvgCompte> GvgComptes { get; set; }
         public virtual ICollection<GvgUniteCompte> GvgUniteComptes { get; set; }
         public virtual ICollection<UniteCompte> UniteComptes { get; set; }
-
-        public virtual ICollection<Gvg> IdGvgs { get; set; }
     }
 }

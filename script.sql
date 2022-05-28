@@ -7,6 +7,7 @@ DROP TABLE Unite;
 DROP TABLE CouleurUnite;
 DROP TABLE TypeUnite;
 DROP TABLE ClasseHeros;
+DROP TABLE Groupe;
 
 -- compte delete cascade
 
@@ -34,6 +35,12 @@ CREATE TABLE CouleurUnite
 ( 
     id int PRIMARY KEY NOT NULL,
     nom varchar(100) NOT NULL
+);
+
+CREATE TABLE Groupe
+(
+    id int PRIMARY KEY NOT NULL,
+    nom varchar(50) NOT NULL
 );
 
 CREATE TABLE Unite
@@ -67,10 +74,12 @@ CREATE TABLE GvgCompte
 (
     idGvg int NOT NULL,
     idCompte int NOT NULL,
+    idGroupe int,
 
     PRIMARY KEY (idGvg, idCompte),
 
     FOREIGN KEY (idGvg) REFERENCES Gvg(id),
+    FOREIGN KEY (idGroupe) REFERENCES Groupe(id),
     FOREIGN KEY (idCompte) REFERENCES Compte(id) ON DELETE CASCADE
 );
 
@@ -99,6 +108,8 @@ CREATE TABLE UniteCompte
     FOREIGN KEY (idUnite) REFERENCES Unite(id)
 );
 
+INSERT INTO Groupe (id, nom) VALUES (1, 'Groupe 1'), (2, 'Groupe 2'), (3, 'Groupe 3'), (4, 'Groupe 4'),
+                                    (5, 'Groupe 5'), (6, 'Groupe 6'), (7, 'Groupe 7'), (8, 'Groupe 8');
 INSERT INTO TypeUnite (id, nom) VALUES (1, 'Distance'), (2, 'Cavalerie'), (3, 'Infanterie');
 INSERT INTO CouleurUnite (id, nom) VALUES (1, 'Blanc'), (2, 'Vert'), (3, 'Bleu'), (4, 'Violet'), (5, 'Jaune');
 

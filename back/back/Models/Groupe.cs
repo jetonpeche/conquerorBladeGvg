@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 namespace back.Models
 {
-    public partial class Gvg
+    public partial class Groupe
     {
-        public Gvg()
+        public Groupe()
         {
             GvgComptes = new HashSet<GvgCompte>();
-            GvgUniteComptes = new HashSet<GvgUniteCompte>();
         }
 
         public int Id { get; set; }
-        public DateTime DateProgrammer { get; set; }
+        public string Nom { get; set; } = null!;
 
         public virtual ICollection<GvgCompte> GvgComptes { get; set; }
-        public virtual ICollection<GvgUniteCompte> GvgUniteComptes { get; set; }
     }
 }

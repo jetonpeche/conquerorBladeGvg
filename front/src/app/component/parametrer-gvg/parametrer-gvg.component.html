@@ -1,4 +1,4 @@
-<h1>Participant GvG du {{ dateGvG }}</h1>
+<h1 class="titre">Participant GvG du {{ dateGvG }}</h1>
 
 <div *ngIf="participant?.ListeCompte" class="row container-fluid">
 
@@ -6,7 +6,8 @@
     <mat-card class="col-lg-4 col-xs-12">
         <h2>Liste des participants</h2>
 
-        <mat-selection-list (selectionChange)="ListerUniteParticipant($event.option.value)" #listeCompte [multiple]="false">
+        <mat-selection-list (selectionChange)="ListerUniteParticipant($event.option.value)" #listeCompte
+            [multiple]="false">
             <mat-list-option *ngFor="let element of participant.ListeCompte" [value]="element.Id">
                 {{ element.Pseudo }}
             </mat-list-option>
@@ -15,7 +16,14 @@
 
     <!-- liste unite du compte choisi -->
     <mat-card style="padding-left: 50px;" class="offset-lg-1 col-lg-7 col-xs-12">
-        <h2>Unités de: {{ listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText }}</h2>
+        <h2>Unités de: {{ compte?.Pseudo }}</h2>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Groupe</mat-label>
+            <mat-select (selectionChange)="ModifierCompteGroupe($event.value)" [ngModel]="compte?.IdGroupe">
+                <mat-option *ngFor="let element of listeGroupe" [value]="element.Id">{{ element.Nom }}</mat-option>
+            </mat-select>
+        </mat-form-field>
 
         <!-- checkbox filtre influance -->
         <mat-checkbox #checkboxFiltre (change)="FiltreUniteInfluance(checkboxFiltre.checked)" color="primary">
@@ -23,29 +31,29 @@
         </mat-checkbox>
 
         <!-- text -->
-        <p [ngStyle]="{ 'color': influanceMax >= influanceTotal ? 'green' : 'red' }">
-            Total influance: {{ influanceTotal }} / {{ influanceMax }} <br>
-            Reste: {{ influanceMax - influanceTotal }}
+        <p [ngStyle]="{ 'color': compte?.Influance >= influanceTotal ? 'green' : 'red' }">
+            Total influance: {{ influanceTotal }} / {{ compte?.Influance }} <br>
+            Reste: {{ +compte?.Influance - +influanceTotal }}
         </p>
 
-        <p *ngIf="influanceMax < influanceTotal">Attention l'influance total est trop grande</p>
+        <p *ngIf="compte?.Influance < influanceTotal">Attention l'influance total est trop grande</p>
 
         <!-- liste des unites -->
         <mat-selection-list color="primary">
-            <mat-list-option #optionUnite *ngFor="let element of listeUnite; let i = index; let last = last" [value]="element.Id"
-                            [id]="'idOption' + element.Id"
-                            (click)="CalculerInfluanceEtChoisiUnite(optionUnite, checkboxFiltre.checked, element)" 
-                            [selected]="UniteEstChoisi(element.Id)"
-                            checkboxPosition="before" >
-                {{ element.Nom }} - {{ element.NiveauMaitrise }} - {{ element.Influance }}
+            <mat-list-option #optionUnite *ngFor="let element of listeUnite"
+                [value]="element.Id"
+                (click)="CalculerInfluanceEtChoisiUnite(optionUnite, checkboxFiltre.checked, element)"
+                [selected]="UniteEstChoisi(element.Id)" checkboxPosition="before">
+                {{ element.Nom }} - {{ element.NiveauMaitrise == "" ? "Aucun lvl" : element.NiveauMaitrise }} - {{ element.Influance }}
             </mat-list-option>
         </mat-selection-list>
 
         <!-- btn valider -->
-        <button *ngIf="listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText" 
-                mat-raised-button color="primary" class="btn-valider" (click)="Valider()">
+        <button *ngIf="compte?.Pseudo" mat-raised-button
+            color="primary" class="btn-valider" (click)="Valider()">
             <mat-spinner *ngIf="btnClicker" diameter="21"></mat-spinner>
-            {{ btnClicker ? '' : 'Valider la compo de: ' + listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText ?? '' }}
+            {{ btnClicker ? '' : 'Valider la compo de: ' +
+            compte?.Pseudo ?? '' }}
         </button>
     </mat-card>
 </div>

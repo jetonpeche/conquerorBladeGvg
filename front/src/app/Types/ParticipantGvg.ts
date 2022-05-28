@@ -5,11 +5,12 @@ export type ParticipantGvG =
     ListeCompte: Participant[]
 }
 
-type Participant =
+export type Participant =
 {
     Id: number,
     Pseudo: string,
     Influance: number,
+    IdGroupe: number,
     ListeUnite: UniteParticipant[]
 }
 

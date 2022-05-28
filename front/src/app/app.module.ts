@@ -32,6 +32,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { MatTableModule } from '@angular/material/table';
     ModiferInfoCompteComponent,
     AjouterGvgComponent,
     ParametrerGvgComponent,
-    UniteGvgComponent
+    UniteGvgComponent,
+    GvgParametrerComponent
   ],
   imports: [
     BrowserModule,

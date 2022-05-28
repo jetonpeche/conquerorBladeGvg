@@ -47,7 +47,7 @@
                             NomClasseHeros = c.IdClasseHerosNavigation.Nom,
                             NomImgClasse = c.IdClasseHerosNavigation.NomImg,
                             EstAdmin = c.EstAdmin,
-                            ListeIdGvgParticipe = c.IdGvgs.Select(g => g.Id).ToList()
+                            ListeIdGvgParticipe = c.GvgComptes.Select(g => g.IdGvg).ToList()
                         }).First();
             });
 

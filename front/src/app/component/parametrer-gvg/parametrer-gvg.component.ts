@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute } from '@angular/router';
+import { GroupeService } from 'src/app/service/groupe.service';
 import { GvgService } from 'src/app/service/gvg.service';
 import { OutilService } from 'src/app/service/outil.service';
 import { UniteCompteGvGExport } from 'src/app/Types/export/UniteCompteExport';
-import { ParticipantGvG, UniteParticipant } from 'src/app/Types/ParticipantGvg';
+import { Groupe } from 'src/app/Types/Groupe';
+import { Participant, ParticipantGvG, UniteParticipant } from 'src/app/Types/ParticipantGvg';
 
 @Component({
   selector: 'app-parametrer-gvg',
@@ -14,9 +16,10 @@ import { ParticipantGvG, UniteParticipant } from 'src/app/Types/ParticipantGvg';
 export class ParametrerGvgComponent implements OnInit 
 {
   participant: ParticipantGvG;
+  compte: Participant;
   listeUnite: UniteParticipant[] = [];
+  listeGroupe: Groupe[] = [];
 
-  influanceMax: number = 0;
   influanceTotal: number = 0;
   dateGvG: string = "";
 
@@ -24,7 +27,6 @@ export class ParametrerGvgComponent implements OnInit
   filtreEstActiver: boolean = false;
 
   private idGvG: number;
-  private idCompte: number;
   private listeUniteClone: UniteParticipant[] = [];
   private listeUniteCompteChoisi: UniteCompteGvGExport[] = [];
 
@@ -33,7 +35,8 @@ export class ParametrerGvgComponent implements OnInit
   constructor(
     private activateRoute: ActivatedRoute,
     private gvgServ: GvgService,
-    private outilServ: OutilService
+    private outilServ: OutilService,
+    private grpServ: GroupeService
     ) { }
 
   ngOnInit(): void 
@@ -41,6 +44,7 @@ export class ParametrerGvgComponent implements OnInit
     this.idGvG = +this.activateRoute.snapshot.paramMap.get("id");
 
     this.ListerParticipantGvG();
+    this.ListerGroupe();
   }
 
   FiltreUniteInfluance(_estCocher: boolean): void
@@ -48,21 +52,21 @@ export class ParametrerGvgComponent implements OnInit
     this.filtreEstActiver = _estCocher;
 
     if(_estCocher)
-      this.listeUnite = this.listeUniteClone.filter(u => u.Influance <= (this.influanceMax - this.influanceTotal));
+      this.listeUnite = this.listeUniteClone.filter(u => u.Influance <= (this.compte.Influance - this.influanceTotal));
     else
       this.listeUnite = this.listeUniteClone;
   }
 
   UniteEstChoisi(_idUnite: number): boolean
   {
-    const INDEX = this.listeUniteCompteChoisi.findIndex(u => u.IdUnite == _idUnite && u.IdCompte == this.idCompte);
+    const INDEX = this.listeUniteCompteChoisi.findIndex(u => u.IdUnite == _idUnite && u.IdCompte == this.compte.Id);
 
     return INDEX != -1;
   }
 
   CalculerInfluanceEtChoisiUnite(_option: MatListOption, _checkboxFiltreEstCocher: boolean, _unite: UniteParticipant): void
   {
-    if(this.influanceMax - (this.influanceTotal + _unite.Influance) <= 0 && _option.selected)
+    if(this.compte.Influance - (this.influanceTotal + _unite.Influance) <= 0 && _option.selected)
     { 
       this.outilServ.ToastInfo("Ajout impossible, influance trop grande");
       
@@ -79,7 +83,7 @@ export class ParametrerGvgComponent implements OnInit
         return;
 
       this.listeUniteCompteChoisi.push({
-        IdCompte: this.idCompte,
+        IdCompte: this.compte.Id,
         IdUnite: _unite.Id,
         IdGvG: this.idGvG,
         EstDejaChoisi: this.listeUniteClone.find(u => u.Id == _unite.Id).EstDejaChoisi
@@ -87,7 +91,7 @@ export class ParametrerGvgComponent implements OnInit
 
       if(_unite.EstDejaChoisi)
       {
-        const INDEX = this.listeUniteDejaChoisiAsupprimer.findIndex(u => u.IdCompte == this.idCompte && u.IdUnite == _unite.Id);
+        const INDEX = this.listeUniteDejaChoisiAsupprimer.findIndex(u => u.IdCompte == this.compte.Id && u.IdUnite == _unite.Id);
         this.listeUniteDejaChoisiAsupprimer.splice(INDEX, 1);
       }
 
@@ -95,13 +99,13 @@ export class ParametrerGvgComponent implements OnInit
     }
     else
     {
-      const INDEX = this.listeUniteCompteChoisi.findIndex(u => u.IdUnite == _unite.Id && u.IdCompte == this.idCompte);
+      const INDEX = this.listeUniteCompteChoisi.findIndex(u => u.IdUnite == _unite.Id && u.IdCompte == this.compte.Id);
       this.listeUniteCompteChoisi.splice(INDEX, 1);
 
       if(_unite.EstDejaChoisi)
       {
         this.listeUniteDejaChoisiAsupprimer.push({
-          IdCompte: this.idCompte,
+          IdCompte: this.compte.Id,
           IdUnite: _unite.Id,
           IdGvG: this.idGvG,
           EstDejaChoisi: _unite.EstDejaChoisi
@@ -118,6 +122,8 @@ export class ParametrerGvgComponent implements OnInit
   {
     const COMPTE = this.participant.ListeCompte.find(c => c.Id == +_idCompte);
     const EXISTE = this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == COMPTE.Id);
+
+    this.compte = COMPTE;
     
     // ajout des unités si c la premiere fois qu'on clique sur le compte
     if(EXISTE == -1)
@@ -145,11 +151,24 @@ export class ParametrerGvgComponent implements OnInit
       this.influanceTotal += COMPTE.ListeUnite.find(u => u.Id == element.IdUnite).Influance;
     }
 
-    this.idCompte = COMPTE.Id;
-    this.influanceMax = COMPTE.Influance;
     this.listeUnite = this.listeUniteClone = COMPTE.ListeUnite;
 
     this.FiltreUniteInfluance(this.filtreEstActiver);
+  }
+
+  ModifierCompteGroupe(_idGroupe: number): void
+  {
+    this.grpServ.ModifierCompteGroupe(this.participant.Id, this.idGvG, _idGroupe).subscribe({
+      next: (retour: boolean) =>
+      {
+        this.compte.IdGroupe = _idGroupe;
+        this.outilServ.ToastOK("Groupe mis à jour");
+      },
+      error: () =>
+      {
+        this.outilServ.ToastErreurHttp();
+      }
+    });
   }
 
   Valider(): void
@@ -181,6 +200,20 @@ export class ParametrerGvgComponent implements OnInit
     });
   }
 
+  private ListerGroupe(): void
+  {
+    this.grpServ.Lister().subscribe({
+      next: (liste: Groupe[]) =>
+      {
+        this.listeGroupe = liste;
+      },
+      error: () =>
+      {
+        this.outilServ.ToastErreurHttp();
+      }
+    });
+  }
+
   private ModifierUniteDejaChoisi(_liste: UniteCompteGvGExport[], _estDejaChoisi: boolean): void
   {
     for (let element of _liste) 
@@ -199,8 +232,10 @@ export class ParametrerGvgComponent implements OnInit
   {
     this.gvgServ.ListerParticipant(this.idGvG).subscribe({
       next: (retour: ParticipantGvG) =>
-      {        
+      {            
         this.participant = retour[0];
+        console.log(this.participant);
+        
         
         this.dateGvG = this.participant.Date;      
       },

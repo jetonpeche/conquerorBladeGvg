@@ -1,7 +1,7 @@
 <img [src]="'../../../assets/imageClasseHeros/' + GetNomImage()" alt="">
 <div>
 
-    <h1>Prochaines GvG</h1>
+    <h1 class="titre">Prochaines GvG</h1>
 
     <div class="flexCard container-fluid">
         <mat-card *ngFor="let element of GetListeGvG()" class="card" (click)="Naviguer(+element.Id, element.Date)">

@@ -1,5 +1,5 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using System.Data;
 
 
 namespace back.Services
@@ -35,7 +35,7 @@ namespace back.Services
                               {
                                   Id = gvg.Id,
                                   Date = gvg.DateProgrammer.ToString("dd/MM/yyyy"),
-                                  NbParticipant = gvg.IdComptes.Count
+                                  NbParticipant = gvg.GvgComptes.Count
                               }).ToList();
             });
 
@@ -54,20 +54,21 @@ namespace back.Services
                          {
                              gvg.Id,
                              Date = gvg.DateProgrammer.ToString("d"),
-                             ListeCompte = gvg.IdComptes.Select(compte =>
+                             ListeCompte = gvg.GvgComptes.Select(compte =>
                              new
                              {
-                                 compte.Id,
-                                 compte.Pseudo,
-                                 compte.Influance,
-                                 ListeUnite = compte.UniteComptes.Select(unite =>
+                                 Id = compte.IdCompte,
+                                 compte.IdCompteNavigation.Pseudo,
+                                 compte.IdCompteNavigation.Influance,
+                                 compte.IdGroupe,
+                                 ListeUnite = compte.IdCompteNavigation.UniteComptes.Select(unite =>
                                  new
                                  {
                                      Id = unite.IdUniteNavigation.Id,
                                      unite.IdUniteNavigation.Influance,
                                      unite.IdUniteNavigation.Nom,
                                      unite.NiveauMaitrise,
-                                     EstDejaChoisi = gvg.GvgUniteComptes.Where(gvgUc => gvgUc.IdUnite == unite.IdUnite && gvgUc.IdCompte == compte.Id && gvg.Id == _idGvg)
+                                     EstDejaChoisi = gvg.GvgUniteComptes.Where(gvgUc => gvgUc.IdUnite == unite.IdUnite && gvgUc.IdCompte == compte.IdCompte && gvg.Id == _idGvg)
                                                                          .Select(gvg => gvg.IdUnite)
                                                                          .FirstOrDefault() != 0
                                  }),
@@ -108,7 +109,7 @@ namespace back.Services
         public bool Participe(int _idCompte, int _idGvg)
         {
             int t = (from gvg in context.Gvgs
-                    where gvg.Id == _idGvg && gvg.IdComptes.Where(c => c.Id == _idCompte).Select(c => c.Id).First() == _idCompte
+                    where gvg.Id == _idGvg && gvg.GvgComptes.Where(c => c.IdCompte == _idCompte).Select(c => c.IdCompte).First() == _idCompte
                     select gvg.Id).FirstOrDefault();
 
             
