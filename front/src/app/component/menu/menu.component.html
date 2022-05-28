@@ -4,16 +4,15 @@
     <h1>Prochaines GvG</h1>
 
     <div class="flexCard container-fluid">
-        <mat-card *ngFor="let element of GetListeGvG()" class="card" [routerLink]="'/parametrer-gvg/' + element.Id">
+        <mat-card *ngFor="let element of GetListeGvG()" class="card" (click)="Naviguer(+element.Id, element.Date)">
             <mat-card-header>
                 <mat-card-title>Date: {{ element.Date }}</mat-card-title>
                 <mat-card-subtitle>Participant: {{ element.NbParticipant }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-actions align="end">
-                <button mat-raised-button *ngIf="ParticipeDeja(element.Id)" color="warn" (click)="Absent(element)">Absent</button>
-                <button mat-raised-button *ngIf="!ParticipeDeja(element.Id)" color="primary" (click)="Participer(element)">Participer</button>
+                <button mat-raised-button *ngIf="ParticipeDeja(element.Id)" color="warn" (click)="Absent(element, $event)">Absent</button>
+                <button mat-raised-button *ngIf="!ParticipeDeja(element.Id)" color="primary" (click)="Participer(element, $event)">Participer</button>
             </mat-card-actions>
         </mat-card>
     </div>
 </div>
-

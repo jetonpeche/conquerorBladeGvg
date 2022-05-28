@@ -2,5 +2,6 @@ export type UniteCompteGvGExport =
 {
   IdGvG: number,
   IdCompte: number,
-  IdUnite: number
+  IdUnite: number,
+  EstDejaChoisi:boolean
 }

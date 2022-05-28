@@ -58,6 +58,7 @@ CREATE TABLE Compte
     pseudo varchar(150) NOT NULL,
     influance int NOT NULL,
     estPremiereConnexion int DEFAULT 1,
+    estAdmin int NOT NULL DEFAULT 0,
 
     FOREIGN KEY (idClasseHeros) REFERENCES ClasseHeros(id)
 );

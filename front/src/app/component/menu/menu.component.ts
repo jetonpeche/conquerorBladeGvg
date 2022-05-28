@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ModiferInfoCompteComponent } from 'src/app/modal/modifer-info-compte/modifer-info-compte.component';
+import { UniteGvgComponent } from 'src/app/modal/unite-gvg/unite-gvg.component';
 import { GvgService } from 'src/app/service/gvg.service';
 import { OutilService } from 'src/app/service/outil.service';
 import { VariableStatic } from 'src/app/Static/VariableStatic';
@@ -24,7 +26,8 @@ export class MenuComponent implements OnInit
   constructor(
     private outilServ: OutilService,
     private gvgServ: GvgService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
     ) { }
 
   ngOnInit(): void 
@@ -36,6 +39,17 @@ export class MenuComponent implements OnInit
 
     if(this.compte.EstPremiereConnexion == 1)
       this.dialog.open(ModiferInfoCompteComponent);
+  }
+
+  Naviguer(_idGvG: number, _date: string): void
+  {
+    if(this.compte.EstAdmin)
+    {
+      this.router.navigate([`/parametrer-gvg/${_idGvG}`]);
+      return;
+    }
+
+    this.dialog.open(UniteGvgComponent, { data: { idGvg: _idGvG, date: _date }});
   }
 
   GetNomImage(): string
@@ -58,8 +72,10 @@ export class MenuComponent implements OnInit
     return INDEX != -1;
   }
 
-  Participer(_gvg: Gvg): void
+  Participer(_gvg: Gvg, _event: Event): void
   {
+    _event.stopPropagation();
+
     this.gvgServ.Participer(_gvg.Id, this.compte.Id).subscribe({
       next: () =>
       {
@@ -75,8 +91,10 @@ export class MenuComponent implements OnInit
     });
   }
 
-  Absent(_gvg: Gvg): void
+  Absent(_gvg: Gvg, _event: Event): void
   {
+    _event.stopPropagation();
+
     this.gvgServ.Absent(_gvg.Id, this.compte.Id).subscribe({
       next: () =>
       {

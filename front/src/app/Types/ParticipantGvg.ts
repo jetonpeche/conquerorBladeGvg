@@ -18,5 +18,6 @@ export type UniteParticipant =
     Id: number,
     Nom: string,
     Influance: number,
-    NiveauMaitrise: string
+    NiveauMaitrise: string,
+    EstDejaChoisi: boolean
 }

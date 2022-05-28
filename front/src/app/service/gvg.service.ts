@@ -20,6 +20,11 @@ export class GvgService
     return this.http.get<Gvg[]>(`${environment.urlApi}/${this.dossier}/lister`);
   }
 
+  ListerMesUniteGvg(_idGvg: number, _idCompte: number): Observable<any>
+  {
+    return this.http.get(`${environment.urlApi}/${this.dossier}/listerMesUnites/${_idGvg}/${_idCompte}`);
+  }
+
   ListerParticipant(_idGvg: number): Observable<ParticipantGvG>
   {
     return this.http.get<ParticipantGvG>(`${environment.urlApi}/${this.dossier}/listerParticipant/${_idGvg}`);
@@ -30,9 +35,15 @@ export class GvgService
     return this.http.post<number[]>(`${environment.urlApi}/${this.dossier}/ajouter`, _info)
   }
 
-  Parametrer(_info: UniteCompteGvGExport[]): Observable<any>
+  Parametrer(_listeAjout: UniteCompteGvGExport[], _listeSupprimer: UniteCompteGvGExport[]): Observable<any>
   {
-    return this.http.post<any>(`${environment.urlApi}/${this.dossier}/parametrerGvG`, _info);
+    const DATA = 
+    { 
+      ListeUniteAjouter: _listeAjout.filter(u => u.EstDejaChoisi == false), 
+      ListeUniteAsupprimer: _listeSupprimer 
+    };
+
+    return this.http.post<any>(`${environment.urlApi}/${this.dossier}/parametrerGvG`, DATA);
   }
 
   Participer(_idGvg: number, _idCompte: number): Observable<boolean>

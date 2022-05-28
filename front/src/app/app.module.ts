@@ -13,6 +13,9 @@ import { AccueilComponent } from './component/accueil/accueil.component';
 import { MenuComponent } from './component/menu/menu.component';
 import { MonCompteComponent } from './component/mon-compte/mon-compte.component';
 import { ModiferInfoCompteComponent } from './modal/modifer-info-compte/modifer-info-compte.component';
+import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
+import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
+import { UniteGvgComponent } from './modal/unite-gvg/unite-gvg.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,14 +27,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
 
-
-import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gv
     MonCompteComponent,
     ModiferInfoCompteComponent,
     AjouterGvgComponent,
-    ParametrerGvgComponent
+    ParametrerGvgComponent,
+    UniteGvgComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,8 @@ import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gv
     MatDatepickerModule,
     MatNativeDateModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTableModule
   ],
   providers: [
     DatePipe, MenuComponent,

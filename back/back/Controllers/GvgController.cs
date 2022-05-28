@@ -24,9 +24,17 @@
         }
 
         [HttpGet("listerParticipant/{idGvg}")]
-        public async Task<string> listerParticipant(int idGvg)
+        public async Task<string> ListerParticipant(int idGvg)
         {
             var liste = await gvgService.listerParticipant(idGvg);
+
+            return JsonConvert.SerializeObject(liste);
+        }
+
+        [HttpGet("listerMesUnites/{idGvg}/{idCompte}")]
+        public async Task<string> ListerMesUnites(int idGvg, int idCompte)
+        {
+            var liste = await gvgService.ListerMesUnites(idGvg, idCompte);
 
             return JsonConvert.SerializeObject(liste);
         }
@@ -106,7 +114,7 @@
         /// </summary>
         /// <returns></returns>
         [HttpPost("parametrerGvG")]
-        public async Task<string> ParametrerGvG([FromBody] GvgCompteUniteImport[] _gvgUniteCompte)
+        public async Task<string> ParametrerGvG([FromBody] GvgCompteUniteImport _gvgUniteCompte)
         {
             gvgService.connectionString = config.GetConnectionString("defaut");
             await gvgService.ParametrerGvG(_gvgUniteCompte);

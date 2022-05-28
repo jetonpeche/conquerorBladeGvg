@@ -24,7 +24,6 @@ namespace back.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,6 +54,8 @@ namespace back.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.EstAdmin).HasColumnName("estAdmin");
+
                 entity.Property(e => e.EstPremiereConnexion)
                     .HasColumnName("estPremiereConnexion")
                     .HasDefaultValueSql("((1))");
@@ -82,7 +83,7 @@ namespace back.Models
                     .WithMany(p => p.Comptes)
                     .HasForeignKey(d => d.IdClasseHeros)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Compte__idClasse__3E1D39E1");
+                    .HasConstraintName("FK__Compte__idClasse__0C50D423");
             });
 
             modelBuilder.Entity<CouleurUnite>(entity =>
@@ -113,11 +114,11 @@ namespace back.Models
                     .WithMany(p => p.IdGvgs)
                     .UsingEntity<Dictionary<string, object>>(
                         "GvgCompte",
-                        l => l.HasOne<Compte>().WithMany().HasForeignKey("IdCompte").HasConstraintName("FK__GvgCompte__idCom__41EDCAC5"),
-                        r => r.HasOne<Gvg>().WithMany().HasForeignKey("IdGvg").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GvgCompte__idGvg__40F9A68C"),
+                        l => l.HasOne<Compte>().WithMany().HasForeignKey("IdCompte").HasConstraintName("FK__GvgCompte__idCom__10216507"),
+                        r => r.HasOne<Gvg>().WithMany().HasForeignKey("IdGvg").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GvgCompte__idGvg__0F2D40CE"),
                         j =>
                         {
-                            j.HasKey("IdGvg", "IdCompte").HasName("PK__GvgCompt__CA012407BFD3F4A3");
+                            j.HasKey("IdGvg", "IdCompte").HasName("PK__GvgCompt__CA0124079E5DF419");
 
                             j.ToTable("GvgCompte");
 
@@ -129,8 +130,8 @@ namespace back.Models
 
             modelBuilder.Entity<GvgUniteCompte>(entity =>
             {
-                entity.HasKey(e => new { e.IdGvg, e.IdCompte })
-                    .HasName("PK__GvgUnite__CA01240751E83C8C");
+                entity.HasKey(e => new { e.IdGvg, e.IdCompte, e.IdUnite })
+                    .HasName("PK__GvgUnite__C790EC664775E363");
 
                 entity.ToTable("GvgUniteCompte");
 
@@ -143,18 +144,19 @@ namespace back.Models
                 entity.HasOne(d => d.IdCompteNavigation)
                     .WithMany(p => p.GvgUniteComptes)
                     .HasForeignKey(d => d.IdCompte)
-                    .HasConstraintName("FK__GvgUniteC__idCom__45BE5BA9");
+                    .HasConstraintName("FK__GvgUniteC__idCom__13F1F5EB");
 
                 entity.HasOne(d => d.IdGvgNavigation)
                     .WithMany(p => p.GvgUniteComptes)
                     .HasForeignKey(d => d.IdGvg)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__GvgUniteC__idGvg__44CA3770");
+                    .HasConstraintName("FK__GvgUniteC__idGvg__12FDD1B2");
 
                 entity.HasOne(d => d.IdUniteNavigation)
                     .WithMany(p => p.GvgUniteComptes)
                     .HasForeignKey(d => d.IdUnite)
-                    .HasConstraintName("FK__GvgUniteC__idUni__46B27FE2");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__GvgUniteC__idUni__14E61A24");
             });
 
             modelBuilder.Entity<TypeUnite>(entity =>
@@ -197,19 +199,19 @@ namespace back.Models
                     .WithMany(p => p.Unites)
                     .HasForeignKey(d => d.IdCouleur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Unite__idCouleur__395884C4");
+                    .HasConstraintName("FK__Unite__idCouleur__0697FACD");
 
                 entity.HasOne(d => d.IdTypeUniteNavigation)
                     .WithMany(p => p.Unites)
                     .HasForeignKey(d => d.IdTypeUnite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Unite__idTypeUni__3A4CA8FD");
+                    .HasConstraintName("FK__Unite__idTypeUni__078C1F06");
             });
 
             modelBuilder.Entity<UniteCompte>(entity =>
             {
                 entity.HasKey(e => new { e.IdCompte, e.IdUnite })
-                    .HasName("PK__UniteCom__91A50BEEB2820340");
+                    .HasName("PK__UniteCom__91A50BEED9D75110");
 
                 entity.ToTable("UniteCompte");
 
@@ -225,13 +227,13 @@ namespace back.Models
                 entity.HasOne(d => d.IdCompteNavigation)
                     .WithMany(p => p.UniteComptes)
                     .HasForeignKey(d => d.IdCompte)
-                    .HasConstraintName("FK__UniteComp__idCom__498EEC8D");
+                    .HasConstraintName("FK__UniteComp__idCom__17C286CF");
 
                 entity.HasOne(d => d.IdUniteNavigation)
                     .WithMany(p => p.UniteComptes)
                     .HasForeignKey(d => d.IdUnite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UniteComp__idUni__4A8310C6");
+                    .HasConstraintName("FK__UniteComp__idUni__18B6AB08");
             });
 
             OnModelCreatingPartial(modelBuilder);

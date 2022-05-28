@@ -7,10 +7,10 @@ namespace back.Models
     {
         public int IdGvg { get; set; }
         public int IdCompte { get; set; }
-        public int? IdUnite { get; set; }
+        public int IdUnite { get; set; }
 
         public virtual Compte IdCompteNavigation { get; set; } = null!;
         public virtual Gvg IdGvgNavigation { get; set; } = null!;
-        public virtual Unite? IdUniteNavigation { get; set; }
+        public virtual Unite IdUniteNavigation { get; set; } = null!;
     }
 }

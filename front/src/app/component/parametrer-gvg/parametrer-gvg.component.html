@@ -17,10 +17,12 @@
     <mat-card style="padding-left: 50px;" class="offset-lg-1 col-lg-7 col-xs-12">
         <h2>Unités de: {{ listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText }}</h2>
 
+        <!-- checkbox filtre influance -->
         <mat-checkbox #checkboxFiltre (change)="FiltreUniteInfluance(checkboxFiltre.checked)" color="primary">
             Filtrer en fonction de l'influance restante
         </mat-checkbox>
 
+        <!-- text -->
         <p [ngStyle]="{ 'color': influanceMax >= influanceTotal ? 'green' : 'red' }">
             Total influance: {{ influanceTotal }} / {{ influanceMax }} <br>
             Reste: {{ influanceMax - influanceTotal }}
@@ -28,16 +30,18 @@
 
         <p *ngIf="influanceMax < influanceTotal">Attention l'influance total est trop grande</p>
 
+        <!-- liste des unites -->
         <mat-selection-list color="primary">
-            <mat-list-option #optionUnite [id]="'idOption' + element.Id"
+            <mat-list-option #optionUnite *ngFor="let element of listeUnite; let i = index; let last = last" [value]="element.Id"
+                            [id]="'idOption' + element.Id"
                             (click)="CalculerInfluanceEtChoisiUnite(optionUnite, checkboxFiltre.checked, element)" 
                             [selected]="UniteEstChoisi(element.Id)"
-                            checkboxPosition="before" 
-                            *ngFor="let element of listeUnite" [value]="element.Id">
+                            checkboxPosition="before" >
                 {{ element.Nom }} - {{ element.NiveauMaitrise }} - {{ element.Influance }}
             </mat-list-option>
         </mat-selection-list>
 
+        <!-- btn valider -->
         <button *ngIf="listeCompte.selectedOptions.selected[0]?._text.nativeElement.innerText" 
                 mat-raised-button color="primary" class="btn-valider" (click)="Valider()">
             <mat-spinner *ngIf="btnClicker" diameter="21"></mat-spinner>

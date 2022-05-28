@@ -66,10 +66,31 @@ namespace back.Services
                                      Id = unite.IdUniteNavigation.Id,
                                      unite.IdUniteNavigation.Influance,
                                      unite.IdUniteNavigation.Nom,
-                                     unite.NiveauMaitrise
+                                     unite.NiveauMaitrise,
+                                     EstDejaChoisi = gvg.GvgUniteComptes.Where(gvgUc => gvgUc.IdUnite == unite.IdUnite && gvgUc.IdCompte == compte.Id && gvg.Id == _idGvg)
+                                                                         .Select(gvg => gvg.IdUnite)
+                                                                         .FirstOrDefault() != 0
                                  }),
                              })
                          });
+            });
+
+            return liste;
+        }
+
+        public async Task<IQueryable> ListerMesUnites(int _idGvg, int _idCompte)
+        {
+            IQueryable? liste = null;
+
+            await Task.Run(() =>
+            {
+                liste = from gvg in context.GvgUniteComptes
+                        where gvg.IdGvg == _idGvg && gvg.IdCompte == _idCompte
+                        select new
+                        {
+                            gvg.IdUniteNavigation.Nom,
+                            gvg.IdUniteNavigation.Influance
+                        };
             });
 
             return liste;
@@ -111,37 +132,28 @@ namespace back.Services
             return listeRetour;
         }
 
-        public async Task ParametrerGvG(GvgCompteUniteImport[] _gvgCompteUnite)
+        public async Task ParametrerGvG(GvgCompteUniteImport _gvgCompteUnite)
         {
-            string value = "";
+            List<GvgUniteCompte> listeAjout = new();
+            List<GvgUniteCompte> listeSupp = new();
 
-            for (int i = 0; i < _gvgCompteUnite.Length; i++)
+            foreach (var element in _gvgCompteUnite.ListeUniteAjouter)
             {
-                var element = _gvgCompteUnite[i];
-
-                // dernier element
-                if(i == _gvgCompteUnite.Length - 1)
-                {
-                    value += $"({element.IdGvg}, {element.IdUnite}, {element.IdCompte})";
-                }
-                else
-                {
-                    value += $"({element.IdGvg}, {element.IdUnite}, {element.IdCompte}), ";
-                }
+                listeAjout.Add(new GvgUniteCompte { IdCompte = element.IdCompte, IdGvg = element.IdGvg, IdUnite = element.IdUnite });
             }
 
-            using(SqlConnection sqlCon = new(connectionString))
+            foreach (var element in _gvgCompteUnite.ListeUniteAsupprimer)
             {
-                await sqlCon.OpenAsync();
-
-                SqlCommand cmd = sqlCon.CreateCommand();
-                cmd.CommandText = $"INSERT INTO GvgUniteCompte (idGvg, idUnite, idCompte) VALUES {value}";
-
-                await cmd.PrepareAsync();
-                await cmd.ExecuteNonQueryAsync();
-
-                await sqlCon.CloseAsync();
+                listeSupp.Add(new GvgUniteCompte { IdCompte = element.IdCompte, IdGvg = element.IdGvg, IdUnite = element.IdUnite });
             }
+
+            if (listeSupp.Count > 0)
+                context.GvgUniteComptes.RemoveRange(listeSupp);
+
+            if(listeAjout.Count > 0)
+                await context.GvgUniteComptes.AddRangeAsync(listeAjout);
+
+            await context.SaveChangesAsync();
         }
 
         public async Task Participer(int _idGvg, int _idCompte)

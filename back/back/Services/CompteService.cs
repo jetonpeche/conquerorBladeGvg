@@ -3,16 +3,10 @@
     public class CompteService
     {
         private conquerorBladeContext context { init; get; }
-        private string connexionString;
 
         public CompteService(conquerorBladeContext _context)
         {
             context = _context;
-        }
-
-        public CompteService(conquerorBladeContext _context, string _connexionString): this(_context)
-        {
-            connexionString = _connexionString;
         }
 
         public bool Existe(string _pseudo)
@@ -52,6 +46,7 @@
                             IdClasseHeros = c.IdClasseHeros,
                             NomClasseHeros = c.IdClasseHerosNavigation.Nom,
                             NomImgClasse = c.IdClasseHerosNavigation.NomImg,
+                            EstAdmin = c.EstAdmin,
                             ListeIdGvgParticipe = c.IdGvgs.Select(g => g.Id).ToList()
                         }).First();
             });

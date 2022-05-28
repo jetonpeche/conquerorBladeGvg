@@ -7,6 +7,7 @@ export type Compte =
     NomClasseHeros: string,
     Pseudo: string,
     Influance: number,
+    EstAdmin: number,
     EstPremiereConnexion: number,
     ListeIdGvgParticipe: number[]
 }

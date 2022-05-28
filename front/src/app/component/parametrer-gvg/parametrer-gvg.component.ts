@@ -21,11 +21,14 @@ export class ParametrerGvgComponent implements OnInit
   dateGvG: string = "";
 
   btnClicker: boolean = false;
+  filtreEstActiver: boolean = false;
 
   private idGvG: number;
   private idCompte: number;
   private listeUniteClone: UniteParticipant[] = [];
   private listeUniteCompteChoisi: UniteCompteGvGExport[] = [];
+
+  private listeUniteDejaChoisiAsupprimer: UniteCompteGvGExport[] = [];
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -42,6 +45,8 @@ export class ParametrerGvgComponent implements OnInit
 
   FiltreUniteInfluance(_estCocher: boolean): void
   {
+    this.filtreEstActiver = _estCocher;
+
     if(_estCocher)
       this.listeUnite = this.listeUniteClone.filter(u => u.Influance <= (this.influanceMax - this.influanceTotal));
     else
@@ -76,8 +81,15 @@ export class ParametrerGvgComponent implements OnInit
       this.listeUniteCompteChoisi.push({
         IdCompte: this.idCompte,
         IdUnite: _unite.Id,
-        IdGvG: this.idGvG
+        IdGvG: this.idGvG,
+        EstDejaChoisi: this.listeUniteClone.find(u => u.Id == _unite.Id).EstDejaChoisi
       });
+
+      if(_unite.EstDejaChoisi)
+      {
+        const INDEX = this.listeUniteDejaChoisiAsupprimer.findIndex(u => u.IdCompte == this.idCompte && u.IdUnite == _unite.Id);
+        this.listeUniteDejaChoisiAsupprimer.splice(INDEX, 1);
+      }
 
       this.influanceTotal += _unite.Influance;
     }
@@ -85,6 +97,16 @@ export class ParametrerGvgComponent implements OnInit
     {
       const INDEX = this.listeUniteCompteChoisi.findIndex(u => u.IdUnite == _unite.Id && u.IdCompte == this.idCompte);
       this.listeUniteCompteChoisi.splice(INDEX, 1);
+
+      if(_unite.EstDejaChoisi)
+      {
+        this.listeUniteDejaChoisiAsupprimer.push({
+          IdCompte: this.idCompte,
+          IdUnite: _unite.Id,
+          IdGvG: this.idGvG,
+          EstDejaChoisi: _unite.EstDejaChoisi
+        })
+      }
 
       this.influanceTotal -= _unite.Influance;
     }
@@ -95,11 +117,30 @@ export class ParametrerGvgComponent implements OnInit
   ListerUniteParticipant(_idCompte: number): void
   {
     const COMPTE = this.participant.ListeCompte.find(c => c.Id == +_idCompte);
+    const EXISTE = this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == COMPTE.Id);
+    
+    // ajout des unités si c la premiere fois qu'on clique sur le compte
+    if(EXISTE == -1)
+    {
+      for (const element of COMPTE.ListeUnite)
+      {  
+        if(element.EstDejaChoisi)
+        {
+          this.listeUniteCompteChoisi.push({
+            IdCompte: COMPTE.Id,
+            IdGvG: this.idGvG,
+            IdUnite: element.Id,
+            EstDejaChoisi: true
+          });
+        }
+      }
+    }
+    
+    const LISTE_UNITE_COMPTE_CHOISI = this.listeUniteCompteChoisi.filter(u => u.IdCompte == COMPTE.Id);
 
-    const LISTE_UNITE_COMPTE = this.listeUniteCompteChoisi.filter(u => u.IdCompte == COMPTE.Id);
-
+    // calcul de l'influance total
     this.influanceTotal = 0;
-    for (const element of LISTE_UNITE_COMPTE) 
+    for (const element of LISTE_UNITE_COMPTE_CHOISI) 
     {
       this.influanceTotal += COMPTE.ListeUnite.find(u => u.Id == element.IdUnite).Influance;
     }
@@ -107,11 +148,13 @@ export class ParametrerGvgComponent implements OnInit
     this.idCompte = COMPTE.Id;
     this.influanceMax = COMPTE.Influance;
     this.listeUnite = this.listeUniteClone = COMPTE.ListeUnite;
+
+    this.FiltreUniteInfluance(this.filtreEstActiver);
   }
 
   Valider(): void
   {
-    if(this.listeUniteCompteChoisi.length == 0)
+    if(this.listeUniteCompteChoisi.length == 0 && this.listeUniteDejaChoisiAsupprimer.length == 0)
     {
       this.outilServ.ToastAttention("Au moins une unité doit être choisi");
       return;
@@ -119,9 +162,14 @@ export class ParametrerGvgComponent implements OnInit
 
     this.btnClicker = true;
 
-    this.gvgServ.Parametrer(this.listeUniteCompteChoisi).subscribe({
+    this.gvgServ.Parametrer(this.listeUniteCompteChoisi, this.listeUniteDejaChoisiAsupprimer).subscribe({
       next: () =>
       {
+        this.ModifierUniteDejaChoisi(this.listeUniteCompteChoisi, true);
+        this.ModifierUniteDejaChoisi(this.listeUniteDejaChoisiAsupprimer, false);
+        
+        this.listeUniteDejaChoisiAsupprimer.length = 0;
+
         this.outilServ.ToastOK("Les unités ont été defini");
         this.btnClicker = false;
       },
@@ -133,9 +181,18 @@ export class ParametrerGvgComponent implements OnInit
     });
   }
 
-  private ListerGroupe(): void
+  private ModifierUniteDejaChoisi(_liste: UniteCompteGvGExport[], _estDejaChoisi: boolean): void
   {
+    for (let element of _liste) 
+    {
+      const COMPTE = this.participant.ListeCompte.find(c => c.Id == element.IdCompte);
+      let uniteCompte = COMPTE.ListeUnite.find(u => u.Id == element.IdUnite);
 
+      uniteCompte.EstDejaChoisi = _estDejaChoisi;
+
+      if(_estDejaChoisi)
+        element.EstDejaChoisi = true;
+    }
   }
 
   private ListerParticipantGvG(): void
@@ -144,6 +201,7 @@ export class ParametrerGvgComponent implements OnInit
       next: (retour: ParticipantGvG) =>
       {        
         this.participant = retour[0];
+        
         this.dateGvG = this.participant.Date;      
       },
       error: () =>

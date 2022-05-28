@@ -93,13 +93,14 @@ export class ModiferInfoCompteComponent implements OnInit {
 
   Enregistrer(_form: NgForm): void
   {
+    
     const DATA: ConfigCompteExport =
     {
       IdCompte: this.compte.Id,
       IdClasseHeros: this.idClasseChoisi,
       Pseudo: this.compte.Pseudo,
       Influance: _form.value.Influance,
-      IdDiscord: _form.value.IdDiscord.toString(),
+      IdDiscord: _form.value.IdDiscord?.toString() ?? "",
       ListeUniteNiv: this.listeUniteChoisi
     }
 
