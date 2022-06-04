@@ -1,5 +1,26 @@
-<h1>Liste des GvGs parametrées</h1>
+<h1 style="text-align: center;">GvG du jour</h1>
 
-<div class="conatiner-fluid">
-    
+<div class="container">
+    <mat-card style="margin-bottom: 20px;" *ngFor="let element of dataSource">
+        <h2>{{ element[0].Nom }}</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Joueur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let element2 of element[0].ListeJoueur"
+                    [ngClass]="{ 'cMoi': element2.Pseudo.toLowerCase() == nomCompte.toLowerCase() }">
+                    <th scope="row">{{ element2.Pseudo }} ({{ element2.Influance }})</th>
+
+                    <!-- liste des untés -->
+                    <td *ngFor="let element3 of element2.ListeUnite">
+                        {{ element3.Nom }} ({{ element3.Influance }})
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
 </div>

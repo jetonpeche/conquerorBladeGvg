@@ -32,6 +32,9 @@ import { MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+
+
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 
 
@@ -73,7 +76,8 @@ import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametre
     MatNativeDateModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   providers: [
     DatePipe, MenuComponent,

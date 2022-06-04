@@ -158,7 +158,7 @@ export class ParametrerGvgComponent implements OnInit
 
   ModifierCompteGroupe(_idGroupe: number): void
   {
-    this.grpServ.ModifierCompteGroupe(this.participant.Id, this.idGvG, _idGroupe).subscribe({
+    this.grpServ.ModifierCompteGroupe(this.compte.Id, this.idGvG, _idGroupe).subscribe({
       next: (retour: boolean) =>
       {
         this.compte.IdGroupe = _idGroupe;

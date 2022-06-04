@@ -42,6 +42,30 @@ namespace back.Services
             return listeRetour;
         }
 
+        public async Task<IEnumerable<dynamic>> ListerParametrer(DateTime _dateTime)
+        {
+            IEnumerable<dynamic> liste = null!;
+
+            await Task.Run(() =>
+            {
+                liste = (from gvg in context.GvgComptes
+                         where gvg.IdGvgNavigation.DateProgrammer.Equals(_dateTime)
+                         orderby gvg.IdGroupe
+                         select new
+                         {
+                             Nom = gvg.IdGroupeNavigation.Nom,
+                             ListeJoueur = gvg.IdGroupeNavigation.GvgComptes.Select(g => new
+                             {
+                                 g.IdCompteNavigation.Pseudo,
+                                 g.IdCompteNavigation.Influance,
+                                 ListeUnite = gvg.IdCompteNavigation.GvgUniteComptes.Select(c => new { c.IdUniteNavigation.Nom, c.IdUniteNavigation.Influance })
+                             })
+                         }).AsEnumerable().GroupBy(c => c.Nom);
+            });
+   
+            return liste;
+        }
+
         public async Task<IQueryable> listerParticipant(int _idGvg)
         {
             IQueryable? liste = null;

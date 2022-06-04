@@ -30,6 +30,11 @@ export class GvgService
     return this.http.get<ParticipantGvG>(`${environment.urlApi}/${this.dossier}/listerParticipant/${_idGvg}`);
   }
 
+  RecupererInfoGvgParametrer()
+  {
+    return this.http.get<any>(`${environment.urlApi}/${this.dossier}/recupererInfoGvgDuJour`);
+  }
+
   Ajouter(_info): Observable<number[]>
   {
     return this.http.post<number[]>(`${environment.urlApi}/${this.dossier}/ajouter`, _info)

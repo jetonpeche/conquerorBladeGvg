@@ -58,6 +58,15 @@
             return JsonConvert.SerializeObject(listeRetour.Result);
         }
 
+        [HttpGet("recupererInfoGvgDuJour")]
+        public async Task<string> RecupererInfoGvg()
+        {
+            DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var liste = await gvgService.ListerParametrer(date);
+
+            return JsonConvert.SerializeObject(liste);
+        }
+
         [HttpPost("ajouter")]
         public async Task<string> Ajouter([FromBody] GvgImport[] _gvgImport)
         {
