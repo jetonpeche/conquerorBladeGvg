@@ -54,14 +54,10 @@
             return info;
         }
 
-        public async Task<int> Ajouter(Compte _compte)
+        public async Task Ajouter(Compte _compte)
         {
             context.Comptes.Add(_compte);
             await context.SaveChangesAsync();
-
-            int id = context.Comptes.OrderByDescending(c => c.Id).Select(c => c.Id).First();
-
-            return id;
         }
 
         public async Task Modifier(Compte _compte)

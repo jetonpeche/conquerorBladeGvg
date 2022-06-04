@@ -31,6 +31,12 @@ namespace back.Controllers
             }
         }
 
+        [HttpGet("InitIdDiscord")]
+        public async Task<string> InitIdDisocrd()
+        {
+
+        }
+
         [HttpPost("ajouter")]
         public async Task<string> Ajouter([FromBody] CompteImport _compte)
         {
@@ -38,12 +44,15 @@ namespace back.Controllers
             {
                 Pseudo = _compte.Pseudo,
                 Influance = _compte.Influance,
-                IdClasseHeros = _compte.IdClasseHeros
+                IdClasseHeros = _compte.IdClasseHeros,
+                IdDiscord = _compte.IdDiscord,
+                EstAdmin = _compte.EstAdmin,
+                EstPremiereConnexion = 1
             };
 
-            int id = await compte.Ajouter(nouveauCompte);
+            await compte.Ajouter(nouveauCompte);
 
-            return JsonConvert.SerializeObject(id);
+            return JsonConvert.SerializeObject(true);
         }
 
         [HttpPut("modifier")]

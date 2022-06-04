@@ -6,6 +6,8 @@
         public int IdClasseHeros { get; set; }
 
         public int Influance { get; set; }
-        public string? IdDiscord { get; set; } = null;
+        public string IdDiscord { get; set; } = "";
+
+        public int EstAdmin { get; set; }
     }
 }

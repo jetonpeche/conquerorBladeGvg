@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuComponent } from './component/menu/menu.component';
+import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
 import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { ModiferInfoCompteComponent } from './modal/modifer-info-compte/modifer-info-compte.component';
 import { VariableStatic } from './Static/VariableStatic';
@@ -25,6 +26,11 @@ export class AppComponent
   OuvrirModalModifInfoCompte(): void
   {
     this.dialog.open(ModiferInfoCompteComponent);
+  }
+
+  OuvrirModalAjouterCompte(): void
+  {
+    this.dialog.open(AjouterCompteComponent);
   }
 
   OuvrirModalAjouterGvG(): void

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Compte } from '../Types/Compte';
+import { CompteExport } from '../Types/export/CompteExport';
 import { ConfigCompteExport } from '../Types/export/ConfigCompteExport';
 
 @Injectable({
@@ -17,6 +18,11 @@ export class CompteService
   Connexion(_pseudo: string): Observable<string | Compte>
   {
     return this.http.get<string | Compte>(`${environment.urlApi}/${this.DOSSIER}/connexion/${_pseudo}`);
+  }
+
+  Ajouter(_info: CompteExport): Observable<boolean>
+  {
+    return this.http.post<boolean>(`${environment.urlApi}/${this.DOSSIER}/ajouter`, _info);
   }
 
   Modifier(_info: ConfigCompteExport): Observable<boolean>

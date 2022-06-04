@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Nouveau compte</h2>
+<mat-dialog-content style="padding-bottom: 10px;">
+    <form #e="ngForm">
+
+        <!-- pseudo -->
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Pseudo cb (pas d'espace)</mat-label>
+            <input matInput name="Pseudo" type="text" pattern="[^/ /g]+" ngModel requried>
+        </mat-form-field>
+
+        <!-- id discord -->
+        <p>Activer le mode développeur puis clique droit sur le nom du ga => copier l'identifiant</p>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>
+                IdDiscord (pas obligatoire)
+            </mat-label>
+            <input matInput name="IdDiscord" type="text" ngModel>
+        </mat-form-field>
+
+        <div class="row">
+
+            <!-- influance -->
+            <div class="col-lg-6 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Influance</mat-label>
+                    <input matInput name="Influance" type="number" min="700" ngModel="700" required>
+                </mat-form-field>
+            </div>
+
+            <!-- classe -->
+            <div class="col-lg-6 col-xs-12">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Classe</mat-label>
+                    <mat-select name="IdClasseHeros" ngModel required>
+                        <mat-option *ngFor="let element of listeClasse" [value]="element.Id">
+                            {{ element.Nom }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- est admin -->
+        <mat-label>Est admin ?</mat-label><br>
+        <mat-radio-group name="EstAdmin" color="primary" ngModel="0">
+            <mat-radio-button value="0">Non</mat-radio-button>
+            <mat-radio-button value="1">Oui</mat-radio-button>
+        </mat-radio-group>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button color="warn" mat-dialog-close>Fermer</button>
+    <button mat-raised-button color="primary" (click)="AjouterCompte(e)">Ajouter</button>
+</mat-dialog-actions>

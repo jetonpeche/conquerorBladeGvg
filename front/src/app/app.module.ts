@@ -33,9 +33,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
+import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
 
 
 @NgModule({
@@ -48,7 +52,8 @@ import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametre
     AjouterGvgComponent,
     ParametrerGvgComponent,
     UniteGvgComponent,
-    GvgParametrerComponent
+    GvgParametrerComponent,
+    AjouterCompteComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +82,9 @@ import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametre
     MatListModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatRadioModule,
+    MatTooltipModule
   ],
   providers: [
     DatePipe, MenuComponent,
