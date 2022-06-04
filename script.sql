@@ -61,7 +61,6 @@ CREATE TABLE Compte
     id int PRIMARY KEY IDENTITY(1, 1) NOT NULL,
     idClasseHeros int NOT NULL,
     idDiscord varchar(100) NULL,
-    nomDiscord varchar NULL,
     pseudo varchar(150) NOT NULL,
     influance int NOT NULL,
     estPremiereConnexion int DEFAULT 1,
@@ -163,15 +162,17 @@ SET IDENTITY_INSERT Unite OFF;
 
 SET IDENTITY_INSERT ClasseHeros ON;
 INSERT INTO ClasseHeros (id, nom, nomImg, iconClasse) VALUES 
-(1, 'Guandao', 'guandao.jpg', 'guandao.webp'), (2, 'Hache d arme', 'hacheArme.jpg', 'hacheArme.webp'), 
-(3, 'Lance', 'lance.jpg', 'lance.webp'), (4, 'Arc court', 'arcCourt.jpg', 'arcCourt.webp'), 
-(5, 'Lames jumelles', 'lameJumelle.jpg', 'assassin.webp'),
-(6, 'Masse de guerre', 'masse.jpg', 'marteau.webp'), (7, 'Nodachi', 'nodachi.jpg', 'nodachi.webp'), 
-(8, 'Epee longue', 'epeeLongue.jpg', 'epeeLongue.webp'), 
-(9, 'Mousquet', 'mousquet.jpg', 'musket.webp'), (10, 'Arc long', 'arcLong.jpg', 'arcLong.webp'), (11, 'Epee courte', 'epeeCourte.jpg', 'epeeCourt.webp'), 
-(12, 'Pique', 'lance.jpg', 'pique.webp');
+(1, 'Guandao', 'guandao.jpg', 'guandao.png'), (2, 'Hache d arme', 'hacheArme.jpg', 'hacheArme.png'), 
+(3, 'Lance', 'lance.jpg', 'lance.png'), (4, 'Arc court', 'arcCourt.jpg', 'arcCourt.png'), 
+(5, 'Lames jumelles', 'lameJumelle.jpg', 'assassin.png'),
+(6, 'Masse de guerre', 'masse.jpg', 'marteau.png'), (7, 'Nodachi', 'nodachi.jpg', 'nodachi.png'), 
+(8, 'Epee longue', 'epeeLongue.jpg', 'epeeLongue.png'), 
+(9, 'Mousquet', 'mousquet.jpg', 'musket.png'), (10, 'Arc long', 'arcLong.jpg', 'arcLong.png'), (11, 'Epee courte', 'epeeCourte.jpg', 'epeeCourt.png'), 
+(12, 'Pique', 'lance.jpg', 'pique.png');
 SET IDENTITY_INSERT ClasseHeros OFF;
 
 SET IDENTITY_INSERT Compte ON;
-INSERT INTO Compte (id, idClasseHeros, pseudo, influance) VALUES (1, 4, 'Jetonpeche', 730), (2, 5, 'test', 700);
+INSERT INTO Compte (id, idClasseHeros, idDiscord, pseudo, influance, estAdmin) VALUES 
+(1, 4, '341945414318161920', 'Jetonpeche', 730, 1),
+(2, 9, '267788625364647937', 'Jalief', 700, 1)
 SET IDENTITY_INSERT Compte OFF;

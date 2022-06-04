@@ -1,10 +1,11 @@
 ﻿using System.Data;
-using Microsoft.Data.SqlClient;
 
 namespace back.Services
 {
     public class UniteService
     {
+        private const string urlImg = "https://cb-gvg-api.jetonpeche.fr/imgUnite"; //"http://localhost:5019/imgUnite";
+
         private conquerorBladeContext context;
 
         public UniteService(conquerorBladeContext _context)
@@ -26,7 +27,7 @@ namespace back.Services
                             u.Id,
                             u.Influance,
                             // recuperer l'image et pouvoir l'afficher dans HTML
-                            NomImg = string.Format($"http://localhost:5019/imgUnite/{u.NomImg}"),
+                            NomImg = string.Format($"{urlImg}/{u.NomImg}"),
                             u.Nom,
                             u.IdCouleur,
                             Couleur = u.IdCouleurNavigation.Nom,

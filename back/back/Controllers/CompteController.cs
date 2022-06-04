@@ -53,19 +53,26 @@
         [HttpPost("ajouter")]
         public async Task<string> Ajouter([FromBody] CompteImport _compte)
         {
-            Compte nouveauCompte = new()
+            try
             {
-                Pseudo = _compte.Pseudo,
-                Influance = _compte.Influance,
-                IdClasseHeros = _compte.IdClasseHeros,
-                IdDiscord = _compte.IdDiscord,
-                EstAdmin = _compte.EstAdmin,
-                EstPremiereConnexion = 1
-            };
+                Compte nouveauCompte = new()
+                {
+                    Pseudo = _compte.Pseudo,
+                    Influance = _compte.Influance,
+                    IdClasseHeros = _compte.IdClasseHeros,
+                    IdDiscord = _compte.IdDiscord,
+                    EstAdmin = _compte.EstAdmin,
+                    EstPremiereConnexion = 1
+                };
 
-            await compte.Ajouter(nouveauCompte);
+                await compte.Ajouter(nouveauCompte);
 
-            return JsonConvert.SerializeObject(true);
+                return JsonConvert.SerializeObject(true);
+            }
+            catch (Exception e)
+            {
+                return JsonConvert.SerializeObject(e.Message);
+            }
         }
 
         [HttpPut("modifier")]

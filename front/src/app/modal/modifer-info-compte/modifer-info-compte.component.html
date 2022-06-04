@@ -27,7 +27,7 @@
             <div *ngFor="let element of listeClasseHero"
                 [ngClass]="{ 'item': true, 'active': +element.Id == +idClasseChoisi }"
                 (click)="ClasseChoisi(element.Id, element.NomImg)">
-                <img width="110" height="110" [src]="'../../../assets/iconClasseHeros/' + element.IconClasse" alt="image de {{ element.Nom }}">
+                <img width="110" height="110" [src]="'assets/iconClasseHeros/' + element.IconClasse" alt="image de {{ element.Nom }}">
             </div>
         </div>
 

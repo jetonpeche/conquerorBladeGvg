@@ -15,7 +15,6 @@ namespace back.Models
         public int Id { get; set; }
         public int IdClasseHeros { get; set; }
         public string? IdDiscord { get; set; }
-        public string? NomDiscord { get; set; }
         public string Pseudo { get; set; } = null!;
         public int Influance { get; set; }
         public int? EstPremiereConnexion { get; set; }

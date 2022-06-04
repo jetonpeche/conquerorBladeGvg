@@ -42,6 +42,8 @@ export class AccueilComponent implements OnInit
     this.compteServ.Connexion(_form.value.pseudo).subscribe({
       next: (retour: string | Compte) =>
       {
+        this.btnClicker = false;
+
         if(typeof(retour) == "string")
           this.outilServ.ToastAttention(retour);
         else
