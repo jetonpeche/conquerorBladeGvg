@@ -44,8 +44,6 @@ export class GvgParametrerComponent implements OnInit
     this.gvgServ.RecupererInfoGvgParametrer().subscribe({
       next: (retour) => 
       {
-        console.log(retour);
-        
         this.dataSource = retour;
       },
       error: () =>

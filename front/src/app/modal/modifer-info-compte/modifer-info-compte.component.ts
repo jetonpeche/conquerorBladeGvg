@@ -220,8 +220,6 @@ export class ModiferInfoCompteComponent implements OnInit {
       {   
         if(liste.length > 0)
         {
-          console.log(liste);
-          
           this.listeMesUnite = liste;
 
           for (const element of this.listeUnite) 

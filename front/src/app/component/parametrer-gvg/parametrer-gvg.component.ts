@@ -234,9 +234,6 @@ export class ParametrerGvgComponent implements OnInit
       next: (retour: ParticipantGvG) =>
       {            
         this.participant = retour[0];
-        console.log(this.participant);
-        
-        
         this.dateGvG = this.participant.Date;      
       },
       error: () =>

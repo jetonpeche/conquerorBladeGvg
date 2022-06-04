@@ -11,7 +11,9 @@ import { Compte } from 'src/app/Types/Compte';
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.scss']
 })
-export class AccueilComponent implements OnInit {
+export class AccueilComponent implements OnInit 
+{
+  btnClicker: boolean = false;
 
   constructor(
     private compteServ: CompteService, 
@@ -32,6 +34,11 @@ export class AccueilComponent implements OnInit {
       return;
     }
 
+    if(this.btnClicker)
+      return;
+
+    this.btnClicker = true;
+
     this.compteServ.Connexion(_form.value.pseudo).subscribe({
       next: (retour: string | Compte) =>
       {
@@ -45,6 +52,7 @@ export class AccueilComponent implements OnInit {
       },
       error: () =>
       {
+        this.btnClicker = false;
         this.outilServ.ToastErreurHttp();
       }
     });
