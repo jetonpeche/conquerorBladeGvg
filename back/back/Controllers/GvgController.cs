@@ -46,7 +46,7 @@
             int idCompte = await compteService.GetIdCompte(idDiscord);
 
             if(idCompte == 0)
-                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !InitMonIdDiscord <pseudo>");
+                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, ou taper la commande: !InitMonIdDiscord <pseudo>");
 
             var listeRetour = gvgService.Lister();
 
@@ -100,7 +100,7 @@
             int idCompte = await compteService.GetIdCompte(_gvg.IdDiscord);
 
             if(idCompte == 0)
-                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !InitMonIdDiscord <pseudo>");
+                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !initMonIdDiscord <pseudo>");
 
             DateTime date = DateTime.Parse(_gvg.Date);
 
@@ -115,7 +115,7 @@
             gvgService.connectionString = config.GetConnectionString("defaut");
             await gvgService.Participer(idGvG, idCompte);    
 
-            return JsonConvert.SerializeObject(true);
+            return JsonConvert.SerializeObject($"Tu as été incrit a la GvG du {_gvg.Date}");
         }
 
         /// <summary>
@@ -138,6 +138,17 @@
             await gvgService.Absent(_gvg.IdGvg, _gvg.IdCompte);
 
             return JsonConvert.SerializeObject(true);
+        }
+
+        [HttpPost("existe")]
+        public async Task<string> Existe(GvgImport _gvgImport)
+        {
+            DateTime dateTime = DateTime.Parse(_gvgImport.Date);
+
+            if(gvgService.Existe(dateTime))
+                return JsonConvert.SerializeObject(true);
+
+            return JsonConvert.SerializeObject(false);
         }
     }
 }

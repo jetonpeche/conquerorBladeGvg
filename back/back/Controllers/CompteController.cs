@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using back;
-
-namespace back.Controllers
+﻿namespace back.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -31,10 +28,26 @@ namespace back.Controllers
             }
         }
 
-        [HttpGet("InitIdDiscord")]
-        public async Task<string> InitIdDisocrd()
+        [HttpGet("initIdDiscord/{pseudoCb}/{idDiscord}")]
+        public async Task<string> InitIdDisocrd(string pseudoCb, string idDiscord)
         {
+            if (!compte.Existe(pseudoCb))
+                return JsonConvert.SerializeObject($"Je ne te connais pas {pseudoCb}");
 
+            if(compte.IdDiscordExiste(idDiscord))
+                return JsonConvert.SerializeObject($"Votre id discord est déjà parametré {pseudoCb}");
+
+            await compte.InitIdDiscord(pseudoCb, idDiscord);
+
+            return JsonConvert.SerializeObject($"je te connais {pseudoCb}");
+        }
+
+        [HttpGet("estAdmin/{idDiscord}")]
+        public async Task<string> EstAdmin(string idDiscord)
+        {
+            bool retour = await compte.EstAdmin(idDiscord);
+
+            return JsonConvert.SerializeObject(retour);
         }
 
         [HttpPost("ajouter")]
@@ -87,6 +100,17 @@ namespace back.Controllers
         public async Task Supprimer([FromRoute] int idCompte)
         {
             await compte.Supprimer(idCompte);
+        }
+
+        [HttpDelete("supprimerViaDiscord/{idDiscord}")]
+        public async Task<string> Supprimer([FromRoute] string idDiscord)
+        {
+            if (!compte.IdDiscordExiste(idDiscord))
+                return JsonConvert.SerializeObject(false);
+
+            await compte.Supprimer(idDiscord);
+
+            return JsonConvert.SerializeObject(true);
         }
     }
 }
