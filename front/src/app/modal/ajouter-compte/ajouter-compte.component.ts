@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ClasseHerosService } from 'src/app/service/classe-heros.service';
 import { CompteService } from 'src/app/service/compte.service';
 import { OutilService } from 'src/app/service/outil.service';
@@ -17,7 +18,8 @@ export class AjouterCompteComponent implements OnInit
   constructor(
     private classeHeroServ: ClasseHerosService, 
     private outilServ: OutilService,
-    private comptServ: CompteService
+    private comptServ: CompteService,
+    private dialogRef: MatDialogRef<AjouterCompteComponent>
     ) { }
 
   ngOnInit(): void 
@@ -34,6 +36,7 @@ export class AjouterCompteComponent implements OnInit
       next: (retour: boolean) =>
       {
         this.outilServ.ToastOK("Le compte à été ajouté");
+        this.dialogRef.close();
       },
       error: () =>
       {

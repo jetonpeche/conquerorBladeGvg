@@ -23,6 +23,11 @@ export class AppComponent
     return VariableStatic.compte != undefined;
   }
 
+  EstRoleAdmin(): boolean
+  {
+    return VariableStatic.compte?.EstAdmin == 1 ?? false;
+  }
+
   OuvrirModalModifInfoCompte(): void
   {
     this.dialog.open(ModiferInfoCompteComponent);
