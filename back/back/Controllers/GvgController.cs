@@ -12,6 +12,7 @@
         {
             context = _context;
             gvgService = new(_context);
+            gvgService.connectionString = _config.GetConnectionString("defaut");
             config = _config;
         }
 
@@ -67,6 +68,19 @@
             return JsonConvert.SerializeObject(liste);
         }
 
+        /// <summary>
+        /// Utiliser automatiquement par le serveur pour les soirs
+        /// NE PAS UTILISER
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("CoroutineSuppGvGPasser")]
+        public async Task SupprimerGvGPasser()
+        {
+            DateTime date = DateTime.Parse(DateTime.Now.ToString("d"));
+
+            await gvgService.SupprimerGvgPasser(date);
+        }
+
         [HttpPost("ajouter")]
         public async Task<string> Ajouter([FromBody] GvgImport[] _gvgImport)
         {
@@ -102,12 +116,29 @@
             if(idCompte == 0)
                 return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !initMonIdDiscord <pseudo>");
 
-            DateTime date = DateTime.Parse(_gvg.Date);
+            DateTime date;
+            int idGvG;
 
-            if (!gvgService.Existe(date))
-                return JsonConvert.SerializeObject($"Aucune GvG pour la date du: {_gvg.Date}");
+            // prochaine GvG
+            if (string.IsNullOrEmpty(_gvg.Date))
+            {
+                date = DateTime.Parse("");
 
-            int idGvG = await gvgService.GetIdGvG(date);
+                idGvG = await gvgService.GetIdProchaineGvG();
+
+                if (idGvG is 0)
+                    return JsonConvert.SerializeObject("Aucune GvG programmée prochainement");
+            }
+            // date gvg choisi
+            else
+            {
+                date = DateTime.Parse(_gvg.Date);
+
+                if (!gvgService.Existe(date))
+                    return JsonConvert.SerializeObject($"Aucune GvG pour la date du: {_gvg.Date}");
+
+                idGvG = await gvgService.GetIdGvG(date);
+            }
 
             if (gvgService.Participe(idCompte, idGvG))
                 return JsonConvert.SerializeObject($"Tu participe déjà a la GvG du: {_gvg.Date}");

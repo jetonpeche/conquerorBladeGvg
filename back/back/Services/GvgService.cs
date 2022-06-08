@@ -123,12 +123,31 @@ namespace back.Services
 
         public async Task<int> GetIdGvG(DateTime _date)
         {
-            int id = (from gvg in context.Gvgs
-                     where gvg.DateProgrammer.Equals(_date)
-                     select gvg.Id).FirstOrDefault();
+            int id = 0;
+
+            await Task.Run(() =>
+            {
+                id = (from gvg in context.Gvgs
+                      where gvg.DateProgrammer.Equals(_date)
+                      select gvg.Id).FirstOrDefault();
+            });
 
             return id;
         }
+
+        public async Task<int> GetIdProchaineGvG()
+        {
+            int id = 0;
+
+            await Task.Run(() =>
+            {
+                id = (from gvg in context.Gvgs
+                      orderby gvg.DateProgrammer
+                      select gvg.Id).FirstOrDefault();
+            });
+
+            return id;
+;        }
 
         public bool Participe(int _idCompte, int _idGvg)
         {
@@ -220,6 +239,37 @@ namespace back.Services
 
                 await sqlCon.CloseAsync();
             }
+        }
+
+        public async Task SupprimerGvgPasser(DateTime dateMtn)
+        {
+            List<int> listeIdGvgPasser = (from gvg in context.Gvgs
+                                         where gvg.DateProgrammer.CompareTo(dateMtn) < 0
+                                         select gvg.Id).ToList();
+
+            string listeIdGvgString = string.Join(',', listeIdGvgPasser);
+
+            using(SqlConnection sqlCon = new(connectionString))
+            {
+                sqlCon.Open();
+
+                SqlCommand cmd = sqlCon.CreateCommand();
+
+                cmd.CommandText = $"DELETE GvgUniteCompte WHERE idGvg IN ({listeIdGvgString})";
+                await cmd.PrepareAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                cmd.CommandText = $"DELETE GvgCompte WHERE idGvg IN ({listeIdGvgString})";
+                await cmd.PrepareAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                cmd.CommandText = $"DELETE Gvg WHERE id IN ({listeIdGvgString})";
+                await cmd.PrepareAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                await sqlCon.CloseAsync();
+            }
+            
         }
     }
 }

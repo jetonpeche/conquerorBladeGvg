@@ -155,11 +155,11 @@ namespace botDiscord.classe
             await Context.Channel.SendMessageAsync(msg);
         }
 
-        // OK
+        // si string vide inscrit a la prochaine gvg
         [Command("participerGvG")]
-        public async Task Participer(string _dateString)
+        public async Task Participer(string _dateString = "")
         {
-            if (!Regex.Match(_dateString, patternDate, RegexOptions.None).Success)
+            if (!string.IsNullOrEmpty(_dateString) && !Regex.Match(_dateString, patternDate, RegexOptions.None).Success)
                 await Context.Channel.SendMessageAsync($"{Context.User.Mention} Erreur: la date doit être au format JJ/MM");
             else
             {
