@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
-
 namespace back.Services
 {
     public class GvgService
@@ -119,6 +118,46 @@ namespace back.Services
             });
 
             return liste;
+        }
+
+        public async Task<string> ListerIdDiscordNonInscritProchaineGvG()
+        {
+            int idGvG = await GetIdProchaineGvG();
+
+            if (idGvG == 0)
+                return "Aucune GvG n'a été programmée prochainement";
+
+            using(SqlConnection sqlCon = new(connectionString))
+            {
+                await sqlCon.OpenAsync();
+
+                SqlCommand cmd = sqlCon.CreateCommand();
+
+                cmd.CommandText = "SELECT idDiscord " +
+                                  "FROM Compte " +
+                                  "WHERE id NOT IN " +
+                                    "(SELECT idCompte " +
+                                    "FROM GvgCompte" +
+                                    " WHERE idGvg = @idGvG)";
+
+                cmd.Parameters.Add("@idGvG", SqlDbType.Int).Value = idGvG;
+                await cmd.PrepareAsync();
+
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    string listeIdDiscordString = "";
+
+                    while(reader.Read())
+                    {
+                        if(!string.IsNullOrEmpty(reader.GetString(0)))
+                            listeIdDiscordString += $" <@{reader.GetString(0)}> ";
+                    }
+
+                    listeIdDiscordString += " merci de vous inscrit à la prochaine GvG";
+
+                    return listeIdDiscordString;
+                }
+            }
         }
 
         public async Task<int> GetIdGvG(DateTime _date)

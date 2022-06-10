@@ -10,10 +10,10 @@ namespace botDiscord.classe
 {
     public class BasicCommande: ModuleBase<SocketCommandContext>
     {
-        //private const string URL_API = "http://localhost:5019";
-        private const string URL_API = "https://cb-gvg-api.jetonpeche.fr"; 
+        public const string URL_API = "http://localhost:5019";
+        //public const string URL_API = "https://cb-gvg-api.jetonpeche.fr"; 
 
-        private static HttpClient http = new();
+        public static HttpClient http { get; } = new();
         private const string MEDIA_TYPE = "application/json";
 
         private const string patternDate = @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))$";
@@ -101,8 +101,8 @@ namespace botDiscord.classe
             List<GvgExport> listeGvg = new();
             List<string> listeDateString = new(_dateString.Trim().Split(','));
 
-            string estAdminString = await http.GetStringAsync($"{URL_API}/compte/estAdmin/{Context.User.Id}");
-            bool estAdmin = bool.Parse(estAdminString);
+            Outil outil = new();
+            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString(), URL_API);
 
             if(!estAdmin)
             {
@@ -155,6 +155,7 @@ namespace botDiscord.classe
             await Context.Channel.SendMessageAsync(msg);
         }
 
+        // OK
         // si string vide inscrit a la prochaine gvg
         [Command("participerGvG")]
         public async Task Participer(string _dateString = "")
@@ -167,9 +168,30 @@ namespace botDiscord.classe
                 HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
                 string retour = await http.PostAsync($"{URL_API}/gvg/participerViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
+                Console.WriteLine(retour);
 
                 await Context.Channel.SendMessageAsync($"{Context.User.Mention} {retour}");
             }
+        }
+
+        [Command("pingerNonInscrit")]
+        public async Task PingerNonInscritProchaineGvG()
+        {
+            Outil outil = new();
+
+            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString(), URL_API);
+
+            if (!estAdmin)
+            {
+                await Context.Channel.SendMessageAsync("Tu n'as pas l'autorisation pour accéder à cette commande");
+                return;
+            }
+               
+            var retour = await http.GetStringAsync($"{URL_API}/gvg/pingerNonIncritProchaineGvg");
+
+            retour = retour.Replace('"', ' ').TrimStart();
+
+            await Context.Channel.SendMessageAsync(retour);
         }
 
         [Command("site")]
@@ -193,7 +215,8 @@ namespace botDiscord.classe
             embedBuilder.AddField("!initMonIdDiscord <pseudo cb>", "Ajoute son Id discord (si pseudo = nom discord rien mettre)");
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
             embedBuilder.AddField("!ajouterDateGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
-            embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisi");
+            embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisi, sinon à la prochaine GvG");
+            embedBuilder.AddField("!pingNonInscrit", "Ping les non inscrit à la prochaine GvG si il y en a une");
             embedBuilder.AddField("!site", "Affiche url du site");
             embedBuilder.AddField("!aled", "Liste des commandes disponibles");
 

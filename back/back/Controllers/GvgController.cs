@@ -68,6 +68,14 @@
             return JsonConvert.SerializeObject(liste);
         }
 
+        [HttpGet("pingerNonIncritProchaineGvg")]
+        public async Task<string> ListerLesInscritsProchaineGvg()
+        {
+            string retour = await gvgService.ListerIdDiscordNonInscritProchaineGvG();
+
+            return JsonConvert.SerializeObject(retour);
+        }
+
         /// <summary>
         /// Utiliser automatiquement par le serveur pour les soirs
         /// NE PAS UTILISER
@@ -118,12 +126,12 @@
 
             DateTime date;
             int idGvG;
+            bool estProchaineGvG;
 
             // prochaine GvG
-            if (string.IsNullOrEmpty(_gvg.Date))
+            if (!DateTime.TryParse(_gvg.Date, out DateTime dateS))
             {
-                date = DateTime.Parse("");
-
+                estProchaineGvG = true;
                 idGvG = await gvgService.GetIdProchaineGvG();
 
                 if (idGvG is 0)
@@ -132,6 +140,7 @@
             // date gvg choisi
             else
             {
+                estProchaineGvG = false;
                 date = DateTime.Parse(_gvg.Date);
 
                 if (!gvgService.Existe(date))
@@ -141,12 +150,12 @@
             }
 
             if (gvgService.Participe(idCompte, idGvG))
-                return JsonConvert.SerializeObject($"Tu participe déjà a la GvG du: {_gvg.Date}");
+                return JsonConvert.SerializeObject(estProchaineGvG ? "Tu participes déjà à la prochaine GvG" : $"Tu participe déjà a la GvG du: {_gvg.Date}");
 
             gvgService.connectionString = config.GetConnectionString("defaut");
             await gvgService.Participer(idGvG, idCompte);    
 
-            return JsonConvert.SerializeObject($"Tu as été incrit a la GvG du {_gvg.Date}");
+            return JsonConvert.SerializeObject(estProchaineGvG ? "Tu as été incrit à la prochaine GvG" : $"Tu as été incrit à la GvG du {_gvg.Date}");
         }
 
         /// <summary>
