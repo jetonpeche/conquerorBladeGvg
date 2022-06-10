@@ -10,8 +10,8 @@ namespace botDiscord.classe
 {
     public class BasicCommande: ModuleBase<SocketCommandContext>
     {
-        public const string URL_API = "http://localhost:5019";
-        //public const string URL_API = "https://cb-gvg-api.jetonpeche.fr"; 
+        //public const string URL_API = "http://localhost:5019";
+        public const string URL_API = "https://cb-gvg-api.jetonpeche.fr"; 
 
         public static HttpClient http { get; } = new();
         private const string MEDIA_TYPE = "application/json";

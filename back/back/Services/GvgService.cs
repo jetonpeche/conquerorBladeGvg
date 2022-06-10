@@ -155,6 +155,9 @@ namespace back.Services
 
                     listeIdDiscordString += " merci de vous inscrit à la prochaine GvG";
 
+                    sqlCon.Close();
+                    reader.Close();
+
                     return listeIdDiscordString;
                 }
             }
@@ -285,6 +288,9 @@ namespace back.Services
             List<int> listeIdGvgPasser = (from gvg in context.Gvgs
                                          where gvg.DateProgrammer.CompareTo(dateMtn) < 0
                                          select gvg.Id).ToList();
+
+            if (listeIdGvgPasser.Count is 0)
+                return;
 
             string listeIdGvgString = string.Join(',', listeIdGvgPasser);
 
