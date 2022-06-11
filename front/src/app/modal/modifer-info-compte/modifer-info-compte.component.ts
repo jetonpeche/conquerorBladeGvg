@@ -42,6 +42,7 @@ export class ModiferInfoCompteComponent implements OnInit {
   ngOnInit(): void 
   {
     this.compte = VariableStatic.compte;
+    this.nomImg = this.compte.NomImgClasse;
     this.idClasseChoisi = this.compte.IdClasseHeros;
 
     this.ListerClasse();
@@ -107,7 +108,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.compteServ.Modifier(DATA).subscribe({
       next: () =>
       {
-        this.outilServ.ToastOK("Votre a été mise à jour");
+        this.outilServ.ToastOK("Votre compte a été mise à jour");
         
         this.compte.NomImgClasse = this.nomImg;
         this.compte.Pseudo = DATA.Pseudo;

@@ -103,13 +103,13 @@
             return JsonConvert.SerializeObject(true);
         }
 
-        [HttpDelete("supprimer/{idCompte}")]
+        [HttpGet("supprimer/{idCompte}")]
         public async Task Supprimer([FromRoute] int idCompte)
         {
             await compte.Supprimer(idCompte);
         }
 
-        [HttpDelete("supprimerViaDiscord/{idDiscord}")]
+        [HttpGet("supprimerViaDiscord/{idDiscord}")]
         public async Task<string> Supprimer([FromRoute] string idDiscord)
         {
             if (!compte.IdDiscordExiste(idDiscord))

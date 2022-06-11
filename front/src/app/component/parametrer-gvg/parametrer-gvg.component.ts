@@ -175,7 +175,7 @@ export class ParametrerGvgComponent implements OnInit
   {
     if(this.listeUniteCompteChoisi.length == 0 && this.listeUniteDejaChoisiAsupprimer.length == 0)
     {
-      this.outilServ.ToastAttention("Au moins une unité doit être choisi");
+      this.outilServ.ToastAttention("Au moins une unité doit être choisie");
       return;
     }
 
@@ -189,7 +189,7 @@ export class ParametrerGvgComponent implements OnInit
         
         this.listeUniteDejaChoisiAsupprimer.length = 0;
 
-        this.outilServ.ToastOK("Les unités ont été defini");
+        this.outilServ.ToastOK("Les unités ont été definies");
         this.btnClicker = false;
       },
       error: () =>

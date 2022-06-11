@@ -54,7 +54,7 @@
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>Type d'unité</mat-label>
                     <mat-select #selectTypeUnite (selectionChange)="Filtrer(+$event.value, +selectCouleurUnite.value, checkBoxMesUnite)" value="0">
-                        <mat-option value="0">Toute les types</mat-option>
+                        <mat-option value="0">Tous les types</mat-option>
                         <mat-option value="2">Cavalerie</mat-option>
                         <mat-option value="1">Distance</mat-option>
                         <mat-option value="3">Infanterie</mat-option>
@@ -67,7 +67,7 @@
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>Couleur d'unité</mat-label>
                     <mat-select #selectCouleurUnite (selectionChange)="Filtrer(+selectTypeUnite.value, +$event.value, checkBoxMesUnite)" value="0">
-                        <mat-option value="0">Toute les couleurs</mat-option>
+                        <mat-option value="0">Toutes les couleurs</mat-option>
                         <mat-option value="1">Blanc</mat-option>
                         <mat-option value="2">Vert</mat-option>
                         <mat-option value="3">Bleu</mat-option>
@@ -96,7 +96,7 @@
                         <mat-option value="haut">Haut lvl</mat-option>
                         <mat-option value="elite">Elite</mat-option>
                         <mat-option value="max">Max</mat-option>
-                        <mat-option value="max et maitrisé">Max & maitrisé</mat-option>
+                        <mat-option value="max et maitrisé">Max & maîtrisée</mat-option>
                     </mat-select>
                   </mat-form-field>
             </mat-card>

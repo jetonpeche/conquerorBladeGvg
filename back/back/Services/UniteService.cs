@@ -40,20 +40,22 @@ namespace back.Services
             return liste;
         }
 
-        public async Task<List<RUnite>> ListerIdMesUnite(int _idCompte)
+        public async Task<IQueryable> ListerIdMesUnite(int _idCompte)
         {
-            MesUnite? liste = null;
+            IQueryable? liste = null;
 
             await Task.Run(() =>
             {
-                liste = (from u in context.Comptes
-                        select new MesUnite()
+                liste = from u in context.UniteComptes
+                        where u.IdCompte == _idCompte
+                        select new
                         {
-                            ListeUnite = u.UniteComptes.Where(u => u.IdCompte == _idCompte).Select(u => new RUnite(u.IdUnite, u.NiveauMaitrise)).ToList()
-                        }).First();
+                            Id = u.IdUnite,
+                            Niveau = u.NiveauMaitrise
+                        };
             });
 
-            return liste.ListeUnite;
+            return liste;
         }
 
         public async Task AjouterUniteCompte(List<UniteCompte> _listeUniteCompte)
@@ -66,13 +68,6 @@ namespace back.Services
         {
             context.UniteComptes.Update(_uniteCompte);
             await context.SaveChangesAsync();
-        }
-
-        public record RUnite (int Id, string Niveau);
-
-        public class MesUnite
-        {
-            public List<RUnite> ListeUnite { get; set; } = null!;
         }
     }
 }

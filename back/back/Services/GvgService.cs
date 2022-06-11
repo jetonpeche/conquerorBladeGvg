@@ -153,7 +153,7 @@ namespace back.Services
                             listeIdDiscordString += $" <@{reader.GetString(0)}> ";
                     }
 
-                    listeIdDiscordString += " merci de vous inscrit à la prochaine GvG";
+                    listeIdDiscordString += " merci de vous inscrire à la prochaine GvG";
 
                     sqlCon.Close();
                     reader.Close();

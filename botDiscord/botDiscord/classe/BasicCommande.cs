@@ -73,7 +73,7 @@ namespace botDiscord.classe
         {
             string msg;
 
-            string retour = await http.DeleteAsync($"{URL_API}/compte/supprimerViaDiscord/{Context.User.Id}").Result.Content.ReadAsStringAsync();
+            string retour = await http.GetAsync($"{URL_API}/compte/supprimerViaDiscord/{Context.User.Id}").Result.Content.ReadAsStringAsync();
 
             bool estSupprimer = bool.Parse(retour);
 
@@ -212,11 +212,11 @@ namespace botDiscord.classe
 
             embedBuilder.AddField("!ping", "Ping l'utilisateur");
             embedBuilder.AddField("!listerGvG", "Liste les GvGs programmées");
-            embedBuilder.AddField("!initMonIdDiscord <pseudo cb>", "Ajoute son Id discord (si pseudo = nom discord rien mettre)");
+            embedBuilder.AddField("!initMonIdDiscord <pseudo cb>", "Ajoute mon Id discord (si pseudo = nom discord rien mettre)");
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
             embedBuilder.AddField("!ajouterDateGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
-            embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisi, sinon à la prochaine GvG");
-            embedBuilder.AddField("!pingNonInscrit", "Ping les non inscrit à la prochaine GvG si il y en a une");
+            embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie, sinon à la prochaine GvG");
+            embedBuilder.AddField("!pingNonInscrit", "Ping les non inscrits à la prochaine GvG si il y en a une");
             embedBuilder.AddField("!site", "Affiche url du site");
             embedBuilder.AddField("!aled", "Liste des commandes disponibles");
 

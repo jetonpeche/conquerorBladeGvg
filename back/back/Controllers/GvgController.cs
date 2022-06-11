@@ -47,7 +47,7 @@
             int idCompte = await compteService.GetIdCompte(idDiscord);
 
             if(idCompte == 0)
-                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, ou taper la commande: !InitMonIdDiscord <pseudo>");
+                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, ou taper la commande: !InitMonIdDiscord");
 
             var listeRetour = gvgService.Lister();
 
@@ -122,7 +122,7 @@
             int idCompte = await compteService.GetIdCompte(_gvg.IdDiscord);
 
             if(idCompte == 0)
-                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !initMonIdDiscord <pseudo>");
+                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !initMonIdDiscord");
 
             DateTime date;
             int idGvG;
@@ -150,7 +150,7 @@
             }
 
             if (gvgService.Participe(idCompte, idGvG))
-                return JsonConvert.SerializeObject(estProchaineGvG ? "Tu participes déjà à la prochaine GvG" : $"Tu participe déjà a la GvG du: {_gvg.Date}");
+                return JsonConvert.SerializeObject(estProchaineGvG ? "Tu participes déjà à la prochaine GvG" : $"Tu participes déjà à la GvG du: {_gvg.Date}");
 
             gvgService.connectionString = config.GetConnectionString("defaut");
             await gvgService.Participer(idGvG, idCompte);    
