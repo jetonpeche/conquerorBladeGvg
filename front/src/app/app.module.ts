@@ -40,6 +40,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
+import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.co
     ParametrerGvgComponent,
     UniteGvgComponent,
     GvgParametrerComponent,
-    AjouterCompteComponent
+    AjouterCompteComponent,
+    GestionUniteComponent
   ],
   imports: [
     BrowserModule,

@@ -26,6 +26,8 @@ namespace back.Services
                         {
                             u.Id,
                             u.Influance,
+                            EstMeta = u.EstMeta == 1,
+
                             // recuperer l'image et pouvoir l'afficher dans HTML
                             NomImg = string.Format($"{urlImg}/{u.NomImg}"),
                             u.Nom,
@@ -67,6 +69,16 @@ namespace back.Services
         public async Task ModifierLvl(UniteCompte _uniteCompte)
         {
             context.UniteComptes.Update(_uniteCompte);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task ModifierMeta(int _idUnite, bool _estMeta)
+        {
+            Unite unite = context.Unites.Where(u => u.Id == _idUnite).First();
+
+            unite.EstMeta = _estMeta ? 1 : 0;
+
+            context.Unites.Update(unite);
             await context.SaveChangesAsync();
         }
     }

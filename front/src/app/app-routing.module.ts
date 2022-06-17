@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccueilComponent } from './component/accueil/accueil.component';
+import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.component';
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 import { MenuComponent } from './component/menu/menu.component';
 import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
@@ -10,7 +11,8 @@ const routes: Routes = [
   { path: "", component: AccueilComponent },
   { path: "menu", component: MenuComponent },
   { path: "parametrer-gvg/:id", canActivate: [AdminGuard], component: ParametrerGvgComponent },
-  { path: "gvg-parametrer", component: GvgParametrerComponent }
+  { path: "gvg-parametrer", component: GvgParametrerComponent },
+  { path: "gestion-unite", canActivate: [AdminGuard], component: GestionUniteComponent }
 
 ];
 

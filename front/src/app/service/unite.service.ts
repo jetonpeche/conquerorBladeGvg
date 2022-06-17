@@ -24,6 +24,12 @@ export class UniteService
     return this.http.get<MesUnite[]>(`${environment.urlApi}/${this.dossier}/listerIdMesUnite/${_idCompte}`);
   }
 
+  ModifierMeta(_idUnite: number, _estMeta: boolean): Observable<boolean>
+  {
+    const DATA = { Id: _idUnite, EstMeta: _estMeta };
+    return this.http.put<boolean>(`${environment.urlApi}/${this.dossier}/modifierMeta`, DATA);
+  }
+
   ModifierLvl(_idCompte: number, _idUnite: number, _niveau: string): Observable<boolean>
   {
     const DATA = { IdCompte: _idCompte, IdUnite: _idUnite, NiveauMaitrise: _niveau };

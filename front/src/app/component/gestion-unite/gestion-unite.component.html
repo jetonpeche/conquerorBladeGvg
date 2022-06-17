@@ -1,0 +1,26 @@
+<div class="container-fluid">
+
+    <h1 class="titre">Gestion des unités</h1>
+
+    <!-- recherche -->
+    <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Recherche</mat-label>
+        <input #inputRecherche matInput type="text" (keyup)="Recherche(inputRecherche.value)">
+    </mat-form-field>
+
+    <!-- liste les unités méta -->
+    <mat-checkbox #checkBoxMesUnite (change)="FiltrerUniteMeta($event)" color="primary">
+        Unités méta
+    </mat-checkbox>
+
+
+    <!-- liste des unités -->
+    <div class="flexCard">
+        <mat-card *ngFor="let element of listeUnite" [class.choisi]="element.EstMeta"
+            class="{{ element.Couleur }} card" (click)="UniteMetaPasMeta(element)">
+
+            <img [src]="element.NomImg" alt="">
+            <p class="influance">{{ element.Influance }}</p>
+        </mat-card>
+    </div>
+</div>

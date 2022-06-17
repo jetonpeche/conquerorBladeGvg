@@ -17,6 +17,7 @@ namespace back.Models
         public string Nom { get; set; } = null!;
         public string NomImg { get; set; } = null!;
         public int Influance { get; set; }
+        public int EstMeta { get; set; }
 
         public virtual CouleurUnite IdCouleurNavigation { get; set; } = null!;
         public virtual TypeUnite IdTypeUniteNavigation { get; set; } = null!;

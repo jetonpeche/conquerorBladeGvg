@@ -1,10 +1,11 @@
 <mat-toolbar color="primary" *ngIf="EstConnecter()">
-    <span>CB unité</span>
+    <span routerLink="/menu" style="cursor: pointer;">CB unité</span>
 
     <div id="flex"></div>
 
     <button mat-button routerLink="/gvg-parametrer">GvG du jour</button>
     <button mat-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterGvG()" routerLinkeActive="active">Programmer GvG</button>
+    <button mat-button *ngIf="EstRoleAdmin()" routerLink="/gestion-unite" routerLinkeActive="active">Gestion unite</button>
 
     <button mat-raised-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterCompte()" routerLinkeActive="active">Ajouter Compte</button>&nbsp;
     <button mat-raised-button (click)="OuvrirModalModifInfoCompte()" routerLinkeActive="active">Mon compte</button>

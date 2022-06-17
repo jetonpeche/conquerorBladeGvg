@@ -32,12 +32,19 @@
         </div>
 
         <!-- filtres / trie -->
-        <div class="row">
+        <div style="margin-top: 10px; margin-bottom: 10px;" class="row">
 
             <!-- mes unités -->
-            <div class="col-lg-12 col-xs-12">
-                <mat-checkbox #checkBoxMesUnite (change)="Filtrer(+selectTypeUnite.value, +selectCouleurUnite.value, checkBoxMesUnite)" color="primary">
+            <div class="col-lg-6 col-xs-12">
+                <mat-checkbox #checkBoxMesUnite (change)="Filtrer(+selectTypeUnite.value, +selectCouleurUnite.value, checkBoxMesUnite, checkBoxUniteMeta)" color="primary">
                     Mes unités
+                </mat-checkbox>
+            </div>
+
+
+            <div class="col-lg-6 col-xs-12">
+                <mat-checkbox #checkBoxUniteMeta (change)="Filtrer(+selectTypeUnite.value, +selectCouleurUnite.value, checkBoxMesUnite, checkBoxUniteMeta)" color="primary">
+                    Unités méta
                 </mat-checkbox>
             </div>
 
@@ -53,7 +60,7 @@
             <div class="col-lg-4 col-xs-12">
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>Type d'unité</mat-label>
-                    <mat-select #selectTypeUnite (selectionChange)="Filtrer(+$event.value, +selectCouleurUnite.value, checkBoxMesUnite)" value="0">
+                    <mat-select #selectTypeUnite (selectionChange)="Filtrer(+$event.value, +selectCouleurUnite.value, checkBoxMesUnite, checkBoxUniteMeta)" value="0">
                         <mat-option value="0">Tous les types</mat-option>
                         <mat-option value="2">Cavalerie</mat-option>
                         <mat-option value="1">Distance</mat-option>
@@ -66,7 +73,7 @@
             <div class="col-lg-4 col-xs-12">
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>Couleur d'unité</mat-label>
-                    <mat-select #selectCouleurUnite (selectionChange)="Filtrer(+selectTypeUnite.value, +$event.value, checkBoxMesUnite)" value="0">
+                    <mat-select #selectCouleurUnite (selectionChange)="Filtrer(+selectTypeUnite.value, +$event.value, checkBoxMesUnite, checkBoxUniteMeta)" value="0">
                         <mat-option value="0">Toutes les couleurs</mat-option>
                         <mat-option value="1">Blanc</mat-option>
                         <mat-option value="2">Vert</mat-option>

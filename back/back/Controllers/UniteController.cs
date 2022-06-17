@@ -43,5 +43,13 @@
 
             return JsonConvert.SerializeObject(true);
         }
+
+        [HttpPut("modifierMeta")]
+        public async Task<string> ModifierMeta(UniteMetaImport _uniteMeta)
+        {
+            await uniteService.ModifierMeta(_uniteMeta.Id, _uniteMeta.EstMeta);
+
+            return JsonConvert.SerializeObject(true);
+        }
     }
 }

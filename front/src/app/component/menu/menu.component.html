@@ -2,9 +2,10 @@
 <div>
 
     <h1 class="titre">Prochaines GvG</h1>
+    <p style="text-align: center;">Les gvgs expirées sont supprimées tous les mardis et samedis à 20h</p>
 
-    <div class="flexCard container-fluid">
-        <mat-card *ngFor="let element of GetListeGvG()" class="card" (click)="Naviguer(+element.Id, element.Date)">
+    <div class="flexCardGvg container-fluid">
+        <mat-card *ngFor="let element of GetListeGvG()" class="cardGvg" (click)="Naviguer(+element.Id, element.Date)">
             <mat-card-header>
                 <mat-card-title>Date: {{ element.Date }}</mat-card-title>
                 <mat-card-subtitle>Participant: {{ element.NbParticipant }}</mat-card-subtitle>

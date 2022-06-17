@@ -55,7 +55,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.nomImg = _nomImage;
   }
 
-  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0, _checkbox: MatCheckbox): void
+  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0, _checkbox: MatCheckbox, _checkboxMeta: MatCheckbox): void
   {
     if(_idTypeUnite == 0 && _idCouleurUnite == 0)
     {
@@ -77,6 +77,9 @@ export class ModiferInfoCompteComponent implements OnInit {
     // mes unités
     if(_checkbox.checked)
       this.listeUnite = this.listeUnite.filter(u => u.EstChoisi == 1);
+
+    // unités méta
+    this.listeUnite = this.listeUnite.filter(u => u.EstMeta == _checkboxMeta.checked);
   }
 
   Recherche(_recherche: string): void
