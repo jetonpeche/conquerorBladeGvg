@@ -55,19 +55,6 @@ namespace botDiscord.classe
         }
 
         // OK
-        [Command("initMonIdDiscord")]
-        public async Task AjouterUtilisateur(string _pseudo = "")
-        {
-            // pseudo cb = pseudo discord
-            if (string.IsNullOrEmpty(_pseudo))
-                _pseudo = Context.Message.Author.Username.ToLower().Trim();
-
-            string ok = await http.GetStringAsync($"{URL_API}/compte/initIdDiscord/{_pseudo}/{Context.Message.Author.Id}");
-
-            await Context.Channel.SendMessageAsync(ok);
-        }
-
-        // OK
         [Command("SupprimeMoi")]
         public async Task SupprimerUtilisateur()
         {
@@ -212,7 +199,6 @@ namespace botDiscord.classe
 
             embedBuilder.AddField("!ping", "Ping l'utilisateur");
             embedBuilder.AddField("!listerGvG", "Liste les GvGs programmées");
-            embedBuilder.AddField("!initMonIdDiscord <pseudo cb>", "Ajoute mon Id discord (si pseudo = nom discord rien mettre)");
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
             embedBuilder.AddField("!ajouterDateGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
             embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie, sinon à la prochaine GvG");

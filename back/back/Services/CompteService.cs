@@ -35,16 +35,6 @@
             return nbCompte == 1;
         }
 
-        public async Task InitIdDiscord(string _pseudo, string _idDiscord)
-        {
-            Compte compte = context.Comptes.Where(c => c.Pseudo == _pseudo).First();
-
-            compte.IdDiscord = _idDiscord;
-
-            context.Update(compte);
-            await context.SaveChangesAsync();
-        }
-
         public async Task<int> GetIdCompte(string _idDiscord)
         {
             int id = 0;

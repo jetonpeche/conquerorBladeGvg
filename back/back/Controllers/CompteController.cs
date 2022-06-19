@@ -28,20 +28,6 @@
             }
         }
 
-        [HttpGet("initIdDiscord/{pseudoCb}/{idDiscord}")]
-        public async Task<string> InitIdDisocrd(string pseudoCb, string idDiscord)
-        {
-            if (!compte.Existe(pseudoCb))
-                return JsonConvert.SerializeObject($"Je ne te connais pas {pseudoCb}");
-
-            if(compte.IdDiscordExiste(idDiscord))
-                return JsonConvert.SerializeObject($"Votre id discord est déjà parametré {pseudoCb}");
-
-            await compte.InitIdDiscord(pseudoCb, idDiscord);
-
-            return JsonConvert.SerializeObject($"je te connais {pseudoCb}");
-        }
-
         [HttpGet("estAdmin/{idDiscord}")]
         public async Task<string> EstAdmin(string idDiscord)
         {
