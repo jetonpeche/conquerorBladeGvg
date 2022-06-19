@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuComponent } from './component/menu/menu.component';
+import { ECache } from './enum/ECache';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
 import { AjouterGvgComponent } from './modal/ajouter-gvg/ajouter-gvg.component';
 import { ModiferInfoCompteComponent } from './modal/modifer-info-compte/modifer-info-compte.component';
@@ -20,8 +21,8 @@ export class AppComponent implements OnInit
 
   ngOnInit(): void 
   {
-    if(sessionStorage.getItem("compte"))
-      VariableStatic.compte = JSON.parse(sessionStorage.getItem("compte"));
+    if(sessionStorage.getItem(ECache.COMPTE))
+      VariableStatic.compte = JSON.parse(sessionStorage.getItem(ECache.COMPTE));
   }
 
   EstConnecter(): Boolean

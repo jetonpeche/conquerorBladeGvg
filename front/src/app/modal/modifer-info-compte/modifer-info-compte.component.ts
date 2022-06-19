@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ECache } from 'src/app/enum/ECache';
 import { ClasseHerosService } from 'src/app/service/classe-heros.service';
 import { CompteService } from 'src/app/service/compte.service';
 import { OutilService } from 'src/app/service/outil.service';
@@ -104,7 +105,7 @@ export class ModiferInfoCompteComponent implements OnInit {
       IdClasseHeros: this.idClasseChoisi,
       Pseudo: this.compte.Pseudo,
       Influance: _form.value.Influance,
-      IdDiscord: _form.value.IdDiscord?.toString() ?? "",
+      IdDiscord: this.compte.IdDiscord,
       ListeUniteNiv: this.listeUniteChoisi
     }
 
@@ -117,7 +118,8 @@ export class ModiferInfoCompteComponent implements OnInit {
         this.compte.Pseudo = DATA.Pseudo;
         this.compte.IdClasseHeros = DATA.IdClasseHeros;
         this.compte.Influance = DATA.Influance;
-        this.compte.IdDiscord = DATA.IdDiscord;
+
+        sessionStorage.setItem(ECache.COMPTE, JSON.stringify(this.compte));
         
         this.dialogRef.close();
       },
