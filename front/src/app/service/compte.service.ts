@@ -20,9 +20,9 @@ export class CompteService
     return this.http.get<string | Compte>(`${environment.urlApi}/${this.DOSSIER}/connexion/${_pseudo}`);
   }
 
-  Ajouter(_info: CompteExport): Observable<string>
+  Ajouter(_info: CompteExport): Observable<string | boolean>
   {
-    return this.http.post<string>(`${environment.urlApi}/${this.DOSSIER}/ajouter`, _info);
+    return this.http.post<string | boolean>(`${environment.urlApi}/${this.DOSSIER}/ajouter`, _info);
   }
 
   Modifier(_info: ConfigCompteExport): Observable<boolean>

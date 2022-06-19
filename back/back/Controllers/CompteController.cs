@@ -73,7 +73,7 @@
 
                 await compte.Ajouter(nouveauCompte);
 
-                return JsonConvert.SerializeObject("Le compte a été ajouté");
+                return JsonConvert.SerializeObject(true);
             }
             catch (Exception e)
             {
