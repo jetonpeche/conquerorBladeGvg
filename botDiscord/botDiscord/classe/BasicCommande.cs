@@ -33,7 +33,7 @@ namespace botDiscord.classe
 
             Console.WriteLine(listeString);
 
-            if (listeString != "[]" && listeString != null && listeString.StartsWith("["))
+            if (listeString != "[]")
             {
                 List<Gvg>? listeGvg = JsonConvert.DeserializeObject<List<Gvg>>(listeString);
 
@@ -50,7 +50,7 @@ namespace botDiscord.classe
             }
             else
             {
-                await Context.Channel.SendMessageAsync(listeString);
+                await Context.Channel.SendMessageAsync("Ancunes GvGs programmées");
             }
         }
 
@@ -202,7 +202,7 @@ namespace botDiscord.classe
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
             embedBuilder.AddField("!ajouterDateGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
             embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie, sinon à la prochaine GvG");
-            embedBuilder.AddField("!pingNonInscrit", "Ping les non inscrits à la prochaine GvG si il y en a une");
+            embedBuilder.AddField("!pingerNonInscrit", "Ping les non inscrits à la prochaine GvG si il y en a une");
             embedBuilder.AddField("!site", "Affiche url du site");
             embedBuilder.AddField("!aled", "Liste des commandes disponibles");
 
