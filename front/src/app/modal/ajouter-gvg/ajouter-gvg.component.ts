@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { switchMap, tap } from 'rxjs';
 import { GvgService } from 'src/app/service/gvg.service';
 import { OutilService } from 'src/app/service/outil.service';
 
@@ -13,6 +14,9 @@ import { OutilService } from 'src/app/service/outil.service';
 export class AjouterGvgComponent implements OnInit 
 {
   listeInput: any[] = [];
+  listeDate: any[] = [];
+
+  formBloquer: boolean = false;
 
   constructor(
     private datePipe: DatePipe, 
@@ -35,29 +39,44 @@ export class AjouterGvgComponent implements OnInit
 
   Ajouter(_form: NgForm): void
   {
-    let liste: any[] = [];
-    
-    for (let i = 1; i <= this.listeInput.length; i++) 
+    if(_form.invalid)
     {
-      const DATE = this.datePipe.transform(_form.value[`Date${i}`], "dd/MM/yyyy")
-      liste.push({ Date: DATE });
+      this.outilServ.ToastErreurForm();
+      return;
+    }
+      
+    if(this.listeDate.length == 0)
+    {
+      this.outilServ.ToastAttention(this.listeInput.length > 1 ? "Les dates choisies sont déjà programmées" : "La date choisie est déjà programmée");
+      return;
     }
 
-    this.gvgServ.Ajouter(liste).subscribe({
+    this.gvgServ.Ajouter(this.listeDate).subscribe({
       next: (listeId: number[]) =>
       {
-        for (let i = 0; i < liste.length; i++) 
+        for (let i = 0; i < this.listeDate.length; i++) 
         {
-          liste[i].Id = listeId[i];
+          this.listeDate[i].Id = listeId[i];
         }
 
-        this.outilServ.ToastOK(`${ liste.length > 1 ? 'Les GvGs ont été programmées' : 'La GvG a été programmée' }`);
-        this.dialogRef.close(liste);
+        this.outilServ.ToastOK(`${ this.listeDate.length > 1 ? 'Les GvGs ont été programmées' : 'La GvG a été programmée' }`);
+        this.dialogRef.close(this.listeDate);
       },
       error: () =>
       {
         this.outilServ.ToastErreurHttp();
       }
     });
+  }
+
+  async Existe(_date): Promise<void>
+  { 
+    let date = this.datePipe.transform(_date, "dd/MM/yyyy");
+    let retour = await this.gvgServ.Existe(date);
+
+    if(retour)
+      this.outilServ.ToastAttention(`La GvG du ${date} est déjà programmée, elle ne sera pas prise en compte`);
+    else
+      this.listeDate.push({ Date: date });
   }
 }

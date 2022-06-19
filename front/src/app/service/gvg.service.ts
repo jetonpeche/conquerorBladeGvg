@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UniteCompteGvGExport } from '../Types/export/UniteCompteExport';
 import { Gvg } from '../Types/Gvg';
@@ -63,5 +63,15 @@ export class GvgService
     const DATA = { idGvg: _idGvg, idCompte: _idCompte };
 
     return this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/absent`, DATA);
+  }
+
+  async Existe(_date: string): Promise<boolean>
+  {
+    const DATA = { Date: _date };
+    let retour$ = this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/existe`, DATA);
+
+    // recupere la 1ere valeur renvoyer
+    // convertie en promise
+    return await firstValueFrom(retour$);
   }
 }

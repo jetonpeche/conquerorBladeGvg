@@ -96,8 +96,8 @@
 
             foreach (var element in _gvgImport)
             {
-                DateTime dateGvg = DateTime.Parse(element.Date);
-                listeGvg.Add(new Gvg { DateProgrammer = dateGvg });
+                DateTime dateGvg = DateTime.Parse(element.Date);                  
+                listeGvg.Add(new Gvg { DateProgrammer = dateGvg });               
             }
 
             List<int> listeRetour = await gvgService.Ajouter(listeGvg);

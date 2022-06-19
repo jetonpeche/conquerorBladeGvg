@@ -55,6 +55,12 @@
         {
             try
             {
+                if (compte.Existe(_compte.Pseudo))
+                    return JsonConvert.SerializeObject("Le pseudo existe déjà");
+
+                if(compte.IdDiscordExiste(_compte.IdDiscord))
+                    return JsonConvert.SerializeObject("L'ID discord existe déjà");
+
                 Compte nouveauCompte = new()
                 {
                     Pseudo = _compte.Pseudo,
@@ -67,7 +73,7 @@
 
                 await compte.Ajouter(nouveauCompte);
 
-                return JsonConvert.SerializeObject(true);
+                return JsonConvert.SerializeObject("Le compte a été ajouté");
             }
             catch (Exception e)
             {

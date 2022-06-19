@@ -14,7 +14,7 @@
             <h3>GvG n°{{ i + 1 }}</h3>
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Date</mat-label>
-                <input readonly matInput [name]="element.name" [matDatepicker]="picker" ngModel required>
+                <input readonly matInput [name]="element.name" [matDatepicker]="picker" (dateChange)="Existe($event.value)" ngModel required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker touchUi #picker></mat-datepicker>
             </mat-form-field>

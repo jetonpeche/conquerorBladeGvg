@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuComponent } from './component/menu/menu.component';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
@@ -12,11 +12,17 @@ import { Gvg } from './Types/Gvg';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent 
+export class AppComponent implements OnInit
 {
   static listeGvgAjouter: any[] = [];
 
   constructor(private dialog: MatDialog) { }
+
+  ngOnInit(): void 
+  {
+    if(sessionStorage.getItem("compte"))
+      VariableStatic.compte = JSON.parse(sessionStorage.getItem("compte"));
+  }
 
   EstConnecter(): Boolean
   {

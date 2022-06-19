@@ -49,6 +49,7 @@ export class AccueilComponent implements OnInit
         else
         {
           VariableStatic.compte = retour as Compte;
+          sessionStorage.setItem("compte", JSON.stringify(retour));
           this.router.navigate(["/menu"]);
         }
       },

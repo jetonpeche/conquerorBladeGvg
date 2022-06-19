@@ -33,9 +33,9 @@ export class AjouterCompteComponent implements OnInit
       return;
 
     this.comptServ.Ajouter(_form.value).subscribe({
-      next: (retour: boolean) =>
+      next: (retour: string) =>
       {
-        this.outilServ.ToastOK("Le compte à été ajouté");
+        this.outilServ.ToastOK(retour);
         this.dialogRef.close();
       },
       error: () =>

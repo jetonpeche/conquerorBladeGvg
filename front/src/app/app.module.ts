@@ -36,12 +36,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
-
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
 import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.component';
 
+// permet de donner la possibilité de refrech la page en mode prod en ajoutant un # sur URL
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -90,6 +90,7 @@ import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.c
   ],
   providers: [
     DatePipe, MenuComponent,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
   ],
   bootstrap: [AppComponent]
