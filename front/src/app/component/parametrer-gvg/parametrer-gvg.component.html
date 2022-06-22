@@ -39,14 +39,17 @@
         <p *ngIf="compte?.Influance < influanceTotal">Attention l'influance total est trop grande</p>
 
         <!-- liste des unites -->
-        <mat-selection-list color="primary">
-            <mat-list-option #optionUnite *ngFor="let element of listeUnite"
-                [value]="element.Id"
-                (click)="CalculerInfluanceEtChoisiUnite(optionUnite, checkboxFiltre.checked, element)"
-                [selected]="UniteEstChoisi(element.Id)" checkboxPosition="before">
-                {{ element.Nom }} - {{ element.NiveauMaitrise == "" ? "Aucun lvl" : element.NiveauMaitrise }} - {{ element.Influance }}
-            </mat-list-option>
-        </mat-selection-list>
+        <ul>
+            <li *ngFor="let element of listeUnite">
+                <mat-checkbox #checkboxUnite
+                    (change)="CalculerInfluanceEtChoisiUnite(checkboxUnite, checkboxFiltre.checked, element)" 
+                    [value]="element.Id.toString()" 
+                    [checked]="UniteEstChoisi(element.Id)" checkboxPosition="before"
+                    color="primary">
+                    {{ element.Nom }} - {{ element.NiveauMaitrise == "" ? "Aucun lvl" : element.NiveauMaitrise }} - {{ element.Influance }}
+                </mat-checkbox>
+            </li>
+        </ul>
 
         <!-- btn valider -->
         <button *ngIf="compte?.Pseudo" mat-raised-button

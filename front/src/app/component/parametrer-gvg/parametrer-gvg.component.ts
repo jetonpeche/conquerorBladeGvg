@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from 'src/app/service/groupe.service';
@@ -64,20 +65,20 @@ export class ParametrerGvgComponent implements OnInit
     return INDEX != -1;
   }
 
-  CalculerInfluanceEtChoisiUnite(_option: MatListOption, _checkboxFiltreEstCocher: boolean, _unite: UniteParticipant): void
+  CalculerInfluanceEtChoisiUnite(_option: MatCheckbox, _checkboxFiltreEstCocher: boolean, _unite: UniteParticipant): void
   {
-    if(this.compte.Influance - (this.influanceTotal + _unite.Influance) <= 0 && _option.selected)
+    if(this.compte.Influance - (this.influanceTotal + _unite.Influance) <= 0 && _option.checked)
     { 
       this.outilServ.ToastInfo("Ajout impossible, influance trop grande");
       
       // evite de tout decocher
       if(+_option.value == _unite.Id)
-        _option.selected = false;
+        _option.checked = false;
 
       return;
     }
 
-    if(_option.selected)
+    if(_option.checked)
     {
       if(this.UniteEstChoisi(_unite.Id))
         return;
@@ -121,14 +122,16 @@ export class ParametrerGvgComponent implements OnInit
   ListerUniteParticipant(_idCompte: number): void
   {
     const COMPTE = this.participant.ListeCompte.find(c => c.Id == +_idCompte);
-    const EXISTE = this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == COMPTE.Id);
+    const EXISTE = this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == +_idCompte);
 
     this.compte = COMPTE;
-    
+    console.log(this.compte);
+    console.log(this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == +_idCompte && c.IdUnite == 4));
+
     // ajout des unités si c la premiere fois qu'on clique sur le compte
     if(EXISTE == -1)
     {
-      for (const element of COMPTE.ListeUnite)
+      for (const element of this.compte.ListeUnite)
       {  
         if(element.EstDejaChoisi)
         {
@@ -142,7 +145,7 @@ export class ParametrerGvgComponent implements OnInit
       }
     }
     
-    const LISTE_UNITE_COMPTE_CHOISI = this.listeUniteCompteChoisi.filter(u => u.IdCompte == COMPTE.Id);
+    const LISTE_UNITE_COMPTE_CHOISI = this.listeUniteCompteChoisi.filter(u => u.IdCompte == this.compte.Id);
 
     // calcul de l'influance total
     this.influanceTotal = 0;
@@ -151,7 +154,7 @@ export class ParametrerGvgComponent implements OnInit
       this.influanceTotal += COMPTE.ListeUnite.find(u => u.Id == element.IdUnite).Influance;
     }
 
-    this.listeUnite = this.listeUniteClone = COMPTE.ListeUnite;
+    this.listeUnite = this.listeUniteClone = this.compte.ListeUnite;
 
     this.FiltreUniteInfluance(this.filtreEstActiver);
   }
