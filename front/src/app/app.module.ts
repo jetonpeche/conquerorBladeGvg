@@ -42,6 +42,7 @@ import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.c
 
 // permet de donner la possibilité de refrech la page en mode prod en ajoutant un # sur URL
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { GestionCompteComponent } from './component/gestion-compte/gestion-compte.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     UniteGvgComponent,
     GvgParametrerComponent,
     AjouterCompteComponent,
-    GestionUniteComponent
+    GestionUniteComponent,
+    GestionCompteComponent
   ],
   imports: [
     BrowserModule,
