@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from 'src/app/service/groupe.service';
 import { GvgService } from 'src/app/service/gvg.service';
