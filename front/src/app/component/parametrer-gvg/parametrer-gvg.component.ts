@@ -125,8 +125,6 @@ export class ParametrerGvgComponent implements OnInit
     const EXISTE = this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == +_idCompte);
 
     this.compte = COMPTE;
-    console.log(this.compte);
-    console.log(this.listeUniteCompteChoisi.findIndex(c => c.IdCompte == +_idCompte && c.IdUnite == 4));
 
     // ajout des unités si c la premiere fois qu'on clique sur le compte
     if(EXISTE == -1)
@@ -179,6 +177,12 @@ export class ParametrerGvgComponent implements OnInit
     if(this.listeUniteCompteChoisi.length == 0 && this.listeUniteDejaChoisiAsupprimer.length == 0)
     {
       this.outilServ.ToastAttention("Au moins une unité doit être choisie");
+      return;
+    }
+
+    if(this.compte.IdGroupe == null)
+    {
+      this.outilServ.ToastInfo("Veuillez choisir un groupe");
       return;
     }
 
