@@ -82,3 +82,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 10rem;
   }
 }
+
+.matTable
+{
+    width: 100%;
+
+    th
+    {
+        font-weight: bold;
+        color: black;
+        font-size: 1em;
+    }
+}

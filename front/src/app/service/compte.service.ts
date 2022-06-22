@@ -15,6 +15,11 @@ export class CompteService
 
   constructor(private http: HttpClient) { }
 
+  Lister(): Observable<Compte[]>
+  {
+    return this.http.get<Compte[]>(`${environment.urlApi}/${this.DOSSIER}/lister`);
+  }
+
   Connexion(_pseudo: string): Observable<string | Compte>
   {
     return this.http.get<string | Compte>(`${environment.urlApi}/${this.DOSSIER}/connexion/${_pseudo}`);
@@ -28,5 +33,10 @@ export class CompteService
   Modifier(_info: ConfigCompteExport): Observable<boolean>
   {
     return this.http.put<boolean>(`${environment.urlApi}/${this.DOSSIER}/modifier`, _info);
+  }
+
+  Supprimer(_idCompte: number): Observable<boolean>
+  {
+    return this.http.get<boolean>(`${environment.urlApi}/${this.DOSSIER}/supprimer/${_idCompte}`);
   }
 }

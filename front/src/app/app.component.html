@@ -6,6 +6,7 @@
     <button mat-button routerLink="/gvg-parametrer">GvG du jour</button>
     <button mat-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterGvG()" routerLinkeActive="active">Programmer GvG</button>
     <button mat-button *ngIf="EstRoleAdmin()" routerLink="/gestion-unite" routerLinkeActive="active">Gestion unite</button>
+    <button mat-button *ngIf="EstRoleAdmin()" routerLink="/gestion-des-comptes" routerLinkeActive="active">Gestion compte</button>
 
     <button mat-raised-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterCompte()" routerLinkeActive="active">Ajouter Compte</button>&nbsp;
     <button mat-raised-button (click)="OuvrirModalModifInfoCompte()" routerLinkeActive="active">Mon compte</button>

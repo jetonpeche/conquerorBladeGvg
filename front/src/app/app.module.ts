@@ -35,6 +35,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
@@ -43,6 +44,7 @@ import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.c
 // permet de donner la possibilité de refrech la page en mode prod en ajoutant un # sur URL
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { GestionCompteComponent } from './component/gestion-compte/gestion-compte.component';
+import { ConfirmationComponent } from './modal/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { GestionCompteComponent } from './component/gestion-compte/gestion-compt
     GvgParametrerComponent,
     AjouterCompteComponent,
     GestionUniteComponent,
-    GestionCompteComponent
+    GestionCompteComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +91,8 @@ import { GestionCompteComponent } from './component/gestion-compte/gestion-compt
     MatTableModule,
     MatIconModule,
     MatRadioModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
   providers: [
     DatePipe, MenuComponent,

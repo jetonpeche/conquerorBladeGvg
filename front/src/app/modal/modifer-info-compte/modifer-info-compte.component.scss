@@ -17,3 +17,16 @@
 {
     background-color: #403D3D;
 }
+
+::ng-deep .mat-progress-spinner circle, .mat-spinner circle
+{
+    stroke: white;
+}
+
+::ng-deep #btnEnregistrer .mat-button-wrapper 
+{
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -13,6 +13,14 @@
             compte = new(_context);
         }
 
+        [HttpGet("lister")]
+        public async Task<string> Lister()
+        {
+            var liste = await compte.Lister();
+
+            return JsonConvert.SerializeObject(liste);
+        }
+
         [HttpGet("connexion/{pseudo}")]
         public async Task<string> Connexion([FromRoute] string pseudo)
         {
@@ -96,9 +104,11 @@
         }
 
         [HttpGet("supprimer/{idCompte}")]
-        public async Task Supprimer([FromRoute] int idCompte)
+        public async Task<string> Supprimer([FromRoute] int idCompte)
         {
             await compte.Supprimer(idCompte);
+
+            return JsonConvert.SerializeObject(true);
         }
 
         [HttpGet("supprimerViaDiscord/{idDiscord}")]

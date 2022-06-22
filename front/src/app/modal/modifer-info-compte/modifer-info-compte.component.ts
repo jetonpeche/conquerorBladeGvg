@@ -28,6 +28,8 @@ export class ModiferInfoCompteComponent implements OnInit {
   idClasseChoisi: number;
   nomImg: string;
 
+  btnClicker: boolean = false;
+
   private listeUniteChoisi: MesUnite[] = [];
   private listeUniteClone: Unite[] = [];
   private listeMesUnite: MesUnite[] = [];
@@ -98,7 +100,11 @@ export class ModiferInfoCompteComponent implements OnInit {
 
   Enregistrer(_form: NgForm): void
   {
-    
+    if(_form.invalid || this.btnClicker)
+      return
+
+    this.btnClicker = true;
+
     const DATA: ConfigCompteExport =
     {
       IdCompte: this.compte.Id,
@@ -118,13 +124,16 @@ export class ModiferInfoCompteComponent implements OnInit {
         this.compte.Pseudo = DATA.Pseudo;
         this.compte.IdClasseHeros = DATA.IdClasseHeros;
         this.compte.Influance = DATA.Influance;
+        this.compte.EstPremiereConnexion = 0;
 
         sessionStorage.setItem(ECache.COMPTE, JSON.stringify(this.compte));
         
+        this.btnClicker = false;
         this.dialogRef.close();
       },
       error: () =>
       {
+        this.btnClicker = false;
         this.outilServ.ToastErreurHttp();
       }
     });

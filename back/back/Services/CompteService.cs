@@ -35,6 +35,32 @@
             return nbCompte == 1;
         }
 
+        public async Task<List<CompteExport>> Lister()
+        {
+            List<CompteExport> liste = Array.Empty<CompteExport>().ToList();
+
+            await Task.Run(() =>
+            {
+                liste = (from c in context.Comptes
+                        orderby c.Pseudo
+                        select new CompteExport
+                        {
+                            Id = c.Id,
+                            Influance = c.Influance,
+                            Pseudo = c.Pseudo,
+                            IdDiscord = c.IdDiscord,
+                            EstPremiereConnexion = c.EstPremiereConnexion,
+                            IdClasseHeros = c.IdClasseHeros,
+                            NomClasseHeros = c.IdClasseHerosNavigation.Nom,
+                            NomImgClasse = c.IdClasseHerosNavigation.NomImg,
+                            EstAdmin = c.EstAdmin,
+                            ListeIdGvgParticipe = c.GvgComptes.Select(g => g.IdGvg).ToList()
+                        }).ToList();
+            });
+
+            return liste;
+        }
+
         public async Task<int> GetIdCompte(string _idDiscord)
         {
             int id = 0;
@@ -81,6 +107,9 @@
 
         public async Task Modifier(Compte _compte)
         {
+            int estAdmin = context.Comptes.Where(c => c.Id == _compte.Id).Select(c => c.EstAdmin).First();
+            _compte.EstAdmin = estAdmin;
+
             context.Comptes.Update(_compte);
             await context.SaveChangesAsync();
         }

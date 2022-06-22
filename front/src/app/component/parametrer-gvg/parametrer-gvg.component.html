@@ -6,7 +6,7 @@
     <mat-card class="col-lg-4 col-xs-12">
         <h2>Liste des participants</h2>
 
-        <mat-selection-list (selectionChange)="ListerUniteParticipant($event.option.value)" #listeCompte
+        <mat-selection-list (selectionChange)="ListerUniteParticipant($event.options[0].value)" #listeCompte
             [multiple]="false">
             <mat-list-option *ngFor="let element of participant.ListeCompte" [value]="element.Id">
                 {{ element.Pseudo }}
