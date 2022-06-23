@@ -19,6 +19,11 @@ export class UniteService
     return this.http.get<Unite[]>(`${environment.urlApi}/${this.dossier}/lister`);
   }
 
+  ListerVisible(): Observable<Unite[]>
+  {
+    return this.http.get<Unite[]>(`${environment.urlApi}/${this.dossier}/listerVisible`);
+  }
+
   ListerMesUnite(_idCompte: number): Observable<MesUnite[]>
   {
     return this.http.get<MesUnite[]>(`${environment.urlApi}/${this.dossier}/listerIdMesUnite/${_idCompte}`);
@@ -28,6 +33,12 @@ export class UniteService
   {
     const DATA = { Id: _idUnite, EstMeta: _estMeta };
     return this.http.put<boolean>(`${environment.urlApi}/${this.dossier}/modifierMeta`, DATA);
+  }
+
+  ModifierVisibiliter(_idUnite: number, _estVisible: boolean): Observable<boolean>
+  {
+    const DATA = { Id: _idUnite, EstVisible: _estVisible };
+    return this.http.put<boolean>(`${environment.urlApi}/${this.dossier}/modifierVisibiliter`, DATA);
   }
 
   ModifierLvl(_idCompte: number, _idUnite: number, _niveau: string): Observable<boolean>

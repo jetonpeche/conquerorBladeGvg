@@ -159,14 +159,10 @@ export class ParametrerGvgComponent implements OnInit
   ModifierCompteGroupe(_idGroupe: number): void
   {
     this.grpServ.ModifierCompteGroupe(this.compte.Id, this.idGvG, _idGroupe).subscribe({
-      next: (retour: boolean) =>
+      next: () =>
       {
         this.compte.IdGroupe = _idGroupe;
         this.outilServ.ToastOK("Groupe mis à jour");
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -201,7 +197,6 @@ export class ParametrerGvgComponent implements OnInit
       error: () =>
       {
         this.btnClicker = false;
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -212,10 +207,6 @@ export class ParametrerGvgComponent implements OnInit
       next: (liste: Groupe[]) =>
       {
         this.listeGroupe = liste;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -241,10 +232,6 @@ export class ParametrerGvgComponent implements OnInit
       {            
         this.participant = retour[0];
         this.dateGvG = this.participant.Date;      
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }

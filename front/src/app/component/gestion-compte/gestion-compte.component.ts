@@ -83,10 +83,6 @@ export class GestionCompteComponent implements OnInit, AfterViewInit
 
         this.btnClicker = false;
         this.outilServ.ToastOK("Le compte a été supprimé");
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -97,12 +93,7 @@ export class GestionCompteComponent implements OnInit, AfterViewInit
       next: (retour: Compte[]) =>
       {
         this.listeCompte.data = retour;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
-
 }

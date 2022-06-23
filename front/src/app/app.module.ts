@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
@@ -36,6 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametrer.component';
 import { AjouterCompteComponent } from './modal/ajouter-compte/ajouter-compte.component';
@@ -45,6 +46,7 @@ import { GestionUniteComponent } from './component/gestion-unite/gestion-unite.c
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { GestionCompteComponent } from './component/gestion-compte/gestion-compte.component';
 import { ConfirmationComponent } from './modal/confirmation/confirmation.component';
+import { ErreurInterceptor } from './interceptor/erreur.interceptor';
 
 @NgModule({
   declarations: [
@@ -92,11 +94,13 @@ import { ConfirmationComponent } from './modal/confirmation/confirmation.compone
     MatIconModule,
     MatRadioModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSidenavModule
   ],
   providers: [
     DatePipe, MenuComponent,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: ErreurInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
   ],
   bootstrap: [AppComponent]

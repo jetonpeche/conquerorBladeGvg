@@ -52,6 +52,7 @@ CREATE TABLE Unite
     nomImg varchar(100) NOT NULL,
     influance int NOT NULL,
     estMeta int NOT NULL DEFAULT 0,
+    estVisible int NOT NULL DEFAULT 1,
 
     FOREIGN KEY (idCouleur) REFERENCES CouleurUnite(id),
     FOREIGN KEY (idTypeUnite) REFERENCES TypeUnite(id)

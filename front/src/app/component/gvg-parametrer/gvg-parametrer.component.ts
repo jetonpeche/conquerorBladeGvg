@@ -38,10 +38,6 @@ export class GvgParametrerComponent implements OnInit
       next: (retour) => 
       {
         this.dataSource = retour;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     })
   }

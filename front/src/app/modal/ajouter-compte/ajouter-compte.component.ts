@@ -42,10 +42,6 @@ export class AjouterCompteComponent implements OnInit
           this.outilServ.ToastOK("Le compte a été ajouté");
           this.dialogRef.close();
         }
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -56,10 +52,6 @@ export class AjouterCompteComponent implements OnInit
       next: (liste: ClasseHeros[]) =>
       {
         this.listeClasse = liste;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     })
   }

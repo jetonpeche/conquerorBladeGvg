@@ -134,7 +134,6 @@ export class ModiferInfoCompteComponent implements OnInit {
       error: () =>
       {
         this.btnClicker = false;
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -157,10 +156,6 @@ export class ModiferInfoCompteComponent implements OnInit {
         next: () =>
         {
           this.outilServ.ToastOK("Le niveau a été modifié");
-        },
-        error: () =>
-        {
-          this.outilServ.ToastErreurHttp();
         }
       });
     }
@@ -205,25 +200,17 @@ export class ModiferInfoCompteComponent implements OnInit {
       next: (liste: ClasseHeros[]) =>
       {        
         this.listeClasseHero = liste;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     })
   }
 
   private ListerUniter(): void
   {
-    this.uniteServ.Lister().subscribe({
+    this.uniteServ.ListerVisible().subscribe({
       next: (liste: Unite[]) =>
       {
         this.listeUniteClone = this.listeUnite = liste;
         this.ListerMesUnite();
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -250,10 +237,6 @@ export class ModiferInfoCompteComponent implements OnInit {
   
           this.listeUniteClone = this.listeUnite;
         }
-      },  
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     })
   }

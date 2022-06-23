@@ -61,10 +61,6 @@ export class AjouterGvgComponent implements OnInit
 
         this.outilServ.ToastOK(`${ this.listeDate.length > 1 ? 'Les GvGs ont été programmées' : 'La GvG a été programmée' }`);
         this.dialogRef.close(this.listeDate);
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }

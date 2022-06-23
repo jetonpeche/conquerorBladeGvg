@@ -56,7 +56,6 @@ export class AccueilComponent implements OnInit
       error: () =>
       {
         this.btnClicker = false;
-        this.outilServ.ToastErreurHttp();
       }
     });
   }

@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GvgService } from 'src/app/service/gvg.service';
-import { OutilService } from 'src/app/service/outil.service';
 import { VariableStatic } from 'src/app/Static/VariableStatic';
 
 @Component({
@@ -19,8 +18,7 @@ export class UniteGvgComponent implements OnInit
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private gvgServ: GvgService,
-    private outilServ: OutilService
+    private gvgServ: GvgService
     ) { }
 
   ngOnInit(): void 
@@ -51,10 +49,6 @@ export class UniteGvgComponent implements OnInit
       next: (retour) =>
       {
         this.listeUnite.data = retour;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }

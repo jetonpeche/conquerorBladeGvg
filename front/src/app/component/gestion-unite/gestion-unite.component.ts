@@ -14,6 +14,7 @@ export class GestionUniteComponent implements OnInit
   listeUnite: Unite[] = [];
 
   private listeUniteClone: Unite[] = [];
+  private btnClicker: boolean = false;
 
   constructor(private uniteServ: UniteService, private outilServ: OutilService) { }
 
@@ -45,17 +46,46 @@ export class GestionUniteComponent implements OnInit
 
   UniteMetaPasMeta(_unite: Unite): void
   {
+    if(this.btnClicker)
+      return;
+
+    this.btnClicker = true;
+
     this.uniteServ.ModifierMeta(_unite.Id, !_unite.EstMeta).subscribe({
       next: () =>
       {
         _unite.EstMeta = !_unite.EstMeta;
+        this.btnClicker = false;
         this.outilServ.ToastOK(`L'unité ${_unite.Nom} ${_unite.EstMeta ? 'est méta' : 'n\'est plus méta'}`);
       },
       error: () =>
       {
-        this.outilServ.ToastErreurHttp();
+        this.btnClicker = false;
       }
-    })
+    });
+  }
+
+  ModifierVisibiliterUnite(_unite: Unite, _event: Event): void
+  {
+    _event.stopPropagation();
+
+    if(this.btnClicker)
+      return;
+
+    this.btnClicker = true;
+
+    this.uniteServ.ModifierVisibiliter(_unite.Id, !_unite.EstVisible).subscribe({
+      next: () =>
+      {
+        _unite.EstVisible = !_unite.EstVisible;
+        this.btnClicker = false;
+        this.outilServ.ToastOK(`L'unite ${_unite.EstVisible ? 'est visibible' : 'n\'est plus visible'}`);
+      },
+      error: () =>
+      {
+        this.btnClicker = false;
+      }
+    });
   }
 
   private ListerUnite(): void
@@ -64,10 +94,6 @@ export class GestionUniteComponent implements OnInit
       next: (liste: Unite[]) =>
       {
         this.listeUnite = this.listeUniteClone = liste;
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }

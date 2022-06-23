@@ -83,10 +83,6 @@ export class MenuComponent implements OnInit
         _gvg.NbParticipant++;   
         
         this.outilServ.ToastOK(`Inscrit à la GvG du: ${_gvg.Date}`);
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -107,10 +103,6 @@ export class MenuComponent implements OnInit
           _gvg.NbParticipant = 0
 
         this.outilServ.ToastOK(`Absent à la GvG du: ${_gvg.Date}`);
-      },
-      error: () =>
-      {
-        this.outilServ.ToastErreurHttp();
       }
     });
   }
@@ -121,10 +113,6 @@ export class MenuComponent implements OnInit
      next: (retour: Gvg[]) =>
      {
         MenuComponent.listeGvg = retour;
-     },
-     error: () =>
-     {
-        this.outilServ.ToastErreurHttp();
      }
    });
   }

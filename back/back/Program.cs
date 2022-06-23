@@ -47,3 +47,4 @@ app.MapControllers();
 app.Run();
 
 // Scaffold-DbContext "Data Source=DESKTOP-J5HTQCS\SQLSERVER;Initial Catalog=conquerorBlade;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+// Scaffold-DbContext "Data Source=DESKTOP-U41J905\SQLEXPRESS;Initial Catalog=conquerorBlade;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models

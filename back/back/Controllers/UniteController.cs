@@ -21,6 +21,14 @@
             return JsonConvert.SerializeObject(liste);
         }
 
+        [HttpGet("listerVisible")]
+        public async Task<string> ListerVisible()
+        {
+            var liste = await uniteService.Lister(1);
+
+            return JsonConvert.SerializeObject(liste);
+        }
+
         [HttpGet("listerIdMesUnite/{idCompte}")]
         public async Task<string> Lister(int idCompte)
         {
@@ -48,6 +56,14 @@
         public async Task<string> ModifierMeta(UniteMetaImport _uniteMeta)
         {
             await uniteService.ModifierMeta(_uniteMeta.Id, _uniteMeta.EstMeta);
+
+            return JsonConvert.SerializeObject(true);
+        }
+
+        [HttpPut("modifierVisibiliter")]
+        public async Task<string> ModifierVisibiliter(UniteVisibiliteImport _uniteVisibilite)
+        {
+            await uniteService.ModifierVisibiliter(_uniteVisibilite.Id, _uniteVisibilite.EstVisible);
 
             return JsonConvert.SerializeObject(true);
         }

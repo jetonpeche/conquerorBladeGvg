@@ -12,6 +12,7 @@ export type Unite =
     NomTypeUnite: string,
 
     EstMeta: boolean,
+    EstVisible: boolean,
 
     EstChoisi?: number,
     Niveau?: string

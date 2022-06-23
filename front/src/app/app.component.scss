@@ -9,3 +9,15 @@
   position: sticky;
   top: 0;
 }
+
+.mat-sidenav
+{
+  background-color: white;
+  width: 200px;
+  height: 100%;
+}
+
+.mat-sidenav-container
+{
+  height: calc(206vh - 115vh);
+}

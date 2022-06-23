@@ -1,15 +1,55 @@
 <mat-toolbar color="primary" *ngIf="EstConnecter()">
     <span routerLink="/menu" style="cursor: pointer;">CB unité</span>
 
+    <button type="button" aria-label="Toggle sidenav" mat-icon-button 
+        [ngStyle]="{ 'visibility': EstConnecter() ? 'visible' : 'hidden' }"
+        (click)="sidenav.toggle()"
+        *ngIf="isHandset$ | async">
+            <mat-icon>menu</mat-icon>
+    </button>
+
     <div id="flex"></div>
 
-    <button mat-button routerLink="/gvg-parametrer">GvG du jour</button>
-    <button mat-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterGvG()" routerLinkeActive="active">Programmer GvG</button>
-    <button mat-button *ngIf="EstRoleAdmin()" routerLink="/gestion-unite" routerLinkeActive="active">Gestion unite</button>
-    <button mat-button *ngIf="EstRoleAdmin()" routerLink="/gestion-des-comptes" routerLinkeActive="active">Gestion compte</button>
+    <button *ngIf="!(isHandset$ | async)" mat-button routerLink="/gvg-parametrer">
+        GvG du jour
+    </button>
 
-    <button mat-raised-button *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterCompte()" routerLinkeActive="active">Ajouter Compte</button>&nbsp;
-    <button mat-raised-button (click)="OuvrirModalModifInfoCompte()" routerLinkeActive="active">Mon compte</button>
+    <button mat-button *ngIf="EstRoleAdmin() && !(isHandset$ | async)" (click)="OuvrirModalAjouterGvG()">
+        Programmer GvG
+    </button>
+
+    <button mat-button *ngIf="EstRoleAdmin() && !(isHandset$ | async)" routerLink="/gestion-unite" routerLinkeActive="active">
+        Gestion unite
+    </button>
+
+    <button mat-button *ngIf="EstRoleAdmin() && !(isHandset$ | async)" routerLink="/gestion-des-comptes" routerLinkeActive="active">
+        Gestion comptes
+    </button>
+
+    <button mat-raised-button *ngIf="EstRoleAdmin() && !(isHandset$ | async)" (click)="OuvrirModalAjouterCompte()">
+        Ajouter Compte
+    </button>&nbsp;
+
+    <button mat-raised-button *ngIf="!(isHandset$ | async)" (click)="OuvrirModalModifInfoCompte()">
+        Mon compte
+    </button>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+    <mat-sidenav 
+        #sidenav (click)="FermerApresClick(sidenav)"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="Test((isHandset$ | async))">
+        <mat-list>
+            <mat-list-item routerLink="/gvg-parametrer">GvG du jour</mat-list-item>
+            <mat-list-item *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterGvG()">Programmer GvG</mat-list-item>
+            <mat-list-item *ngIf="EstRoleAdmin()" routerLink="/gestion-unite">Gestion unite</mat-list-item>
+            <mat-list-item *ngIf="EstRoleAdmin()" routerLink="/gestion-des-comptes">Gestion comptes</mat-list-item>
+            <mat-list-item *ngIf="EstRoleAdmin()" (click)="OuvrirModalAjouterCompte()">Ajouter Compte</mat-list-item>
+            <mat-list-item (click)="OuvrirModalModifInfoCompte()">Mon compte</mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
