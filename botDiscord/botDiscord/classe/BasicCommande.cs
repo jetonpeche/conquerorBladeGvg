@@ -10,9 +10,6 @@ namespace botDiscord.classe
 {
     public class BasicCommande: ModuleBase<SocketCommandContext>
     {
-        //public const string URL_API = "http://localhost:5019";
-        public const string URL_API = "https://cb-gvg-api.jetonpeche.fr"; 
-
         public static HttpClient http { get; } = new();
         private const string MEDIA_TYPE = "application/json";
 
@@ -29,9 +26,7 @@ namespace botDiscord.classe
         [Command("listerGvG")]
         public async Task Lister()
         {
-            string listeString = await http.GetStringAsync($"{URL_API}/gvg/listerViaDiscord/{Context.User.Id}");
-
-            Console.WriteLine(listeString);
+            string listeString = await http.GetStringAsync($"{Outil.urlApi}/{ApiRacine.GVG}/listerViaDiscord/{Context.User.Id}");
 
             if (listeString != "[]")
             {
@@ -60,7 +55,7 @@ namespace botDiscord.classe
         {
             string msg;
 
-            string retour = await http.GetAsync($"{URL_API}/compte/supprimerViaDiscord/{Context.User.Id}").Result.Content.ReadAsStringAsync();
+            string retour = await http.GetAsync($"{Outil.urlApi}/{ApiRacine.COMPTE}/supprimerViaDiscord/{Context.User.Id}").Result.Content.ReadAsStringAsync();
 
             bool estSupprimer = bool.Parse(retour);
 
@@ -70,7 +65,7 @@ namespace botDiscord.classe
             }
             else
             {
-                msg = $"Je ne te trouve pas {Context.Message.Author.Mention} ton id discord n'est pas connu. Utilise la comande: !initMonIdDiscord";
+                msg = $"Je ne te trouve pas {Context.Message.Author.Mention} ton id discord n'est pas connu";
             }
 
             await Context.Channel.SendMessageAsync(msg);
@@ -89,7 +84,7 @@ namespace botDiscord.classe
             List<string> listeDateString = new(_dateString.Trim().Split(','));
 
             Outil outil = new();
-            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString(), URL_API);
+            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString());
 
             if(!estAdmin)
             {
@@ -110,7 +105,7 @@ namespace botDiscord.classe
                 string jsonString = JsonConvert.SerializeObject(new { IdDiscord = Context.User.Id.ToString(), Date = element + $"/{DateTime.Now.Year}" });
                 HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
-                string retour = await http.PostAsync($"{URL_API}/gvg/existe", httpContent).Result.Content.ReadAsStringAsync();
+                string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/existe", httpContent).Result.Content.ReadAsStringAsync();
 
                 bool existe = bool.Parse(retour);
                     
@@ -131,7 +126,7 @@ namespace botDiscord.classe
 
                 HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
-                var retour = await http.PostAsync($"{URL_API}/Gvg/ajouter", httpContent);
+                var retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/ajouter", httpContent);
 
                 if (retour.IsSuccessStatusCode)
                     msg = listeGvg.Count > 1 ? "Les nouvelles dates ont été programmées" : "La nouvelle date a été programmée";
@@ -154,8 +149,7 @@ namespace botDiscord.classe
                 string jsonString = JsonConvert.SerializeObject(new { IdDiscord = Context.User.Id.ToString(), Date = _dateString + $"/{DateTime.Now.Year}" });
                 HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
-                string retour = await http.PostAsync($"{URL_API}/gvg/participerViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
-                Console.WriteLine(retour);
+                string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/participerViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
 
                 await Context.Channel.SendMessageAsync($"{Context.User.Mention} {retour}");
             }
@@ -166,7 +160,7 @@ namespace botDiscord.classe
         {
             Outil outil = new();
 
-            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString(), URL_API);
+            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString());
 
             if (!estAdmin)
             {
@@ -174,7 +168,7 @@ namespace botDiscord.classe
                 return;
             }
                
-            var retour = await http.GetStringAsync($"{URL_API}/gvg/pingerNonIncritProchaineGvg");
+            var retour = await http.GetStringAsync($"{Outil.urlApi}/{ApiRacine.GVG}/pingerNonIncritProchaineGvg");
 
             retour = retour.Replace('"', ' ').TrimStart();
 
