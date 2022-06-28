@@ -292,9 +292,15 @@ namespace back.Services
             if (listeIdGvgPasser.Count is 0)
                 return;
 
-            string listeIdGvgString = string.Join(',', listeIdGvgPasser);
+            await Supprimer(listeIdGvgPasser);
 
-            using(SqlConnection sqlCon = new(connectionString))
+        }
+
+        public async Task Supprimer(List<int> _listeIdGvgPasser)
+        {
+            string listeIdGvgString = string.Join(',', _listeIdGvgPasser);
+
+            using (SqlConnection sqlCon = new(connectionString))
             {
                 sqlCon.Open();
 
@@ -314,7 +320,6 @@ namespace back.Services
 
                 await sqlCon.CloseAsync();
             }
-            
         }
     }
 }

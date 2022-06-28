@@ -190,5 +190,42 @@
 
             return JsonConvert.SerializeObject(false);
         }
+
+        [HttpPost("supprimer/{idGvG}")]
+        public async Task<string> Supprimer([FromRoute] int idGvG)
+        {
+            List<int> liste = new();
+            liste.Add(idGvG);
+
+            await gvgService.Supprimer(liste);
+
+            return JsonConvert.SerializeObject(true);
+        }
+
+        [HttpPost("supprimerViaDiscord")]
+        public async Task<string> Supprimer(GvgImport[] _gvgImport)
+        {
+            List<int> listeIdGvg = new();
+            foreach(var element in _gvgImport)
+            {
+                DateTime dateTime = DateTime.Parse(element.Date);
+
+                if (gvgService.Existe(dateTime))
+                {
+                    int id = await gvgService.GetIdGvG(dateTime);
+                    listeIdGvg.Add(id);
+                }
+            }
+
+            if (listeIdGvg.Count > 0)
+            {
+                await gvgService.Supprimer(listeIdGvg);
+                return JsonConvert.SerializeObject("Les GvGs on été supprimées");
+            }  
+            else
+            {
+                return JsonConvert.SerializeObject("Le / les date(s) n'existe(s) pas");
+            }
+        }
     }
 }

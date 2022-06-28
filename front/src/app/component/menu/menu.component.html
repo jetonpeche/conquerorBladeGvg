@@ -2,17 +2,30 @@
 <div>
 
     <h1 class="titre">Prochaines GvG</h1>
-    <p style="text-align: center; color: white;">Les gvgs expirées sont supprimées tous les mardis et samedis à 20h</p>
+    <!-- <p style="text-align: center; color: white;">Les gvgs expirées sont supprimées tous les mardis et samedis à 20h</p>-->
 
     <div class="flexCardGvg container-fluid">
-        <mat-card *ngFor="let element of GetListeGvG()" class="cardGvg" (click)="Naviguer(+element.Id, element.Date)">
+        <mat-card *ngFor="let element of GetListeGvG(); let i = index" class="cardGvg" (click)="Naviguer(+element.Id, element.Date)">
             <mat-card-header>
                 <mat-card-title>Date: {{ element.Date }}</mat-card-title>
                 <mat-card-subtitle>Participant: {{ element.NbParticipant }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-actions align="end">
-                <button mat-raised-button *ngIf="ParticipeDeja(element.Id)" color="warn" (click)="Absent(element, $event)">Absent</button>
-                <button mat-raised-button *ngIf="!ParticipeDeja(element.Id)" color="primary" (click)="Participer(element, $event)">Participer</button>
+
+                <!-- btn supp -->
+                <button mat-raised-button *ngIf="EstAdmin()" color="warn" (click)="ConfirmerSupprimerGvG(element, $event, i)">
+                    Supprimer
+                </button>
+
+                <!-- btn abs -->
+                <button mat-raised-button *ngIf="ParticipeDeja(element.Id)" color="warn" (click)="Absent(element, $event)">
+                    Absent
+                </button>
+
+                <!-- btn participer -->
+                <button mat-raised-button *ngIf="!ParticipeDeja(element.Id)" color="primary" (click)="Participer(element, $event)">
+                    Participer
+                </button>
             </mat-card-actions>
         </mat-card>
     </div>

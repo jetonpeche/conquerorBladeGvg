@@ -65,6 +65,11 @@ export class GvgService
     return this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/absent`, DATA);
   }
 
+  Supprimer(_idGvg: number): Observable<boolean>
+  {
+    return this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/supprimer/${_idGvg}`, null);
+  }
+
   async Existe(_date: string): Promise<boolean>
   {
     const DATA = { Date: _date };

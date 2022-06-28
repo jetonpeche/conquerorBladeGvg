@@ -41,6 +41,11 @@ export class MenuComponent implements OnInit
       this.dialog.open(ModiferInfoCompteComponent);
   }
 
+  EstAdmin(): boolean
+  {
+    return VariableStatic.compte.EstAdmin == 1;
+  }
+
   Naviguer(_idGvG: number, _date: string): void
   {
     if(this.compte.EstAdmin)
@@ -103,6 +108,35 @@ export class MenuComponent implements OnInit
           _gvg.NbParticipant = 0
 
         this.outilServ.ToastOK(`Absent à la GvG du: ${_gvg.Date}`);
+      }
+    });
+  }
+
+  ConfirmerSupprimerGvG(_gvg: Gvg, _event: Event, _index: number): void
+  {
+    _event.stopPropagation();
+
+    const TITRE = "Confirmation suppression GvG";
+    const TEXT = `Confirmez-vous le suppression de la GvG du ${_gvg.Date} ?`;
+
+    this.outilServ.OuvrirModalConfirmer(TITRE, TEXT);
+
+    this.outilServ.reponseModalConfirmation.subscribe({
+      next: (retour: boolean) =>
+      { 
+        if(retour)
+          this.SupprimerGvG(_gvg.Id, _index);
+      }
+    });
+  }
+
+  private SupprimerGvG(_idGvg: number, _index: number): void
+  {
+    this.gvgServ.Supprimer(_idGvg).subscribe({
+      next: () =>
+      {
+        MenuComponent.listeGvg.splice(_index, 1);
+        this.outilServ.ToastOK("La GvG a été supprimée");
       }
     });
   }
