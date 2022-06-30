@@ -23,7 +23,8 @@ export class AccueilComponent implements OnInit
 
   ngOnInit(): void 
   {
-
+    sessionStorage.clear();
+    VariableStatic.compte = undefined;
   }
 
   Connexion(_form: NgForm): void

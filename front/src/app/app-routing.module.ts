@@ -7,14 +7,15 @@ import { GvgParametrerComponent } from './component/gvg-parametrer/gvg-parametre
 import { MenuComponent } from './component/menu/menu.component';
 import { ParametrerGvgComponent } from './component/parametrer-gvg/parametrer-gvg.component';
 import { AdminGuard } from './guard/admin.guard';
+import { ConnecterGuard } from './guard/connecter.guard';
 
 const routes: Routes = [
   { path: "", component: AccueilComponent },
-  { path: "menu", component: MenuComponent },
-  { path: "parametrer-gvg/:id", canActivate: [AdminGuard], component: ParametrerGvgComponent, title: "Parametrer gvg" },
-  { path: "gvg-parametrer", component: GvgParametrerComponent, title: "gvg du jour" },
-  { path: "gestion-unite", canActivate: [AdminGuard], component: GestionUniteComponent, title: "gestion des unités" },
-  { path: "gestion-des-comptes", canActivate: [AdminGuard], component: GestionCompteComponent, title: "gestion des comptes" }
+  { path: "menu", canActivate: [ConnecterGuard], component: MenuComponent },
+  { path: "parametrer-gvg/:id", canActivate: [AdminGuard, ConnecterGuard], component: ParametrerGvgComponent, title: "Parametrer gvg" },
+  { path: "gvg-parametrer", canActivate: [ConnecterGuard], component: GvgParametrerComponent, title: "gvg du jour" },
+  { path: "gestion-unite", canActivate: [AdminGuard, ConnecterGuard], component: GestionUniteComponent, title: "gestion des unités" },
+  { path: "gestion-des-comptes", canActivate: [AdminGuard, ConnecterGuard], component: GestionCompteComponent, title: "gestion des comptes" }
 
 ];
 
