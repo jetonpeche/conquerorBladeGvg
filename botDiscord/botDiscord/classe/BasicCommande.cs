@@ -11,7 +11,7 @@ namespace botDiscord.classe
     public class BasicCommande: ModuleBase<SocketCommandContext>
     {
         public static HttpClient http { get; } = new();
-        private const string MEDIA_TYPE = "application/json";
+        public static string MEDIA_TYPE { get; } = "application/json";
 
         private const string patternDate = @"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))$";
 
@@ -72,11 +72,10 @@ namespace botDiscord.classe
         }
 
         // OK
-        [Command("ajouterDateGvG")]
+        [Command("ajouterGvG")]
         public async Task AjouterDate([Remainder] string _dateString)
         {
             string msg = "";
-            bool estBloquer = false;
 
             _dateString = Regex.Replace(_dateString, @"\s+", string.Empty);
 
@@ -84,9 +83,8 @@ namespace botDiscord.classe
             List<string> listeDateString = new(_dateString.Trim().Split(','));
 
             Outil outil = new();
-            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString());
 
-            if(!estAdmin)
+            if(!await outil.EstAdmin(Context.User.Id.ToString()))
             {
                 await Context.Channel.SendMessageAsync("Tu n'as pas l'autorisation pour accéder à cette commande");
                 return;
@@ -97,30 +95,15 @@ namespace botDiscord.classe
                 if (!Regex.Match(element, patternDate, RegexOptions.None).Success)
                 {
                     msg = $"Erreur: la date: {element} doit être au format JJ/MM";
-                    estBloquer = true;
 
                     break;
                 }
-
-                string jsonString = JsonConvert.SerializeObject(new { IdDiscord = Context.User.Id.ToString(), Date = element + $"/{DateTime.Now.Year}" });
-                HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
-
-                string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/existe", httpContent).Result.Content.ReadAsStringAsync();
-
-                bool existe = bool.Parse(retour);
                     
-                if (!existe)
+                if (!await outil.GvgExiste(element))
                     listeGvg.Add(new GvgExport { Date = element + $"/{DateTime.Now.Year}" });
-                else
-                {
-                    msg = $"La date {element}/{DateTime.Now.Year} existe déjà";
-                    estBloquer = true;
-
-                    break;
-                }
             }
             
-            if(!estBloquer)
+            if(listeGvg.Count > 0)
             {
                 string jsonString = JsonConvert.SerializeObject(listeGvg);
 
@@ -132,6 +115,10 @@ namespace botDiscord.classe
                     msg = listeGvg.Count > 1 ? "Les nouvelles dates ont été programmées" : "La nouvelle date a été programmée";
                 else
                     msg = "Une erreur a eu lieu";
+            }
+            else
+            {
+                msg = "Toutes les dates ont déjà été programmées";
             }
 
             await Context.Channel.SendMessageAsync(msg);
@@ -175,6 +162,65 @@ namespace botDiscord.classe
             await Context.Channel.SendMessageAsync(retour);
         }
 
+        [Command("supprimerGvG")]
+        public async Task SupprimerGvG([Remainder] string _dateString = "")
+        {
+            Outil outil = new();
+
+            if(!await outil.EstAdmin(Context.User.Id.ToString()))
+            {
+                await Context.Channel.SendMessageAsync("Tu n'as pas le droit");
+                return;
+            }
+
+            string msg = "";
+
+            // supp la prochaine GvG
+            if (string.IsNullOrEmpty(_dateString))
+            {
+                string jsonString = JsonConvert.SerializeObject(new { Date = $"{_dateString}/{DateTime.Now.Year}" });
+                HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
+
+                string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/supprimerViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
+
+                msg = retour;
+            }
+            else
+            {
+                bool estBloquer = false;
+                List<string> listeDateString = new(_dateString.Trim().Split(','));
+
+                foreach (var element in listeDateString)
+                {
+                    _dateString = Regex.Replace(_dateString, @"\s+", string.Empty);
+
+                    if (!Regex.Match(_dateString, patternDate, RegexOptions.None).Success)
+                    {
+                        msg = $"Erreur: la date: {element} doit être au format JJ/MM";
+                        estBloquer = true;
+                        break;
+                    }
+
+                    if(!await outil.GvgExiste(element))
+                    {
+                        await Context.Channel.SendMessageAsync($"La GvG: {_dateString} n'existe pas");
+                        return;
+                    }
+
+                    string jsonString = JsonConvert.SerializeObject(new { Date = _dateString });
+                    HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
+
+                    await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/supprimerViaDiscord", httpContent);
+
+                }
+
+                if(!estBloquer)
+                    msg = listeDateString.Count() > 1 ? "Les GvGs ont été supprimées" : "La GvG a été supprimée";
+            }
+
+            await Context.Channel.SendMessageAsync(msg);
+        }
+
         [Command("site")]
         public async Task OuvrirSite()
         {
@@ -185,6 +231,9 @@ namespace botDiscord.classe
         [Command("aled")]
         public async Task ListerCmd()
         {
+            Outil outil = new();
+            bool estAdmin = await outil.EstAdmin(Context.User.Id.ToString());
+
             EmbedBuilder embedBuilder = new()
             {
                 Title = "Liste des commandes",
@@ -192,11 +241,18 @@ namespace botDiscord.classe
             };
 
             embedBuilder.AddField("!ping", "Ping l'utilisateur");
+
+            if(estAdmin)
+            {
+                embedBuilder.AddField("!pingerNonInscrit", "Ping les non inscrits à la prochaine GvG si il y en a une");
+                embedBuilder.AddField("!ajouterGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
+                embedBuilder.AddField("!supprimerGvG <rien> ou <JJ/MM> ou <JJ/MM, JJ/MM...>", "Supprime la prochaine GvG ou la / les GvG(s) choisie(s)");
+            }
+
             embedBuilder.AddField("!listerGvG", "Liste les GvGs programmées");
+            embedBuilder.AddField("!participerGvG <rien> ou <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie ou à la prochaine GvG");
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
-            embedBuilder.AddField("!ajouterDateGvG <JJ/MM> ou <JJ/MM, JJ/MM...>", "Ajout d'une ou des nouvelles dates de GvG");
-            embedBuilder.AddField("!participerGvG <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie, sinon à la prochaine GvG");
-            embedBuilder.AddField("!pingerNonInscrit", "Ping les non inscrits à la prochaine GvG si il y en a une");
+
             embedBuilder.AddField("!site", "Affiche url du site");
             embedBuilder.AddField("!aled", "Liste des commandes disponibles");
 

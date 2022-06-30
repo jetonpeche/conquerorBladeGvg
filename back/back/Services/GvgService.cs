@@ -296,6 +296,14 @@ namespace back.Services
 
         }
 
+        public async Task Supprimer(int _idGvG)
+        {
+            List<int> liste = new();
+            liste.Add(_idGvG);
+
+            await Supprimer(liste);
+        }
+
         public async Task Supprimer(List<int> _listeIdGvgPasser)
         {
             string listeIdGvgString = string.Join(',', _listeIdGvgPasser);

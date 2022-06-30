@@ -194,37 +194,32 @@
         [HttpPost("supprimer/{idGvG}")]
         public async Task<string> Supprimer([FromRoute] int idGvG)
         {
-            List<int> liste = new();
-            liste.Add(idGvG);
-
-            await gvgService.Supprimer(liste);
+            await gvgService.Supprimer(idGvG);
 
             return JsonConvert.SerializeObject(true);
         }
 
         [HttpPost("supprimerViaDiscord")]
-        public async Task<string> Supprimer(GvgImport[] _gvgImport)
+        public async Task<string> Supprimer(GvgImport _gvgImport)
         {
-            List<int> listeIdGvg = new();
-            foreach(var element in _gvgImport)
+            if(DateTime.TryParse(_gvgImport.Date, out DateTime date))
             {
-                DateTime dateTime = DateTime.Parse(element.Date);
+                int idGvg = await gvgService.GetIdGvG(date);
 
-                if (gvgService.Existe(dateTime))
-                {
-                    int id = await gvgService.GetIdGvG(dateTime);
-                    listeIdGvg.Add(id);
-                }
+                await gvgService.Supprimer(idGvg);
+
+                return JsonConvert.SerializeObject(true);
             }
-
-            if (listeIdGvg.Count > 0)
-            {
-                await gvgService.Supprimer(listeIdGvg);
-                return JsonConvert.SerializeObject("Les GvGs on été supprimées");
-            }  
             else
             {
-                return JsonConvert.SerializeObject("Le / les date(s) n'existe(s) pas");
+                int idGvg = await gvgService.GetIdProchaineGvG();
+
+                if (idGvg is 0)
+                    return JsonConvert.SerializeObject("Aucune GvG programmée prochainement");
+
+                await gvgService.Supprimer(idGvg);
+
+                return JsonConvert.SerializeObject("La prochaine GvG à été supprimée");
             }
         }
     }
