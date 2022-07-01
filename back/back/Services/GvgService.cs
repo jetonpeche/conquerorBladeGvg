@@ -52,7 +52,7 @@ namespace back.Services
                          orderby gvg.IdGroupe
                          select new
                          {
-                             Nom = gvg.IdGroupeNavigation.Nom,
+                             Nom = gvg.IdGroupeNavigation!.Nom,
                              ListeJoueur = gvg.IdGroupeNavigation.GvgComptes.Select(g => new
                              {
                                  g.IdCompteNavigation.Pseudo,
@@ -84,7 +84,9 @@ namespace back.Services
                                  compte.IdCompteNavigation.Pseudo,
                                  compte.IdCompteNavigation.Influance,
                                  compte.IdGroupe,
-                                 ListeUnite = compte.IdCompteNavigation.UniteComptes.Select(unite =>
+
+                                 // unité visible
+                                 ListeUnite = compte.IdCompteNavigation.UniteComptes.Where(u => u.IdUniteNavigation.EstVisible == 1).Select(unite =>
                                  new
                                  {
                                      Id = unite.IdUniteNavigation.Id,

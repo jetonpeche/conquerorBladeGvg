@@ -27,6 +27,7 @@ export class ParametrerGvgComponent implements OnInit
   filtreEstActiver: boolean = false;
 
   private idGvG: number;
+  private listeCompteClone: Participant[] = [];
   private listeUniteClone: UniteParticipant[] = [];
   private listeUniteCompteChoisi: UniteCompteGvGExport[] = [];
 
@@ -55,6 +56,19 @@ export class ParametrerGvgComponent implements OnInit
       this.listeUnite = this.listeUniteClone.filter(u => u.Influance <= (this.compte.Influance - this.influanceTotal));
     else
       this.listeUnite = this.listeUniteClone;
+  }
+
+  RechercheUnite(_recherche: string): void
+  {
+    _recherche = _recherche.toLowerCase();
+    
+    if(_recherche == "")
+    {
+      this.participant.ListeCompte = this.listeCompteClone;
+      return;
+    }
+
+    this.participant.ListeCompte = this.listeCompteClone.filter(c => c.ListeUnite.find(u => u.Nom.toLowerCase().includes(_recherche)) != null)
   }
 
   UniteEstChoisi(_idUnite: number): boolean
@@ -230,7 +244,8 @@ export class ParametrerGvgComponent implements OnInit
     this.gvgServ.ListerParticipant(this.idGvG).subscribe({
       next: (retour: ParticipantGvG) =>
       {            
-        this.participant = retour[0];
+        this.participant = retour[0];  
+        this.listeCompteClone = retour[0].ListeCompte;  
         this.dateGvG = this.participant.Date;      
       }
     });

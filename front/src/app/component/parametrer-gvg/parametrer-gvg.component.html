@@ -6,6 +6,11 @@
     <mat-card class="col-lg-4 col-xs-12">
         <h2>Liste des participants</h2>
 
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Recherche unité</mat-label>
+            <input #inputRechercheUnite matInput type="text" (keyup)="RechercheUnite(inputRechercheUnite.value)">
+        </mat-form-field>
+
         <mat-selection-list (selectionChange)="ListerUniteParticipant($event.options[0].value)" #listeCompte
             [multiple]="false">
             <mat-list-option *ngFor="let element of participant.ListeCompte" [value]="element.Id">
@@ -42,18 +47,17 @@
         <ul>
             <li *ngFor="let element of listeUnite">
                 <mat-checkbox #checkboxUnite
-                    (change)="CalculerInfluanceEtChoisiUnite(checkboxUnite, checkboxFiltre.checked, element)" 
-                    [value]="element.Id.toString()" 
-                    [checked]="UniteEstChoisi(element.Id)" checkboxPosition="before"
+                    (change)="CalculerInfluanceEtChoisiUnite(checkboxUnite, checkboxFiltre.checked, element)"
+                    [value]="element.Id.toString()" [checked]="UniteEstChoisi(element.Id)" checkboxPosition="before"
                     color="primary">
-                    {{ element.Nom }} - {{ element.NiveauMaitrise == "" ? "Aucun lvl" : element.NiveauMaitrise }} - {{ element.Influance }}
+                    {{ element.Nom }} - {{ element.NiveauMaitrise == "" ? "Aucun lvl" : element.NiveauMaitrise }} - {{
+                    element.Influance }}
                 </mat-checkbox>
             </li>
         </ul>
 
         <!-- btn valider -->
-        <button *ngIf="compte?.Pseudo" mat-raised-button
-            color="primary" class="btn-valider" (click)="Valider()">
+        <button *ngIf="compte?.Pseudo" mat-raised-button color="primary" class="btn-valider" (click)="Valider()">
             <mat-spinner *ngIf="btnClicker" diameter="21"></mat-spinner>
             {{ btnClicker ? '' : 'Valider la compo de: ' +
             compte?.Pseudo ?? '' }}

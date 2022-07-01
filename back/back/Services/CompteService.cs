@@ -125,7 +125,7 @@
 
         public async Task Supprimer(string _idDiscord)
         {
-            Compte compte = context.Comptes.Where(c => c.IdDiscord.Equals(_idDiscord)).First();
+            Compte compte = context.Comptes.Where(c => c.IdDiscord!.Equals(_idDiscord)).First();
 
             context.Comptes.Remove(compte);
             await context.SaveChangesAsync();
