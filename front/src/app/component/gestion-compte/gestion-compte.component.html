@@ -32,6 +32,22 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
                 <td mat-cell *matCellDef="let element; let i = index">
 
+                    <!-- participer prochaine gvg -->
+                    <button *ngIf="!element.ParticipeProchaineGvg" mat-mini-fab 
+                            (click)="InscrireProchaineGvg(element)"
+                            color="primary" matTooltip="Participer prochaine GvG">
+                        <mat-icon *ngIf="!btnClicker">playlist_add</mat-icon>
+                        <mat-spinner *ngIf="btnClicker" diameter="23"></mat-spinner>
+                    </button>
+
+                    <!-- absent prochaine gvg -->
+                    <button *ngIf="element.ParticipeProchaineGvg" mat-mini-fab 
+                            (click)="DesinscrireProchaineGvg(element)"
+                            color="accent" matTooltip="Absent prochaine GvG">
+                        <mat-icon *ngIf="!btnClicker">clear</mat-icon>
+                        <mat-spinner *ngIf="btnClicker" diameter="23"></mat-spinner>
+                    </button>&nbsp;
+
                     <!-- supprimer -->
                     <button mat-mini-fab color="warn" (click)="OuvrirModalConfirmer(element, i)">
                         <mat-icon *ngIf="!btnClicker">delete</mat-icon>

@@ -9,5 +9,6 @@ export type Compte =
     Influance: number,
     EstAdmin: number,
     EstPremiereConnexion: number,
+    ParticipeProchaineGvg?: boolean,
     ListeIdGvgParticipe: number[]
 }

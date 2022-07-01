@@ -39,24 +39,25 @@
         {
             List<CompteExport> liste = Array.Empty<CompteExport>().ToList();
 
-            await Task.Run(() =>
-            {
-                liste = (from c in context.Comptes
-                        orderby c.Pseudo
-                        select new CompteExport
-                        {
-                            Id = c.Id,
-                            Influance = c.Influance,
-                            Pseudo = c.Pseudo,
-                            IdDiscord = c.IdDiscord,
-                            EstPremiereConnexion = c.EstPremiereConnexion,
-                            IdClasseHeros = c.IdClasseHeros,
-                            NomClasseHeros = c.IdClasseHerosNavigation.Nom,
-                            NomImgClasse = c.IdClasseHerosNavigation.NomImg,
-                            EstAdmin = c.EstAdmin,
-                            ListeIdGvgParticipe = c.GvgComptes.Select(g => g.IdGvg).ToList()
-                        }).ToList();
-            });
+            GvgService gvgService = new(context);
+            int idGvg = await gvgService.GetIdProchaineGvG();
+
+            liste = (from c in context.Comptes
+                    orderby c.Pseudo
+                    select new CompteExport
+                    {
+                        Id = c.Id,
+                        Influance = c.Influance,
+                        Pseudo = c.Pseudo,
+                        IdDiscord = c.IdDiscord,
+                        EstPremiereConnexion = c.EstPremiereConnexion,
+                        IdClasseHeros = c.IdClasseHeros,
+                        NomClasseHeros = c.IdClasseHerosNavigation.Nom,
+                        NomImgClasse = c.IdClasseHerosNavigation.NomImg,
+                        EstAdmin = c.EstAdmin,
+                        ParticipeProchaineGvg = idGvg == 0 ? false : c.GvgComptes.Where(g => g.IdGvg == idGvg && g.IdCompte == c.Id).Count() == 1,
+                        ListeIdGvgParticipe = c.GvgComptes.Select(g => g.IdGvg).ToList()
+                    }).ToList();
 
             return liste;
         }

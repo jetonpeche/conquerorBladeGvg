@@ -58,11 +58,25 @@ export class GvgService
     return this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/participer`, DATA);
   }
 
+  InscrireProchaineGvg(_idDiscord: string): Observable<string>
+  {
+    const DATA = { IdDiscord: _idDiscord, Date: "" };
+
+    return this.http.post<string>(`${environment.urlApi}/${this.dossier}/participerViaDiscord`, DATA);
+  }
+
   Absent(_idGvg: number, _idCompte: number): Observable<boolean>
   {
     const DATA = { idGvg: _idGvg, idCompte: _idCompte };
 
     return this.http.post<boolean>(`${environment.urlApi}/${this.dossier}/absent`, DATA);
+  }
+
+  AbsentProchaineGvg(_idDiscord: string): Observable<string>
+  {
+    const DATA = { IdDiscord: _idDiscord, Date: "" };
+    
+    return this.http.post<string>(`${environment.urlApi}/${this.dossier}/absentViaDiscord`, DATA);
   }
 
   Supprimer(_idGvg: number): Observable<boolean>
