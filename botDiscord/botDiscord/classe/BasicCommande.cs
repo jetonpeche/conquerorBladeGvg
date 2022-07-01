@@ -126,7 +126,7 @@ namespace botDiscord.classe
 
         // OK
         // si string vide inscrit a la prochaine gvg
-        [Command("participerGvG")]
+        [Command("participer")]
         public async Task Participer(string _dateString = "")
         {
             if (!string.IsNullOrEmpty(_dateString) && !Regex.Match(_dateString, patternDate, RegexOptions.None).Success)
@@ -137,6 +137,22 @@ namespace botDiscord.classe
                 HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
                 string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/participerViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
+
+                await Context.Channel.SendMessageAsync($"{Context.User.Mention} {retour}");
+            }
+        }
+
+        [Command("absent")]
+        public async Task Absent(string _dateString = "")
+        {
+            if (!string.IsNullOrEmpty(_dateString) && !Regex.Match(_dateString, patternDate, RegexOptions.None).Success)
+                await Context.Channel.SendMessageAsync($"{Context.User.Mention} Erreur: la date doit être au format JJ/MM");
+            else
+            {
+                string jsonString = JsonConvert.SerializeObject(new { IdDiscord = Context.User.Id.ToString(), Date = _dateString + $"/{DateTime.Now.Year}" });
+                HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
+
+                string retour = await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/absentViaDiscord", httpContent).Result.Content.ReadAsStringAsync();
 
                 await Context.Channel.SendMessageAsync($"{Context.User.Mention} {retour}");
             }
@@ -211,7 +227,6 @@ namespace botDiscord.classe
                     HttpContent httpContent = new StringContent(jsonString, Encoding.UTF8, MEDIA_TYPE);
 
                     await http.PostAsync($"{Outil.urlApi}/{ApiRacine.GVG}/supprimerViaDiscord", httpContent);
-
                 }
 
                 if(!estBloquer)
@@ -225,6 +240,12 @@ namespace botDiscord.classe
         public async Task OuvrirSite()
         {
             await Context.Channel.SendMessageAsync("liens du site: https://conqueror-blade-gvg.jetonpeche.fr/");
+        }
+
+        [Command("strat")]
+        public async Task OuvrirSiteStrat()
+        {
+            await Context.Channel.SendMessageAsync("lien de stratSketch https://stratsketch.com/");
         }
 
         // OK
@@ -250,10 +271,12 @@ namespace botDiscord.classe
             }
 
             embedBuilder.AddField("!listerGvG", "Liste les GvGs programmées");
-            embedBuilder.AddField("!participerGvG <rien> ou <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie ou à la prochaine GvG");
+            embedBuilder.AddField("!participer <rien> ou <JJ/MM>", "Inscrit l'utilisateur pour la GvG choisie ou à la prochaine GvG");
+            embedBuilder.AddField("!absent <rien> ou <JJ/MM>", "Désinscrit l'utilisateur de la prochaine GvG ou la date choisie");
             embedBuilder.AddField("!SupprimeMoi", "Supprime l'utilisateur de la base de donnée");
 
-            embedBuilder.AddField("!site", "Affiche url du site");
+            embedBuilder.AddField("!site", "Affiche l'url du site");
+            embedBuilder.AddField("!strat", "Affiche l'url de stratSketch");
             embedBuilder.AddField("!aled", "Liste des commandes disponibles");
 
             await Context.Channel.SendMessageAsync(null, false, embedBuilder.Build());

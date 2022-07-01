@@ -122,31 +122,27 @@
             int idCompte = await compteService.GetIdCompte(_gvg.IdDiscord);
 
             if(idCompte == 0)
-                return JsonConvert.SerializeObject("Veuillez remplir l'id discord sur le site avant, \n Ou taper la commande: !initMonIdDiscord");
+                return JsonConvert.SerializeObject("Je ne te connais pas");
 
-            DateTime date;
             int idGvG;
             bool estProchaineGvG;
 
-            // prochaine GvG
-            if (!DateTime.TryParse(_gvg.Date, out DateTime dateS))
+            if (DateTime.TryParse(_gvg.Date, out DateTime date))
+            {
+                estProchaineGvG = false;
+
+                if (!gvgService.Existe(date))
+                    return JsonConvert.SerializeObject($"Aucune GvG pour la date du: {_gvg.Date}");
+
+                idGvG = await gvgService.GetIdGvG(date);
+            }
+            else
             {
                 estProchaineGvG = true;
                 idGvG = await gvgService.GetIdProchaineGvG();
 
                 if (idGvG is 0)
                     return JsonConvert.SerializeObject("Aucune GvG programmée prochainement");
-            }
-            // date gvg choisi
-            else
-            {
-                estProchaineGvG = false;
-                date = DateTime.Parse(_gvg.Date);
-
-                if (!gvgService.Existe(date))
-                    return JsonConvert.SerializeObject($"Aucune GvG pour la date du: {_gvg.Date}");
-
-                idGvG = await gvgService.GetIdGvG(date);
             }
 
             if (gvgService.Participe(idCompte, idGvG))
@@ -178,6 +174,40 @@
             await gvgService.Absent(_gvg.IdGvg, _gvg.IdCompte);
 
             return JsonConvert.SerializeObject(true);
+        }
+
+        [HttpPost("absentViaDiscord")]
+        public async Task<string> AbsentViaDiscord(GvgCompteImport _gvg)
+        {
+            CompteService compteService = new(context);
+
+            if(!compteService.IdDiscordExiste(_gvg.IdDiscord))
+                return JsonConvert.SerializeObject("Je ne te connais pas");
+
+            int idCompte = await compteService.GetIdCompte(_gvg.IdDiscord);
+
+            if(DateTime.TryParse(_gvg.Date, out DateTime date))
+            {
+                if (!gvgService.Existe(date))
+                    return JsonConvert.SerializeObject($"Aucune GvG pour le: {_gvg.Date}");
+
+                int idGvg = await gvgService.GetIdGvG(date);
+
+                await gvgService.Absent(idGvg, idCompte);
+
+                return JsonConvert.SerializeObject("Tu ne participe plus à la GvG");
+            }
+            else
+            {
+                int idGvg = await gvgService.GetIdProchaineGvG();
+
+                if (idGvg is 0)
+                    return JsonConvert.SerializeObject("Aucune GvG prochainement");
+
+                await gvgService.Absent(idGvg, idCompte);
+
+                return JsonConvert.SerializeObject("Tu ne participe plus à la prochaine GvG");
+            }
         }
 
         [HttpPost("existe")]
