@@ -58,7 +58,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.nomImg = _nomImage;
   }
 
-  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0, _checkbox: MatCheckbox, _checkboxMeta: MatCheckbox): void
+  Filtrer(_idTypeUnite: number = 0, _idCouleurUnite: number = 0, _checkboxMesUnites: MatCheckbox, _checkboxMeta: MatCheckbox, _checkboxPasMesUnite: MatCheckbox): void
   {
     if(_idTypeUnite == 0 && _idCouleurUnite == 0)
     {
@@ -78,11 +78,15 @@ export class ModiferInfoCompteComponent implements OnInit {
     }  
 
     // mes unités
-    if(_checkbox.checked)
+    if(_checkboxMesUnites.checked && !_checkboxPasMesUnite.checked)
       this.listeUnite = this.listeUnite.filter(u => u.EstChoisi == 1);
 
+    // pas mes unite
+    else if(!_checkboxMesUnites.checked && _checkboxPasMesUnite.checked)
+      this.listeUnite = this.listeUnite.filter(u => u.EstChoisi != 1);
+
     // unités méta
-    this.listeUnite = this.listeUnite.filter(u => u.EstMeta == _checkboxMeta.checked);
+      this.listeUnite = this.listeUnite.filter(u => u.EstMeta == _checkboxMeta.checked);
   }
 
   Recherche(_recherche: string): void
@@ -235,7 +239,7 @@ export class ModiferInfoCompteComponent implements OnInit {
             }
           }
   
-          this.listeUniteClone = this.listeUnite;
+          this.listeUniteClone = this.listeUnite;          
         }
       }
     })
