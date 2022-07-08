@@ -40,6 +40,43 @@
             return JsonConvert.SerializeObject(liste);
         }
 
+        // A TESTER
+        [HttpGet("listerMesUnitesViaDiscord/{dateGvg}/{idDiscord}")]
+        public async Task<string> ListerMesUniteViaDiscord(string dateGvg, string idDiscord)
+        {
+            CompteService compteServ = new(context);
+            int idCompte = await compteServ.GetIdCompte(idDiscord);
+
+            if (idCompte is 0)
+                return JsonConvert.SerializeObject("Je ne te connais pas");
+
+            if (DateTime.TryParse(dateGvg, out DateTime date))
+            {
+                if (!gvgService.Existe(date))
+                    return JsonConvert.SerializeObject($"Aucune GvG pour le {dateGvg}");
+
+                int idGvg = await gvgService.GetIdGvG(date);
+
+                if (!gvgService.Participe(idCompte, idGvg))
+                    return JsonConvert.SerializeObject("Tu ne participes pas a cette GvG");
+
+                var listeUnite = await gvgService.ListerMesUnites(idGvg, idCompte);
+
+                return JsonConvert.SerializeObject(listeUnite);
+            }
+            else
+            {
+                int idGvg = await gvgService.GetIdProchaineGvG();
+
+                if (idGvg is 0)
+                    return JsonConvert.SerializeObject("Aucune GvG prochainement");
+
+                var listeUnite = await gvgService.ListerMesUnites(idGvg, idCompte);
+
+                return JsonConvert.SerializeObject(listeUnite);
+            } 
+        }
+
         [HttpGet("listerViaDiscord/{idDiscord}")]
         public async Task<string> ListerViaGvG(string idDiscord)
         {
