@@ -99,11 +99,19 @@
         <!-- liste des unités -->
         <div class="flexCard">
             <mat-card *ngFor="let element of listeUnite" [class.choisi]="element.EstChoisi == 1" class="{{ element.Couleur }} card" 
-                        (click)="ChoisirSuppUnite(element, selectNivUnite.value, $event)">
+                        (click)="ChoisirSuppUnite(element, selectNivUnite.value, btnUniteTempo, $event)">
 
                 <img [src]="element.NomImg" alt="">
                 <p class="influance">{{ element.Influance }}</p>
 
+                <!-- definir comme unité temporaire -->
+                <button #btnUniteTempo mat-mini-fab class="btnTempo" color="primary" 
+                        (click)="DefinirUniteTemporaire(element, $event)">
+                    <mat-icon *ngIf="element.EstTemporaire">timer</mat-icon>
+                    <mat-icon *ngIf="!element.EstTemporaire">timer_off</mat-icon>
+                </button>
+                
+                <!-- niveau de l'unité -->
                 <mat-form-field (click)="$event.stopPropagation()"
                                  color="primary" style="width: 100%;" appearance="outline">
                     <mat-label>Niveau</mat-label>

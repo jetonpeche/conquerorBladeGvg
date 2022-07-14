@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace back.Services
 {
@@ -56,6 +57,7 @@ namespace back.Services
                             u.Id,
                             u.Influance,
                             EstMeta = u.EstMeta == 1,
+                            EstTemporaire = false,
 
                             // recuperer l'image et pouvoir l'afficher dans HTML
                             NomImg = string.Format($"{urlImg}/{u.NomImg}"),
@@ -83,6 +85,7 @@ namespace back.Services
                         select new
                         {
                             Id = u.IdUnite,
+                            EstTemporaire = u.EstTemporaire == 1,
                             Niveau = u.NiveauMaitrise
                         };
             });
@@ -118,6 +121,16 @@ namespace back.Services
             unite.EstVisible = _estVisible ? 1 : 0;
 
             context.Unites.Update(unite);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SupprimerUniteTemporaire()
+        {
+            UniteCompte[] listeUniteCompte = (from u in context.UniteComptes
+                                              where u.EstTemporaire == 1
+                                              select u).ToArray();
+
+            context.UniteComptes.RemoveRange(listeUniteCompte);
             await context.SaveChangesAsync();
         }
     }

@@ -7,6 +7,7 @@ namespace back.Models
     {
         public int IdCompte { get; set; }
         public int IdUnite { get; set; }
+        public int EstTemporaire { get; set; }
         public string NiveauMaitrise { get; set; } = null!;
 
         public virtual Compte IdCompteNavigation { get; set; } = null!;

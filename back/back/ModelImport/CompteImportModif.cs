@@ -10,5 +10,7 @@
     {
         public int Id { get; set; }
         public string Niveau { get; set; }
+
+        public bool EstTemporaire { get; set; }
     }
 }

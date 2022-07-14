@@ -42,6 +42,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-weight: bold;
   }
 
+  .btnTempo
+  {
+    position: absolute;
+    bottom: 28px;
+  }
+
   &.choisi
   {
     outline: 3px solid rgb(0, 255, 0);

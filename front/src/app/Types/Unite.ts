@@ -13,6 +13,7 @@ export type Unite =
 
     EstMeta: boolean,
     EstVisible: boolean,
+    EstTemporaire: boolean,
 
     EstChoisi?: number,
     Niveau?: string

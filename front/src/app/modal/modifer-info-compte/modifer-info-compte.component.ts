@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ECache } from 'src/app/enum/ECache';
@@ -49,7 +50,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     this.idClasseChoisi = this.compte.IdClasseHeros;
 
     this.ListerClasse();
-    this.ListerUniter();
+    this.ListerUnite();
   }
 
   ClasseChoisi(_idClasse: number, _nomImage: string): void
@@ -105,7 +106,7 @@ export class ModiferInfoCompteComponent implements OnInit {
   Enregistrer(_form: NgForm): void
   {
     if(_form.invalid || this.btnClicker)
-      return
+      return;
 
     this.btnClicker = true;
 
@@ -165,8 +166,23 @@ export class ModiferInfoCompteComponent implements OnInit {
     }
   }
 
-  ChoisirSuppUnite(_unite: Unite, _niveau: string, _element: Event): void
+  DefinirUniteTemporaire(_unite: Unite, _event: Event): void
   {
+    _event.stopPropagation();
+
+    let unite = this.listeUniteChoisi.find(u => u.Id == _unite.Id);
+
+    if(unite)
+    {
+      unite.EstTemporaire = !unite.EstTemporaire;
+      _unite.EstTemporaire = unite.EstTemporaire;
+
+      this.outilServ.ToastOK(`${_unite.Nom} ${_unite.EstTemporaire ? 'est' : 'n\'est plus'} temporaire`);
+    }
+  }
+
+  ChoisirSuppUnite(_unite: Unite, _niveau: string, _matBtn: MatButton, _element: Event): void
+  { 
     const INDEX = this.listeMesUnite.findIndex(u => u.Id == _unite.Id);
 
     if(INDEX != -1)
@@ -174,6 +190,8 @@ export class ModiferInfoCompteComponent implements OnInit {
       this.outilServ.ToastInfo("Cette unité ne peux pas être décochée");
       return;
     }
+    
+    let estTemporaire: boolean = _matBtn._elementRef.nativeElement.value == "true";
 
     if(_unite.EstChoisi == 1)
     {
@@ -181,16 +199,21 @@ export class ModiferInfoCompteComponent implements OnInit {
       this.listeUniteChoisi.splice(INDEX, 1);
 
       _unite.EstChoisi = 0;
+      _unite.EstTemporaire = false;
 
       this.outilServ.ToastOK(`${_unite.Nom} plus selectionnée`);
     }
     else
     {
       _unite.EstChoisi = 1;
+      _unite.EstTemporaire = estTemporaire;
 
-      this.listeUniteChoisi.push({ Id: _unite.Id, Niveau: _niveau });
+      this.listeUniteChoisi.push({ Id: _unite.Id, Niveau: _niveau, EstTemporaire: estTemporaire });
       this.outilServ.ToastOK(`${_unite.Nom} selectionnée`);
     }
+
+    console.log(this.listeUniteChoisi);
+    
   }
 
   GetNiveauMonUnite(_id: number): string
@@ -208,7 +231,7 @@ export class ModiferInfoCompteComponent implements OnInit {
     })
   }
 
-  private ListerUniter(): void
+  private ListerUnite(): void
   {
     this.uniteServ.ListerVisible().subscribe({
       next: (liste: Unite[]) =>
@@ -223,7 +246,7 @@ export class ModiferInfoCompteComponent implements OnInit {
   {
     this.uniteServ.ListerMesUnite(this.compte.Id).subscribe({
       next: (liste: MesUnite[]) =>
-      {   
+      {
         if(liste.length > 0)
         {
           this.listeMesUnite = liste;
@@ -235,6 +258,7 @@ export class ModiferInfoCompteComponent implements OnInit {
             if(unite)
             {
               element.EstChoisi = 1;
+              element.EstTemporaire = unite.EstTemporaire;
               element.Niveau = unite.Niveau;
             }
           }

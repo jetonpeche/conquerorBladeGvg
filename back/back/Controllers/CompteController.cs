@@ -82,7 +82,7 @@
 
             foreach (var unite in _compte.ListeUniteNiv)
             {
-                liste.Add(new() { IdCompte = _compte.IdCompte, IdUnite = unite.Id, NiveauMaitrise = unite.Niveau });
+                liste.Add(new() { IdCompte = _compte.IdCompte, IdUnite = unite.Id, NiveauMaitrise = unite.Niveau, EstTemporaire = unite.EstTemporaire ? 1 : 0 });
             }
 
             Compte compteModif = new()

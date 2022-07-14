@@ -65,7 +65,7 @@ CREATE TABLE Compte
     idDiscord varchar(100) NULL,
     pseudo varchar(150) NOT NULL,
     influance int NOT NULL,
-    estPremiereConnexion int DEFAULT 1,
+    estPremiereConnexion int NOT NULL DEFAULT 1,
     estAdmin int NOT NULL DEFAULT 0,
 
     FOREIGN KEY (idClasseHeros) REFERENCES ClasseHeros(id)
@@ -101,6 +101,7 @@ CREATE TABLE UniteCompte
 ( 
     idCompte int NOT NULL,
     idUnite int NOT NULL,
+    estTemporaire int DEFAULT 0 NOT NULL,
     niveauMaitrise varchar(30) NOT NULL,
 
     PRIMARY KEY(idCompte, idUnite),

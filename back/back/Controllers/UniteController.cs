@@ -67,5 +67,17 @@
 
             return JsonConvert.SerializeObject(true);
         }
+
+        /// <summary>
+        /// Utilisé automatiquement tout les lundis par le serveur
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("supprimerUniteTemporaire")]
+        public async Task<string> SupprimerUniteTemporaire()
+        {
+            await uniteService.SupprimerUniteTemporaire();
+
+            return JsonConvert.SerializeObject(true);
+        }
     }
 }
